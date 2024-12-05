@@ -4,6 +4,8 @@ function control_draw() {
 
 	var targetspeed = 1000000 / room_speed
 	currspeed = targetspeed / delta_time
+	var checkplaying = playing - playing_prev
+	playing_prev = playing
 	
 	var current_song = songs[song]
 	var tabwidth = 180
@@ -503,7 +505,7 @@ function control_draw() {
 		                    if (current_time - current_song.song_added[xx, b] < 1000) a = 0
 		                }
 		                if (a) {
-		                    if (current_song.song_ins[xx, b].loaded) play_sound(current_song.song_ins[xx, b], current_song.song_key[xx, b], c , d, e, b + 1)
+		                    if (current_song.song_ins[xx, b].loaded && reference_option != 1) play_sound(current_song.song_ins[xx, b], current_song.song_key[xx, b], c , d, e, b + 1)
 							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Tempo Changer") current_song.tempo = floor(abs(e)) / 15
 							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
 							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Sound Stopper") {remove_emitters_all(floor(e), floor(d - 100))}
@@ -515,6 +517,17 @@ function control_draw() {
 		    }
 		}
 	}
+	
+	if (checkplaying > 0) {
+		if (reference_option > 0 && !audio_is_playing(reference_sound)) {
+			reference_sound = audio_play_sound(reference_audio, 1, 0)
+			audio_sound_set_track_position(reference_sound, current_song.marker_pos / current_song.tempo + reference_offset / 1000)
+		}
+	}
+	if (checkplaying < 0) {
+		if (audio_is_playing(reference_sound)) audio_stop_sound(reference_sound)
+	}
+	
 	if (window = w_dragselection) {
 	    current_song.selection_x = current_song.starta + floor((mouse_x - (x1 + 2)) / 32) - select_pressa
 	    current_song.selection_y = current_song.startb + floor((mouse_y - (y1 + 34)) / 32) - select_pressb
@@ -970,6 +983,11 @@ function control_draw() {
 		//}
 	}
 	if (keyboard_check_released(vk_f3)) debug_option = 0
+	
+	if (keyboard_check_pressed(vk_numpad1)) {reference_option = 0; set_msg("Reference mute")}
+	if (keyboard_check_pressed(vk_numpad2)) {reference_option = 1; set_msg("Reference solo")}
+	if (keyboard_check_pressed(vk_numpad3)) {reference_option = 2; set_msg("Reference mix")}
+	
 	if (!isplayer) {
 	// Selecting note blocks
 	if (select > 0) {
@@ -1905,6 +1923,23 @@ function control_draw() {
 		volume_scroll = 0
 	}
 	draw_set_alpha(1)
+	xx += 120
+	if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
+		reference_audio_file = string(GetOpenFileName("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
+		reference_audio = audio_create_stream(reference_audio_file)
+		if (reference_audio < 0) {
+		    if (language != 1) message("Couldn't load the file", "Error")
+		    else message("找不到文件", "错误")
+			reference_audio_file = ""
+			reference_audio = -1
+		}
+	}
+	xx += 100
+	if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Offset (ms): ", "偏移量（毫秒）: "))
+	xx += 100
+	if (reference_audio >= 0) reference_offset = median(0, draw_dragvalue(13, xx, yy + 5, reference_offset, 0.5), 1000000)
+	xx += 50
+	if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Loaded file: ", "已加载音频: ") + reference_audio_file)
 
 	// Compatible
 	if (!isplayer) {
@@ -2538,5 +2573,4 @@ function control_draw() {
 		show_debug_message(string(window) + " " + string(prevwindow))
 	}*/
 	prevwindow = window
-
 }

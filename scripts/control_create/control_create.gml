@@ -292,6 +292,7 @@ function control_create() {
 	audio_listener_orientation(0,1,0, 0,0,1)
 	audio_listener_position(100,0,1)
 	playing = 0
+	playing_prev = playing
 	record = 0
 	mastervol = 1
 	tempodrag = 10
@@ -309,6 +310,12 @@ function control_create() {
 	for (a = 0; a < 10000; a += 1) text_exists[a] = 0
 	currspeed = 0
 	taskbar = 1
+	
+	reference_audio_file = ""
+	reference_audio = -1
+	reference_option = 0
+	reference_offset = 0
+	reference_sound = -1
 
 	// Note blocks
 	midi_devices = 0
