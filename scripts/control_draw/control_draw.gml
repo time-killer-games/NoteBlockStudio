@@ -984,9 +984,31 @@ function control_draw() {
 	}
 	if (keyboard_check_released(vk_f3)) debug_option = 0
 	
-	if (keyboard_check_pressed(vk_numpad1)) {reference_option = 0; set_msg("Reference mute")}
-	if (keyboard_check_pressed(vk_numpad2)) {reference_option = 1; set_msg("Reference solo")}
-	if (keyboard_check_pressed(vk_numpad3)) {reference_option = 2; set_msg("Reference mix")}
+	if (keyboard_check_pressed(vk_numpad1)) {
+		reference_option = 0; 
+		set_msg("Reference mute"); 
+		if (audio_is_playing(reference_sound)) audio_stop_sound(reference_sound)
+	}
+	if (keyboard_check_pressed(vk_numpad2)) {
+		reference_option = 1; 
+		set_msg("Reference solo"); 
+		if (playing) {
+			if (reference_option > 0 && !audio_is_playing(reference_sound)) {
+				reference_sound = audio_play_sound(reference_audio, 1, 0)
+				audio_sound_set_track_position(reference_sound, current_song.marker_pos / current_song.tempo + reference_offset / 1000)
+			}
+		}
+	}
+	if (keyboard_check_pressed(vk_numpad3)) {
+		reference_option = 2; 
+		set_msg("Reference mix")
+		if (playing) {
+			if (reference_option > 0 && !audio_is_playing(reference_sound)) {
+				reference_sound = audio_play_sound(reference_audio, 1, 0)
+				audio_sound_set_track_position(reference_sound, current_song.marker_pos / current_song.tempo + reference_offset / 1000)
+			}
+		}
+	}
 	
 	if (!isplayer) {
 	// Selecting note blocks
@@ -1934,11 +1956,12 @@ function control_draw() {
 			reference_audio = -1
 		}
 	}
+	draw_theme_color()
 	xx += 100
 	if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Offset (ms): ", "偏移量（毫秒）: "))
-	xx += 100
+	xx += 90
 	if (reference_audio >= 0) reference_offset = median(0, draw_dragvalue(13, xx, yy + 5, reference_offset, 0.5), 1000000)
-	xx += 50
+	xx += 30
 	if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Loaded file: ", "已加载音频: ") + reference_audio_file)
 
 	// Compatible
