@@ -519,6 +519,7 @@
     {"id":{"name":"spr_tabbuttons_f","path":"sprites/spr_tabbuttons_f/spr_tabbuttons_f.yy",},"order":38,},
     {"id":{"name":"fnt_wslui_info_med","path":"fonts/fnt_wslui_info_med/fnt_wslui_info_med.yy",},"order":3,},
     {"id":{"name":"instrument_swap","path":"scripts/instrument_swap/instrument_swap.yy",},"order":6,},
+    {"id":{"name":"selection_expand_columns","path":"scripts/selection_expand_columns/selection_expand_columns.yy",},"order":38,},
     {"id":{"name":"schematic_load","path":"scripts/schematic_load/schematic_load.yy",},"order":2,},
     {"id":{"name":"schematic_size","path":"scripts/schematic_size/schematic_size.yy",},"order":3,},
     {"id":{"name":"schematic_cell_set","path":"scripts/schematic_cell_set/schematic_cell_set.yy",},"order":4,},
@@ -1612,8 +1613,8 @@
     {"CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy/_typing","resourceVersion":"1.0","name":"_shape.pyc","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy/_typing","resourceVersion":"1.0","name":"_ufunc.pyi","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles/Data/Python/Lib/site-packages/numpy/_typing","resourceVersion":"1.0","name":"__init__.pyc","resourceType":"GMIncludedFile",},
-    {"CopyToMask":-1,"filePath":"datafiles/Data","resourceVersion":"1.0","name":"changelog.txt","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"Launch Debug.bat","resourceType":"GMIncludedFile",},
+    {"CopyToMask":-1,"filePath":"datafiles/Data","resourceVersion":"1.0","name":"changelog.txt","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "2022.6.1.26",
