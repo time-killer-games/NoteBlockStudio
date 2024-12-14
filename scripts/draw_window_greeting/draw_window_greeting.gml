@@ -41,7 +41,7 @@ function draw_window_greeting() {
 	draw_text_center(x1 + 132, y1 + 213, "Note Block Studio")
 	draw_theme_font(font_main_bold)
 	var dev_label_offset = (is_prerelease) ? 15 : 0
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Running from the GameMaker IDE.")
 		else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "在 IDE 中运行")	
 	} else if (check_update) {
@@ -79,7 +79,7 @@ function draw_window_greeting() {
 	}
 	draw_theme_font(font_main)
 	draw_theme_color()
-	if (RUN_FROM_IDE != 1) {
+	if (NOT_RUN_FROM_IDE != 1) {
 		if (language != 1) draw_text_center(x1 + 132, y1 + 233, "Version Local Release")
 		else draw_text_center(x1 + 132, y1 + 233, "本地版本")
 	} else {

@@ -11,15 +11,15 @@ function control_create() {
 	if (os_type = os_windows) lib_init()
 
 	// Window
-	#macro RUN_FROM_IDE !string_count("GMS2TEMP", get_execution_command()) // THIS CONSTANT IS A REVERSE BOOLEAN (0 is from IDE)
-	//show_message(get_execution_command() + "IDE: " + string(RUN_FROM_IDE))
+	#macro NOT_RUN_FROM_IDE !string_count("GMS2TEMP", get_execution_command()) // THIS CONSTANT IS A REVERSE BOOLEAN (0 is from IDE)
+	//show_message(get_execution_command() + "IDE: " + string(NOT_RUN_FROM_IDE))
 	p_num = parameter_count()
 	isplayer = (check_args("-player"))
 	filenamearg = check_args()
 	for (var i = 0; i < p_num; i += 1) {
 		if (parameter_string(i) = "-player" || parameter_string(i) == "--protocol-launcher") isplayer = 1
 	}
-	//if (RUN_FROM_IDE != 1) isplayer = 1
+	//if (NOT_RUN_FROM_IDE != 1) isplayer = 1
 	destroy_self = 0
 	port_taken = 0
 	server_socket = -1

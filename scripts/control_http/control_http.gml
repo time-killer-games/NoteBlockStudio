@@ -6,7 +6,7 @@ function control_http() {
 		download_song_from_url()
 	}
 
-	else if (check_update) {
+	else if (check_update && NOT_RUN_FROM_IDE) {
 		check_updates()
 		get_update()
 	}
