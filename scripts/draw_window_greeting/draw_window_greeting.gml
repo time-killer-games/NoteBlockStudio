@@ -21,8 +21,8 @@ function draw_window_greeting() {
 			curs = cr_handpoint;
 			if (mouse_check_button_released(mb_left)) {
 				if (hover_x) { // X button
-					if (language != 1) show_message_dynamic("Developing Note Block Studio takes a lot of unpaid volunteering time. If you can, please consider supporting us in the future! =)\n\n(You can find that option at any time in Help > Donate.)");
-					else show_message_dynamic("开发Note Block Studio完全基于我们用爱发电。如果情况允许，请考虑在以后小小的支持我们一下！(～￣▽￣)～\n\n（您可以随时在帮助 > 捐赠中找到该选项。）")
+					if (language != 1) show_message("Developing Note Block Studio takes a lot of unpaid volunteering time. If you can, please consider supporting us in the future! =)\n\n(You can find that option at any time in Help > Donate.)");
+					else show_message("开发Note Block Studio完全基于我们用爱发电。如果情况允许，请考虑在以后小小的支持我们一下！(～￣▽￣)～\n\n（您可以随时在帮助 > 捐赠中找到该选项。）")
 					donate_banner_time = date_inc_month(date_current_datetime(), 1);
 					donate_banner = 0;
 					save_settings();

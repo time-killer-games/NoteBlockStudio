@@ -2019,7 +2019,7 @@ function control_draw() {
 	draw_set_alpha(1)
 	xx += 120
 	if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
-		reference_audio_file = string(get_open_filename_ext_dynamic("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
+		reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
 		reference_audio = audio_create_stream(reference_audio_file)
 		if (reference_audio < 0) {
 		    if (language != 1) message("Couldn't load the file", "Error")
