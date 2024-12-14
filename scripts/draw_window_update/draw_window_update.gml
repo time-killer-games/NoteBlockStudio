@@ -41,10 +41,10 @@ function draw_window_update() {
 	
 	// Refresh changelog button (debug)
 	if (RUN_FROM_IDE != 1) {
-		if (draw_button2(x1 + 500 - 144 - 16, y1 + 8, 72, "Open file")) {
+		if (draw_button2(x1 + 500 - 144 - 16, y1 + 8 + 24, 72, "Open file")) {
 			open_url(data_directory + "changelog.txt");
 		}
-		if (draw_button2(x1 + 500 - 72 - 8, y1 + 8, 72, "Refresh")) {
+		if (draw_button2(x1 + 500 - 72 - 8, y1 + 8 + 24, 72, "Refresh")) {
 			changelogstr = load_text(data_directory + "changelog.txt");
 		}
 	}
@@ -57,6 +57,9 @@ function draw_window_update() {
 		if (window = w_update) {
 			draw_text_dynamic(x1 + 32, y1 + 32, "感谢你更新到 " + version + " 版本！")
 		}
+	}
+	if (language != 1 && draw_button2(x1 + 500 - 120 - 8, y1 + 8, 120, "Watch release video")) {
+		open_url("https://bit.ly/NBS311_video");
 	}
 	draw_area(x1 + 16, y1 + 58, x1 + 487 + theme_offset, y1 + 357)
 	n = string_count("\n", fullstr) 
