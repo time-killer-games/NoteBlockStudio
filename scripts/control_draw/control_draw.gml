@@ -64,8 +64,8 @@ function control_draw() {
 	for (var nn = 0; nn < array_length(songs); nn++) {
 		songs[nn].song_title = condstr((songs[nn].filename = "" || songs[nn].filename = "-player") && (songs[nn].midiname = "" || !isplayer), condstr(language != 1, "Unsaved song", "新文件")) + condstr(songs[nn].filename != "-player", filename_name(songs[nn].filename)) + condstr((songs[nn].filename = "" || songs[nn].filename = "-player") && songs[nn].midiname != "" && isplayer, songs[nn].midiname)
 	}
-	window_set_caption(songs[song].song_title + condstr(songs[song].changed && songs[song].filename != "" && songs[song].filename != "-player", "*") + condstr(os_type != os_macosx, " - Minecraft Note Block Studio" + condstr(isplayer, " - Player Mode")))
-	//window_set_caption(condstr((song_download_display_name != ""), song_download_display_name, condstr((filename = "" || filename = "-player") && (midiname = "" || !isplayer), condstr(language != 1, "Unsaved song", "新文件")) + condstr(filename != "-player", filename_name(filename)) + condstr((filename = "" || filename = "-player") && midiname != "" && isplayer, midiname) + condstr(changed && filename != "" && filename != "-player", "*")) + " - Note Block Studio" + condstr(isplayer, " - Player Mode"))
+	//window_set_caption(songs[song].song_title + condstr(songs[song].changed && songs[song].filename != "" && songs[song].filename != "-player", "*") + condstr(os_type != os_macosx, " - Minecraft Note Block Studio" + condstr(isplayer, " - Player Mode")))
+	window_set_caption(condstr((songs[song].song_download_display_name != ""), songs[song].song_download_display_name, condstr((songs[song].filename = "" || songs[song].filename = "-player") && (songs[song].midiname = "" || !isplayer), condstr(language != 1, "Unsaved song", "新文件")) + condstr(songs[song].filename != "-player", filename_name(songs[song].filename)) + condstr((songs[song].filename = "" || songs[song].filename = "-player") && songs[song].midiname != "" && isplayer, songs[song].midiname) + condstr(songs[song].changed && songs[song].filename != "" && songs[song].filename != "-player", "*")) + condstr(os_type != os_macosx, " - Note Block Studio" + condstr(isplayer, " - Player Mode")))
 	// Performance indicator: "(" + string_format(currspeed * 100, 1, 0) + "%) "
 	draw_set_alpha(1)
 	draw_theme_color()
@@ -400,7 +400,6 @@ function control_draw() {
 		if (fdark) draw_set_color(2565927)
 		draw_rectangle(x1 + 2, y1 + 34, x1 + 2 + 32 * totalcols, y1 + 34 + 32 * totalrows, false)
 	}
-	}
 	note_offset = floor(((current_song.marker_pos - floor(current_song.marker_pos + 0.5 * !isplayer)) * 32) + 0.5) * ((playing && marker_follow && marker_pagebypage = 2 && (current_song.marker_pos - floor(totalcols / 2 + 0.5) < current_song.enda + 1 && current_song.marker_pos - floor(totalcols / 2 + 0.5) > 0)) || isplayer)
 	if (!isplayer) {
 	var tempo_changer_display_queue = []
@@ -558,7 +557,7 @@ function control_draw() {
 		if (audio_is_playing(reference_sound)) audio_stop_sound(reference_sound)
 	}
 
-	if (tempo < 0.25) tempo = 0.25
+	if (current_song.tempo < 0.25) current_song.tempo = 0.25
 	if (window = w_dragselection) {
 	    current_song.selection_x = current_song.starta + floor((mouse_x - (x1 + 2)) / 32) - select_pressa
 	    current_song.selection_y = current_song.startb + floor((mouse_y - (y1 + 34)) / 32) - select_pressb
@@ -1507,13 +1506,13 @@ function control_draw() {
 				
 				// TODO: replace with array_contains() if we ever upgrade GameMaker...
 				var layer_id = current_song.startb + b
-				var layer_selected = ds_list_find_index(selected_layers, layer_id) > -1 // [TODO]
+				var layer_selected = ds_list_find_index(current_song.selected_layers, layer_id) > -1
 				if (layer_selected) {
 					selection_remove(0, current_song.startb + b, current_song.enda, current_song.startb + b, 0, 0)
-					ds_list_delete_value(selected_layers, layer_id)
+					ds_list_delete_value(current_song.selected_layers, layer_id)
 				} else {
 					selection_add(0, current_song.startb + b, current_song.enda, current_song.startb + b, 0, 0)
-					ds_list_add(selected_layers, layer_id)
+					ds_list_add(current_song.selected_layers, layer_id)
 				}
 			}
 			// Add layer
@@ -2020,7 +2019,7 @@ function control_draw() {
 	draw_set_alpha(1)
 	xx += 120
 	if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
-		reference_audio_file = string(GetOpenFileName("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
+		reference_audio_file = string(get_open_filename_ext_dynamic("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
 		reference_audio = audio_create_stream(reference_audio_file)
 		if (reference_audio < 0) {
 		    if (language != 1) message("Couldn't load the file", "Error")

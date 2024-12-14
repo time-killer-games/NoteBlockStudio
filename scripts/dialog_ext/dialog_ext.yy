@@ -6,7 +6,7 @@
     "path": "folders/Scripts/File.yy",
   },
   "resourceVersion": "1.0",
-  "name": "new_song",
+  "name": "dialog_ext",
   "tags": [],
   "resourceType": "GMScript",
 }

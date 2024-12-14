@@ -67,7 +67,7 @@ function reset() {
 	save_version = nbs_version
 	tonextsave = 0
 	tonextbackup = 0
-	backup_delete_own_instance()
+	backup_delete_own_tab()
 	songs[song].song_backupname = "Unsaved song " + string(song_backupid) + ".nbs"
 
 

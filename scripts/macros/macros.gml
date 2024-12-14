@@ -1,7 +1,7 @@
 function macros() {
 #macro gm_runtime_version "2022.6.1.40"
-#macro version_date "2024.12.04"
-#macro version "3.11.0-rc.1"
+#macro version_date "2024.12.13"
+#macro version "3.12.0-dev"
 #macro is_prerelease 1 // remember to change to 0 in the release!
 #macro nbs_version 5
 #macro pat_version 1
@@ -34,7 +34,7 @@ function macros() {
 #macro pattern_directory condstr(os_type = os_windows, working_directory, file_directory) + "patterns" + condstr(os_type = os_windows, "\\", "/")
 #macro log_file          file_directory + "log.txt"
 #macro temp_file         file_directory + "tmp.file"
-#macro update_file       file_directory + "minecraft note block studio installer.exe"
+#macro update_file       file_directory + "note block studio installer.exe"
 #macro settings_file     file_directory + "settings.ini"
 #macro settings_dev_file file_directory + "settings_dev.ini"
 #macro backup_directory  file_directory + "data" + condstr(os_type = os_windows, "\\", "/")

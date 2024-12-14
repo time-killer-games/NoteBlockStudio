@@ -5,7 +5,7 @@ function new_song() {
 	reset_add()
 	//if (confirm() > -1) {
 	//	reset()
-	//	backup_delete_own_instance()
+	//	backup_delete_own_tab()
 	//}
 
 

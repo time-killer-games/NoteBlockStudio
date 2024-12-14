@@ -55,7 +55,7 @@ function toggle_playing(argument0) {
 	        }
 	    }
 	} else {
-		timestoloop = real(loopmax)
+		timestoloop = real(songs[song].loopmax)
 	}
 
 

@@ -1,4 +1,4 @@
-function open_song_zip(filename) {
+function open_song_zip(filename, replace = false) {
 
 	var dst_path = temp_directory + "nbs\\";
 	
@@ -18,5 +18,5 @@ function open_song_zip(filename) {
 		throw("This is not a valid zipped song file!");
 	}
 	
-	open_song_nbs(song_path, sounds_path);
+	return open_song_nbs(song_path, sounds_path, 0, replace);
 }

@@ -14,10 +14,8 @@ function control_create() {
 	#macro RUN_FROM_IDE !string_count("GMS2TEMP", get_execution_command()) // THIS CONSTANT IS A REVERSE BOOLEAN (0 is from IDE)
 	//show_message(get_execution_command() + "IDE: " + string(RUN_FROM_IDE))
 	p_num = parameter_count()
-	// isplayer = (check_args("--player") || check_args("-p"))
-	// filenamearg = check_args("--song", 1)
-	// if (filenamearg = 0 || filenamearg = -1) filenamearg = check_args()
-	isplayer = 0
+	isplayer = (check_args("-player"))
+	filenamearg = check_args()
 	for (var i = 0; i < p_num; i += 1) {
 		if (parameter_string(i) = "-player" || parameter_string(i) == "--protocol-launcher") isplayer = 1
 	}
@@ -29,7 +27,7 @@ function control_create() {
 	client_socket = -1
 	if (server_socket < 0 && !isplayer) {port_taken = 1; client_socket = network_create_socket(network_socket_tcp)}
 	if (parameter_count() > 0) {
-		if (filenamearg != "" && (filename_ext(filenamearg) = ".mid" || filename_ext(filenamearg) = ".midi" || filename_ext(filenamearg) = ".schematic" || filename_ext(filenamearg) = ".nbs")) {
+		if (filenamearg != "" && (filename_ext(filenamearg) = ".mid" || filename_ext(filenamearg) = ".midi" || filename_ext(filenamearg) = ".schematic" || filename_ext(filenamearg) = ".nbs" || filename_ext(filenamearg) = ".zip")) {
 			if (port_taken) {
 				network_connect(client_socket, "127.0.0.1", 30010)
 				var temp_buffer = buffer_create(0, buffer_grow, 1)
@@ -369,7 +367,7 @@ function control_create() {
 	dragvol = 0
 	dragstereob = 0
 	dragstereo = 0
-	//selected_layers = ds_list_create() // [TODO]
+	//selected_layers = ds_list_create()
 
 	// Piano
 	show_piano = 1
@@ -445,18 +443,13 @@ function control_create() {
 	insselect = -1
 	mouse_xprev = mouse_x
 	mouse_yprev = mouse_y
-	mousepress_x = -1 // [TODO]
+	mousepress_x = -1
 	mousepress_y = -1
 	asso_nbs = 1
 	asso_midi = 0
 	asso_sch = 0
 	w_asso_start = 1
 	wmenu = 0
-	loop_session = 0
-	loop = 0
-	loopmax = 0
-	loopstart = 0
-	loopend = 0
 	//looptobarend = 1
 	timestoloop = songs[song].loopmax
 	settempo = 0 // Tempo input box clicked
@@ -492,7 +485,8 @@ function control_create() {
 	selected_tab_mc = 0
 	
 	// Import sounds
-	mc_default_path = string_copy(game_save_id, 0, string_last_pos("\\", string_copy(game_save_id, 1, string_length(game_save_id) - 1))) + ".minecraft\\";
+	mc_default_path = string_copy(game_save_id, 0, string_last_pos("/", string_copy(game_save_id, 1, string_length(game_save_id) - 1))) + condstr(os_type != os_macosx, ".") + "minecraft/";
+	if (os_type = os_windows) mc_default_path = string_replace_all(mc_default_path, "/", "\\");
 	mc_install_path = mc_default_path;
 	
 	var asset_index_names_keys = ["pre-1.6", "legacy", "1.7.3", "1.7.4", "1.7.10", "14w25a", "14w31a", "1.8", "1.9", "1.9-aprilfools", "1.10", "1.11", "1.12", "1.13", "1.13.1", "1.14", "1.14-af", "1.15", "1.16", "1.17", "1.18", "1.19", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "_"];
@@ -609,14 +603,13 @@ function control_create() {
 		donate_banner = 1 // Enable donate banner after each update
 	}
 	
-	// Download song [TODO]]
+	// Download song
 	protocol_data = pointer_null;
 	song_download_data = pointer_null;
 	song_downloaded_size = 0
 	song_total_size = -1
 	song_download_status = 0
 	song_download_file = ""
-	song_download_display_name = ""
 
 	// Delete old installer
 	if (file_exists_lib(update_file)) {
@@ -643,8 +636,13 @@ function control_create() {
 	//		}
 	if (file_find_first(backup_directory + "*.nbs", 0) != "" && !port_taken && !isplayer) {
 		var isrecover = 0
-		if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
-		else isrecover = question("Note Block Studio在您工作时意外关闭了。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
+		if (os_type != os_macosx) {
+			if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
+			else isrecover = question("Note Block Studio在您工作时意外关闭了。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
+		} else {
+			if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song or the song haven't been saved since you closed the program. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
+			else isrecover = question("Note Block Studio在您工作时意外关闭，或上次关闭时没有保存文件。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
+		}
 		if (isrecover) {
 			// Create restore folder
 			if (!directory_exists_lib(restore_directory)) {
@@ -694,8 +692,8 @@ function control_create() {
 			// File drop, etc.
 			} else if (string_replace(arg, " ", "") != "") {
 				show_debug_message(arg)
-				filename = arg;
-				song_backupname = filename_name(filename_change_ext(filename, ".nbs"));
+				filenamearg = arg;
+				song_backupname = filename_name(filename_change_ext(filenamearg, ".nbs"));
 			}
 			
 		}
@@ -717,7 +715,7 @@ function control_create() {
 	// Open song
 	if (parameter_count() > 0) {
 		songs[song].filename = filenamearg
-		if (songs[song].filename != "" && (filename_ext(songs[song].filename) = ".mid" || filename_ext(songs[song].filename) = ".midi" || filename_ext(songs[song].filename) = ".schematic" || filename_ext(songs[song].filename) = ".nbs")) {
+		if (songs[song].filename != "" && (filename_ext(songs[song].filename) = ".mid" || filename_ext(songs[song].filename) = ".midi" || filename_ext(songs[song].filename) = ".schematic" || filename_ext(songs[song].filename) = ".nbs" || filename_ext(songs[song].filename) = ".zip")) {
 			if (!port_taken) {
 				load_song(songs[song].filename, 0, 1, 1)
 			}

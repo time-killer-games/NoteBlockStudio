@@ -11,7 +11,6 @@ function instrument_load(custom_sounds_path = "") {
 	// If not provided or the sound doesn't exist there, fall back to the default Sounds folder
 	if (custom_sounds_path == "") {
 		fn = bundled_sounds_directory + filename;
-	    if (os_type = os_windows) fn = string_replace_all(sounds_directory + filename, "/", "\\")
 	} else {
 		var custom_fn = custom_sounds_path + filename;
 		
@@ -22,7 +21,7 @@ function instrument_load(custom_sounds_path = "") {
 		}
 	}
 
-	fn = string_replace_all(fn, "/", "\\");
+	if (os_type = os_windows) fn = string_replace_all(fn, "/", "\\");
 
 	log("Load instrument", fn)
 

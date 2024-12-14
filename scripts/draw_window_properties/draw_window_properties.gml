@@ -2,7 +2,7 @@ function draw_window_properties() {
 	// draw_window_properties()
 	
 	if (window != prevwindow) {
-		// Initialize loop end to current last tick of the song [TODO]
+		// Initialize loop end to current last tick of the song
 		songs[song].loopend = songs[song].enda + 1
 	}
 	

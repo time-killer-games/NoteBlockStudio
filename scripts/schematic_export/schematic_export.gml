@@ -2,8 +2,8 @@ function schematic_export() {
 	// schematic_export()
 	var fn, a, b, c, d, p, xx, yy, zz, len, wid, hei, o, chestx, chesty, chestz, signx, signy, signz, nblocks, layers, cyy, y1, insnum, ins;
 	var REPEATER, TORCHON, TORCHOFF, WIRE, LADDER, RAIL, POWEREDRAIL, noteblocks, noteblockx, noteblocky, noteblockz, noteblocknote, noteblockins, noteblockpit;
-	if (!structure) fn = string(GetSaveFileName("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Schematic"))
-	else fn = string(GetSaveFileName("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Schematic"))
+	if (!structure) fn = string(get_save_filename_ext_dynamic("Minecraft Schematics (*.schematic)|*.schematic", filename_new_ext(songs[song].filename, "") + ".schematic", "", "Export Schematic"))
+	else fn = string(get_save_filename_ext_dynamic("Minecraft Structures (*.nbt)|*.nbt", filename_new_ext(string_replace_all(string_lower(songs[song].filename), " ", "_"), "") + ".nbt", "", "Export Schematic"))
 	if (fn = "") return 0
 	//fn = string_replace_all(fn, ".schematic", "")
 	//fn += ".schematic"
@@ -625,13 +625,13 @@ function schematic_export() {
 	        if (o.sch_exp_minecraft_old) {
 	            TAG_String("Text1", "Song generated")
 	            TAG_String("Text2", "by the")
-	            TAG_String("Text3", "Minecraft Note")
-	            TAG_String("Text4", "Block Studio")
+	            TAG_String("Text3", "Note Block")
+	            TAG_String("Text4", "Studio")
 	        } else {
 	            TAG_String("Text1", "{\"text\": \"Song generated\"}")
 	            TAG_String("Text2", "{\"text\": \"by the\"}")
-	            TAG_String("Text3", "{\"text\": \"Minecraft Note\"}")
-	            TAG_String("Text4", "{\"text\": \"Block Studio\"}")
+	            TAG_String("Text3", "{\"text\": \"Note Block\"}")
+	            TAG_String("Text4", "{\"text\": \"Studio\"}")
 	        }
 	        TAG_End()
 	        if (sch_loop) {
@@ -920,8 +920,8 @@ function schematic_export() {
 				TAG_String("id", "minecraft:sign")
 	            TAG_String("Text1", "{\"text\": \"Song generated\"}")
 	            TAG_String("Text2", "{\"text\": \"by the\"}")
-	            TAG_String("Text3", "{\"text\": \"Minecraft Note\"}")
-	            TAG_String("Text4", "{\"text\": \"Block Studio\"}")
+	            TAG_String("Text3", "{\"text\": \"Note Block\"}")
+	            TAG_String("Text4", "{\"text\": \"Studio\"}")
 				TAG_End()
 			TAG_List("pos", 3, 3)
 				buffer_write_int_be(wid - 1 - signy)

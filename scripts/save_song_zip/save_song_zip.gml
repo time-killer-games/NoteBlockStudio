@@ -1,8 +1,8 @@
 function save_song_zip() {
 	var fn, tempdir, ins, src, dst, count;
 	
-	if (language != 1) fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(filename == "", "", filename_change_ext(filename, ".zip")), "", "Save song with custom sounds"));
-	else fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(filename == "", "", filename_change_ext(filename, ".zip")), "", "连带自定义音色一起导出"));
+	if (language != 1) fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, ".zip")), "", "Save song with custom sounds"));
+	else fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, ".zip")), "", "连带自定义音色一起导出"));
 	if (fn = "") return 0;
 	
 	tempdir = data_directory + "Temp\\";
@@ -13,9 +13,9 @@ function save_song_zip() {
 	
 	// Save instruments
 	count = 0;
-	for (var i = first_custom_index; i <= ds_list_size(instrument_list) - 1; i++) {
-		show_debug_message(string(i) + " " + string(ds_list_size(instrument_list)));
-		ins = ds_list_find_value(instrument_list, i);
+	for (var i = first_custom_index; i <= ds_list_size(songs[song].instrument_list) - 1; i++) {
+		show_debug_message(string(i) + " " + string(ds_list_size(songs[song].instrument_list)));
+		ins = ds_list_find_value(songs[song].instrument_list, i);
 		if (ins.filename != "") {
 			src = sounds_directory + ins.filename;
 			dst = tempdir + "sounds\\" + ins.filename;

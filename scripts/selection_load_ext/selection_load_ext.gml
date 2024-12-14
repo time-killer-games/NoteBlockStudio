@@ -48,7 +48,7 @@ function selection_load_ext(argument0, argument1, argument2) {
 			val = real(buffer_substr_copy(str_buffer, prev_pipe_pos + 1, pipe_pos - prev_pipe_pos - 1, val_buffer))
 			prev_pipe_pos = pipe_pos
 			songs[song].selection_pit[ca, cb] = val
-	        selected += 1
+	        songs[song].selected += 1
 	        if (songs[song].selection_colfirst[ca] = -1) songs[song].selection_colfirst[ca] = cb
 	        songs[song].selection_collast[ca] = cb
 	        h = max(h, cb)
