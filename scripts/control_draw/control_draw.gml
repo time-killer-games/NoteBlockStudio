@@ -528,6 +528,7 @@ function control_draw() {
 	        selection_y = max(0, selection_y)
 	        history_set(h_selectmove, selection_x, selection_y, selection_sx, selection_sy)
 	        window = w_releasemouse
+			selection_expand_layers()
 	    }
 	}
 	if (!isplayer) {

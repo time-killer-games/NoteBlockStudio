@@ -453,6 +453,7 @@
     {"id":{"name":"fnt_wslui_info_big_hires","path":"fonts/fnt_wslui_info_big_hires/fnt_wslui_info_big_hires.yy",},"order":2,},
     {"id":{"name":"open_song_nbs","path":"scripts/open_song_nbs/open_song_nbs.yy",},"order":16,},
     {"id":{"name":"remove_block","path":"scripts/remove_block/remove_block.yy",},"order":10,},
+    {"id":{"name":"selection_expand_layers","path":"scripts/selection_expand_layers/selection_expand_layers.yy",},"order":37,},
     {"id":{"name":"remove_block_manual","path":"scripts/remove_block_manual/remove_block_manual.yy",},"order":11,},
     {"id":{"name":"scr_HSBtoRGB","path":"scripts/scr_HSBtoRGB/scr_HSBtoRGB.yy",},"order":7,},
     {"id":{"name":"spr_tooltip_sl_left_hires","path":"sprites/spr_tooltip_sl_left_hires/spr_tooltip_sl_left_hires.yy",},"order":3,},

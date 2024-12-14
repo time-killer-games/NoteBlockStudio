@@ -35,4 +35,5 @@ function selection_load_from_array(xx, yy, array){
 	selection_l = ca + 1
 	selection_h = h + 1
 	selection_code_update()
+	selection_expand_layers()
 }
