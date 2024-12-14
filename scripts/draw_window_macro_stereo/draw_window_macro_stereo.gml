@@ -1,11 +1,14 @@
 function draw_window_macro_stereo() {
 	// draw_window_stereo_macro()
 	var x1, y1, a, b, str, total_vals, val;
+	if (songs[song].selected == 0) {
+		window = 0
+		return 0
+	}
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
 	text_exists[0] = 0
-	if (songs[song].selected = 0) return 0
 	x1 = floor(rw / 2 - 80)
 	y1 = floor(rh / 2 - 80) + windowoffset
 	draw_window(x1, y1, x1 + 140, y1 + 130)
@@ -19,10 +22,10 @@ function draw_window_macro_stereo() {
 	    draw_rectangle(x1 + 6, y1 + 26, x1 + 134, y1 + 92, 1)
 	}
 	if (language != 1) {
-	if (draw_checkbox(x1 + 10, y1 + 30, stereo_reverse, "Reversed", "Delay is done in the inverse direction.")) stereo_reverse=!stereo_reverse
+	if (draw_checkbox(x1 + 10, y1 + 30, stereo_reverse, "Reversed", "Stereo is done in the inverse direction.")) stereo_reverse=!stereo_reverse
 	draw_areaheader(x1 + 10, y1 + 53, 120, 35, "Stereo width")
 	} else {
-	if (draw_checkbox(x1 + 10, y1 + 30, stereo_reverse, "反转", "反方向应用延长音。")) stereo_reverse=!stereo_reverse
+	if (draw_checkbox(x1 + 10, y1 + 30, stereo_reverse, "反转", "反方向应用立体效果。")) stereo_reverse=!stereo_reverse
 	draw_areaheader(x1 + 10, y1 + 53, 120, 35, "立体程度")
 	}
 	stereo_width = median(0, draw_dragvalue(11, x1 + 55, y1 + 65, stereo_width, 0.5), 100)
@@ -33,9 +36,9 @@ function draw_window_macro_stereo() {
 		windowclose = 0
 		windowopen = 0
 		str = songs[song].selection_code
-		arr_data = selection_to_array(str)
+		var arr_data = selection_to_array_ext()
 		window = 0
-		total_vals = string_count("|", str)
+		total_vals = array_length(arr_data)
 		val = 0
 		while (val < total_vals) {
 			// First column panned left
@@ -67,8 +70,8 @@ function draw_window_macro_stereo() {
 			}
 			val ++
 		}
-		str = array_to_selection(arr_data, total_vals)
-		selection_load(songs[song].selection_x,songs[song].selection_y,str,true)
+		selection_load_from_array(songs[song].selection_x, songs[song].selection_y, arr_data)
+		history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
 		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
 	if (draw_button2(x1 + 70, y1 + 98, 60, condstr(language != 1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}

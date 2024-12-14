@@ -53,7 +53,7 @@ function load_settings() {
 	marker_end =         ini_read_real(  "preferences", "marker_end",         marker_end)
 	realvolume =         ini_read_real(  "preferences", "show_layer_volumes", realvolume)
 	realstereo =         ini_read_real(  "preferences", "use_stereo",         realstereo)
-	looptobarend =       ini_read_real(  "preferences", "loop_to_bar_end",    looptobarend)
+	//looptobarend =       ini_read_real(  "preferences", "loop_to_bar_end",    looptobarend)
 	show_soundcount =    ini_read_real(  "preferences", "show_soundcount",    show_soundcount)
 	use_bpm =            ini_read_real(  "preferences", "use_bpm",            use_bpm)
 	save_version =       ini_read_real(  "preferences", "save_version",       save_version)
@@ -76,6 +76,7 @@ function load_settings() {
 	keynames_flat =      ini_read_real(  "preferences", "keynames_flat",      keynames_flat)
 	hires =              ini_read_real(  "preferences", "hires",              hires)
 	current_resource =   ini_read_string("preferences", "current_resource",   current_resource)
+	acrylic_successful = ini_read_real(  "preferences", "acrylic_successful", acrylic_successful)
 
 	// Midi import settings
 	w_midi_remember =     ini_read_real(  "midi_import", "remember",        w_midi_remember)
@@ -147,6 +148,7 @@ function load_settings() {
 	dat_path =              ini_read_string("datapack_export", "path",          dat_path)
 	dat_source =            ini_read_string("datapack_export", "source",        dat_source)
 	dat_usezip =            ini_read_real(  "datapack_export", "use_zip",       dat_usezip)
+	dat_mcversion =         ini_read_real(  "datapack_export", "mcversion",     dat_mcversion)
 	dat_includelocked =     ini_read_real(  "datapack_export", "locked",        dat_includelocked)
 	dat_includeoutofrange = ini_read_real(  "datapack_export", "out_of_range",  dat_includeoutofrange)
 	dat_enableradius =      ini_read_real(  "datapack_export", "enable_radius", dat_enableradius)
@@ -173,6 +175,7 @@ function load_settings() {
 	warning_instrument = ini_read_real("warnings", "instrument", warning_instrument)
 	warning_schematic =  ini_read_real("warnings", "schematics", warning_schematic)
 	tutorial_tempobox =  ini_read_real("warnings", "tempobox", tutorial_tempobox)
+	donate_banner_time = ini_read_real("warnings", "donate_banner_time", donate_banner_time)
 
 	ini_close()
 	return 1

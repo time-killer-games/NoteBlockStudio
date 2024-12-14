@@ -1,6 +1,6 @@
 function load_song() {
 	// load_song(fn [, backup])
-	var fn, backup, file_ext, f, str, stats, tstr, ca, cb, bstr, a, b, c, d, w, hei, byte1, byte2, song_first_custom_index, custom_index_diff, newsong, replace, start
+	var fn, backup, file_ext, newsong
 	fn = argument[0]
 	start = false
 	backup = false
@@ -17,7 +17,7 @@ function load_song() {
 	//if (confirm() < 0) return 0
 	if (!backup && fn = "") {
 	    if (!directory_exists_lib(songfolder)) songfolder = songs_directory
-	    fn = string(GetOpenFileName("Note Block Songs (*.nbs)|*.nbs|MIDI Sequences (*.mid)|*.mid;*.midi|Minecraft Schematics (*.schematic)|*.schematic", "", songfolder, condstr(language != 1, "Load song", "打开歌曲")))
+	    fn = string(GetOpenFileName("Note Block Songs (*.nbs)|*.nbs|Zipped Files (*.zip)|*.zip|MIDI Sequences (*.mid)|*.mid;*.midi|Minecraft Schematics (*.schematic)|*.schematic", "", songfolder, condstr(language != 1, "Load song", "打开歌曲")))
 	}
 	if (fn = "" || !file_exists_lib(fn)) return 0
 
@@ -31,10 +31,11 @@ function load_song() {
 	    open_midi(fn)
 	    return 1
 	}
-	if (file_ext = ".schematic") {
+	else if (file_ext = ".schematic") {
 	    open_schematic(fn)
 	    return 1
 	}
+    if (false) { // [TODO]
 	if (file_ext != ".nbs" && !start) { message(condstr(language != 1, "Error: This file cannot be opened in this program.", "警告：本软件无法打开此类型文件。"), condstr(language != 1, "Error", "错误")) return 0 }
 	if (file_ext = ".nbs") {
 		for (var a = 0; a < 2000; a += 1) {try{songs[song].text_exists_song[a] = text_exists[a]}catch(ee){}; try{songs[song].text_str_song[a] = text_str[a]}catch(ee){}}
@@ -206,11 +207,28 @@ function load_song() {
 	        if (language != 1) {if (question("This song uses custom instruments. However, some sounds could not be loaded:\n\n" + str+"\nMake sure that you have put the sounds in the \"Sounds\" folder. Open Instrument settings?", "Error")) window = w_instruments}
 	        else {if (question("此歌曲使用自定义音色。但是一些音色未能被加载：\n\n" + str+"\n确保您已将声音文件放到“Sounds”文件夹。打开音色设置吗？", "错误")) window = w_instruments}
 	    buffer_delete(buffer)
+    }
+    }
+	else if (file_ext = ".zip") {
+		try {
+			newsong = open_song_zip(fn)
+		} catch (e) {
+			message(e, "Error")
+			return 1;
+		}
 	}
+	else if (file_ext = ".nbs") {
+		newsong = open_song_nbs(fn)
+	} else {
+		message(condstr(language != 1, "Error: This file cannot be opened in this program.", "警告：本软件无法打开此类型文件。"), condstr(language != 1, "Error", "错误"))
+		return 0;
+	}
+		
 	if (!backup) {
 		add_to_recent(fn)
 		if (window != w_instruments && newsong.song_name != "") window = w_songinfo
 		newsong.filename = fn
+		newsong.song_backupname = filename_name(filename_change_ext(newsong.filename, ".nbs"));
 		newsong.changed = 0
 	}
 	else {
@@ -219,7 +237,5 @@ function load_song() {
 	//backup_clear()
 	blocks_set_instruments()
 	io_clear()
-
-
 
 }

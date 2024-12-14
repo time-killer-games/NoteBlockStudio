@@ -1,19 +1,19 @@
 function draw_window_macro_tremolo() {
 	// draw_window_macro_tremolo()
-	var x1, y1, a, i, pattern, str, total_vals, val;
+	var x1, y1;
+	if (songs[song].selected == 0) {
+		window = 0
+		return 0
+	}
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
 	text_exists[0] = 0
-	if (songs[song].selected = 0) return 0
 	x1 = floor(rw / 2 - 72)
 	y1 = floor(rh / 2 - 145) + windowoffset
 	draw_window(x1, y1, x1 + 150, y1 + 240)
 	draw_theme_font(font_main_bold)
 	draw_text_dynamic(x1 + 8, y1 + 8, "Tremolo")
-	draw_set_color(c_red)
-	if (language != 1) draw_text_dynamic(x1 + 8, y1 + 23, "(CANNOT BE UNDONE)")
-	else draw_text_dynamic(x1 + 8, y1 + 23, "（无法还原！！）")
 	draw_theme_color()
 	draw_theme_font(font_main)
 	if (theme = 0) {
@@ -68,8 +68,8 @@ function draw_window_macro_tremolo() {
 			return 1
 		}
 		if tremolotype = 0 macro_tremolo()
-		if tremolotype = 1 macro_tremolo_fadein()
-		if tremolotype = 2 macro_tremolo_fadeout()
+		else if tremolotype = 1 macro_tremolo_fadein()
+		else if tremolotype = 2 macro_tremolo_fadeout()
 		windowalpha = 0
 		windowclose = 0
 		windowopen = 0

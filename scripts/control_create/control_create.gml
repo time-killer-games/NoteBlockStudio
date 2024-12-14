@@ -11,11 +11,16 @@ function control_create() {
 	if (os_type = os_windows) lib_init()
 
 	// Window
-	#macro RUN_FROM_IDE parameter_count()==3&&string_count("GMS2TEMP",parameter_string(2))
+	#macro RUN_FROM_IDE !string_count("GMS2TEMP", get_execution_command()) // THIS CONSTANT IS A REVERSE BOOLEAN (0 is from IDE)
+	//show_message(get_execution_command() + "IDE: " + string(RUN_FROM_IDE))
 	p_num = parameter_count()
-	isplayer = (check_args("--player") || check_args("-p"))
-	filenamearg = check_args("--song", 1)
-	if (filenamearg = 0 || filenamearg = -1) filenamearg = check_args()
+	// isplayer = (check_args("--player") || check_args("-p"))
+	// filenamearg = check_args("--song", 1)
+	// if (filenamearg = 0 || filenamearg = -1) filenamearg = check_args()
+	isplayer = 0
+	for (var i = 0; i < p_num; i += 1) {
+		if (parameter_string(i) = "-player" || parameter_string(i) == "--protocol-launcher") isplayer = 1
+	}
 	//if (RUN_FROM_IDE != 1) isplayer = 1
 	destroy_self = 0
 	port_taken = 0
@@ -72,6 +77,7 @@ function control_create() {
 	currentfont = 0
 	acrylic = (os_type = os_windows)
 	can_draw_mica = 1
+	acrylic_successful = 1
 	mouseover = 0
 	display_width = display_get_width()
 	display_height = display_get_height()
@@ -88,6 +94,9 @@ function control_create() {
 	icon_display = 1
 	hires = (window_scale > 1.25)
 	if (os_type = os_macosx) hires = 0
+	surface_depth_disable(true)
+	donate_banner = 1
+	donate_banner_time = -1
 	
 	font_table =
 	[
@@ -132,7 +141,7 @@ function control_create() {
 	// Application
 	update = 0
 	check_update = 1
-	check_prerelease = 0
+	check_prerelease = is_prerelease
 	update_success = 0
 	show_welcome = 1
 	scroll_wheel = 0
@@ -282,6 +291,13 @@ function control_create() {
 	    recent_song_time[a] = 0
 	}
 	if (os_type = os_ios) recent_song[0] = bundled_songs_directory + "the_ground's_colour_is_yellow.nbs"
+	//timesignature = 4
+	//randomise()
+	//song_backupid = string(floor(random(800000)))
+	//song_backupname = "Unsaved song " + song_backupid + ".nbs"
+	if (!directory_exists_lib(backup_directory)) {
+		directory_create_lib(backup_directory);
+	}
 	file_dnd_set_hwnd(hwnd_main)
 	file_dnd_set_enabled(true)
 	dndfile = ""
@@ -353,6 +369,7 @@ function control_create() {
 	dragvol = 0
 	dragstereob = 0
 	dragstereo = 0
+	//selected_layers = ds_list_create() // [TODO]
 
 	// Piano
 	show_piano = 1
@@ -428,12 +445,19 @@ function control_create() {
 	insselect = -1
 	mouse_xprev = mouse_x
 	mouse_yprev = mouse_y
+	mousepress_x = -1 // [TODO]
+	mousepress_y = -1
 	asso_nbs = 1
 	asso_midi = 0
 	asso_sch = 0
 	w_asso_start = 1
 	wmenu = 0
-	looptobarend = 1
+	loop_session = 0
+	loop = 0
+	loopmax = 0
+	loopstart = 0
+	loopend = 0
+	//looptobarend = 1
 	timestoloop = songs[song].loopmax
 	settempo = 0 // Tempo input box clicked
 	taptempo = 0 // Tempo in measuring
@@ -466,6 +490,28 @@ function control_create() {
 	
 	// Minecraft
 	selected_tab_mc = 0
+	
+	// Import sounds
+	mc_default_path = string_copy(game_save_id, 0, string_last_pos("\\", string_copy(game_save_id, 1, string_length(game_save_id) - 1))) + ".minecraft\\";
+	mc_install_path = mc_default_path;
+	
+	var asset_index_names_keys = ["pre-1.6", "legacy", "1.7.3", "1.7.4", "1.7.10", "14w25a", "14w31a", "1.8", "1.9", "1.9-aprilfools", "1.10", "1.11", "1.12", "1.13", "1.13.1", "1.14", "1.14-af", "1.15", "1.16", "1.17", "1.18", "1.19", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "_"];
+	var asset_index_names_values = ["Pre-1.6", "1.6-1.7", "1.7.3", "1.7.4", "1.7.10", "14w25a", "1.8 Pre-Release 1", "1.8", "1.9", "1.RV-Pre1", "1.10", "1.11", "1.12", "1.13", "1.13.1", "1.14", "3D Shareware v1.34", "1.15", "1.16", "1.17", "1.18", "1.19", "22w42a", "1.19.3", "1.19.4", "23w14a", "1.20", "23w31a", "1.20.2 Pre-Release 1", "1.20.2", "23w42a", "23w43a", "23w45a", "1.20.3", "24w06a", "24w09a", "24w11a", "1.20.5", "1.21", "1.21.2", "1.21.4", "1.21.4+"];
+	
+	sound_import_asset_index_names = ds_map_create();
+	sound_import_asset_index_names_sort = ds_list_create(); // TODO: convert this to an array when array_get_index() is available
+
+    for (var i = 0; i < array_length(asset_index_names_keys); i++) {
+        ds_map_add(sound_import_asset_index_names, asset_index_names_keys[i], asset_index_names_values[i]);
+		ds_list_add(sound_import_asset_index_names_sort, asset_index_names_keys[i]);
+    }
+
+	sound_import_selected_asset_index = "";
+	sound_import_asset_index_select = 0;
+	sound_import_asset_index_count = -1;
+	sound_import_asset_indexes = [];
+	sound_import_menu_str = "";
+	sound_import_status = 0;
 
 	// Schematic
 	reset_schematic_export(0)
@@ -506,10 +552,23 @@ function control_create() {
 		default:
 			lang_en_us()
 	}
-	if (channelstoggle) channels = 32768
+	if (channelstoggle) channels = 1024
 	else channels = 256
 	audio_channel_num(channels)
-	change_theme()
+	if (acrylic_successful) {
+		if (acrylic) {
+			acrylic_successful = 0
+			save_settings()
+			change_theme()
+			acrylic_successful = 1
+			save_settings()
+		}
+	} else {
+		acrylic = 0
+		can_draw_mica = 0
+		if (language != 1) show_message("Note Block Studio encountered an error creating the background sprite. Transparency effects will be disabled.\nThis usually happens when your desktop wallpaper is either too tall or too long.")
+		else show_message("Note Block Studio 在创建背景贴图时遇到错误，透明效果将被关闭。\n这种情况一般是由于您的桌面壁纸图片过高或过长。")
+	}
 	if (show_welcome) window = w_greeting
 	draw_accent_init()
 	if (isplayer) window_set_size(floor(800 * window_scale), floor(500 * window_scale))
@@ -520,6 +579,12 @@ function control_create() {
 	
 	if (current_resource != "Vanilla") {
 		set_resourcepack(current_resource)
+	}
+
+	if (date_compare_date(date_current_datetime(), donate_banner_time) > 0) {
+		donate_banner = 1
+	} else {
+		donate_banner = 0
 	}
 
 	// Updates
@@ -541,12 +606,25 @@ function control_create() {
 		theme = 3 // Sets to the Fluent theme when updated
 	    window = w_update
 	    update_success = 1
+		donate_banner = 1 // Enable donate banner after each update
 	}
+	
+	// Download song [TODO]]
+	protocol_data = pointer_null;
+	song_download_data = pointer_null;
+	song_downloaded_size = 0
+	song_total_size = -1
+	song_download_status = 0
+	song_download_file = ""
+	song_download_display_name = ""
 
 	// Delete old installer
 	if (file_exists_lib(update_file)) {
 		files_delete_lib(update_file)
 	}
+	
+	// Register as nbs:// url protocol handler
+	register_url_protocol()
 	
 	// Init wallpaper
 	change_theme()
@@ -554,18 +632,88 @@ function control_create() {
 	// Auto-recovery
 	// PREVIOUSLY DISABLED DUE TO https://github.com/OpenNBS/OpenNoteBlockStudio/issues/196
 	// Implemented in a better way that takes multiple instances into account.
-	if (!port_taken && !isplayer) {
-		if (file_find_first(backup_file + "*_backup.nbs", 0) != "") {
-			if (question("Minecraft Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?", "Auto-recovery")) {
-				open_url(backup_file)
+	//if (!port_taken && !isplayer) {
+	//	if (file_find_first(backup_file + "*_backup.nbs", 0) != "") {
+	//		if (question("Minecraft Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?", "Auto-recovery")) {
+	//			open_url(backup_file)
+	//		}
+	//	} else if (file_find_first(backup_file + "*_unsaved.nbs", 0) != "") {
+	//		if (question("Minecraft Note Block Studio detected you closed the window without saving the song in the last session. Do you want to recover your work?", "Auto-recovery")) {
+	//			open_url(backup_file)
+	//		}
+	if (file_find_first(backup_directory + "*.nbs", 0) != "" && !port_taken && !isplayer) {
+		var isrecover = 0
+		if (language != 1) isrecover = question("Note Block Studio quit unexpectedly while you were working on a song. Do you want to recover your work?\n\n(If you click 'No', you'll be prompted to recover it again the next time you open the program.)", "Auto-recovery")
+		else isrecover = question("Note Block Studio在您工作时意外关闭了。要恢复您的文档吗？\n\n（如果点击“No”，下次打开软件时将会再次提示恢复。）", "自动恢复")
+		if (isrecover) {
+			// Create restore folder
+			if (!directory_exists_lib(restore_directory)) {
+				directory_create_lib(restore_directory);
 			}
-		} else if (file_find_first(backup_file + "*_unsaved.nbs", 0) != "") {
-			if (question("Minecraft Note Block Studio detected you closed the window without saving the song in the last session. Do you want to recover your work?", "Auto-recovery")) {
-				open_url(backup_file)
+			
+			// Copy files to a new, safe location
+			var file_to_restore = file_find_first(backup_directory + "*.nbs", 0);
+			var restored_count = 0;
+			while (file_to_restore != "") {
+				files_copy_lib(backup_directory + file_to_restore, restore_directory + file_to_restore);
+				restored_count += 1;
+				file_to_restore = file_find_next();
 			}
+			file_find_close();
+			
+			// Delete original songs (only after everything has been copied!)
+			var file_to_delete = file_find_first(backup_directory + "*.nbs", 0);
+			while (file_to_delete != "") {
+				files_delete_lib(backup_directory + file_to_delete)
+				file_to_delete = file_find_next();
+			}
+			file_find_close();
+			
+			// Open restore folder
+			if (language != 1) show_message(string(restored_count) + " " + condstr(restored_count > 1, "files have been restored.", "file has been restored."));
+			else show_message(string(restored_count) + "个文件已恢复。");
+			open_url(restore_directory);
 		}
 	}
 
+	// Parse command line arguments
+	var p_num = parameter_count();
+	if (p_num > 1) {
+		for (var i = 1; i <= p_num; i++) {
+			var arg = parameter_string(i);
+			
+			if (arg == "-player") continue;
+			if (arg == "-game" || string_count("\\GMS2TEMP\\", arg) > 0) continue; // GMS runner
+			
+			// URL protocol
+			if (arg == "--protocol-launcher") {
+				if (p_num >= i + 1) {
+					protocol_data = parameter_string(i + 1);
+				}
+			
+			// File drop, etc.
+			} else if (string_replace(arg, " ", "") != "") {
+				show_debug_message(arg)
+				filename = arg;
+				song_backupname = filename_name(filename_change_ext(filename, ".nbs"));
+			}
+			
+		}
+	}
+	
+	var args = ""
+	for (var i = 0; i <= parameter_count(); i++) {
+		args = args + parameter_string(i) + " ";
+	}
+	log("Run with command line args: " + args);
+	
+	// Download song
+	if (protocol_data != pointer_null) {
+		var download_url = string_replace(protocol_data, "nbs://", "")
+		download_url = string_replace(download_url, "https//", "https://") // Re-add : stripped from URL
+		download_url = string_replace(download_url, "http//", "http://")
+		download_song_start(download_url)
+	}
 	// Open song
 	if (parameter_count() > 0) {
 		songs[song].filename = filenamearg

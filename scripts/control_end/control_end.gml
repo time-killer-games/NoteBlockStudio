@@ -3,7 +3,7 @@
 function control_end() {
 	
 	if (!destroy_self) {
-		if (!isplayer) backup_clear()
+		if (!isplayer) backup_delete_own_instance()
 		for (var i = array_length(songs) - 1; i >= 0; i--) {
 			set_song(i)
 			if (os_type != os_macosx) confirm(1)

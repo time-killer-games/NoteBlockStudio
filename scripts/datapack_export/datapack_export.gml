@@ -23,7 +23,12 @@ function datapack_export() {
 		var path = dat_getpath(o.dat_path)
 		var objective = "nbs_" + string_copy(string_lettersdigits(o.dat_name), 1, 10)
 		var tag = objective
-		var pack_format = 10
+		
+		// https://minecraft.wiki/w/Pack_format
+		var pack_format = (o.dat_mcversion == 0) ? 41 : 48
+		// https://minecraft.wiki/w/Java_Edition_1.21#Command_format_2
+		var function_registry = (o.dat_mcversion == 0) ? "functions" : "function";
+
 		var playspeed = min(round(o.songs[o.song].tempo * 4), 120)
 		var rootfunction = "0_" + string(power(2, floor(log2(o.songs[o.song].enda))+1)-1)
 		var tempdir
@@ -49,21 +54,21 @@ function datapack_export() {
 		if (directory_exists_lib(tempdir)) {
 			directory_delete_lib(tempdir)
 		}
-		functiondir = dat_makefolders(path, namespace)
+		functiondir = dat_makefolders(path, namespace, function_registry)
 	
 		//pack.mcmeta
-		inputString = "{\n\t\"pack\": {\n\t\t\"pack_format\": " + string(pack_format) + ",\n\t\t\"description\": \"" + o.dat_name + "\\nMade with Minecraft Note Block Studio\"\n\t}\n}"
+		inputString = "{\n\t\"pack\": {\n\t\t\"pack_format\": " + string(pack_format) + ",\n\t\t\"description\": \"" + o.dat_name + "\\nMade with Note Block Studio\"\n\t}\n}"
 		dat_writefile(inputString, tempdir + "pack.mcmeta")
 	
 		//Minecraft folder:
 	
 		//load.json
 		inputString = "{\"values\": [\"" + functionpath + "load\"]}"
-		dat_writefile(inputString, tempdir + "data\\minecraft\\tags\\functions\\load.json")
+		dat_writefile(inputString, tempdir + "data\\minecraft\\tags\\" + function_registry + "\\load.json")
 	
 		//tick.json
 		inputString = "{\"values\": [\"" + functionpath + "tick\"]}"
-		dat_writefile(inputString, tempdir + "data\\minecraft\\tags\\functions\\tick.json")
+		dat_writefile(inputString, tempdir + "data\\minecraft\\tags\\" + function_registry + "\\tick.json")
 	
 		//Song folder:
 	
@@ -113,7 +118,7 @@ function datapack_export() {
 		} else {
 			inputString += "datapack disable \"" + filename_name(fn) + "\"" + br
 		}
-		inputString += "tellraw @s [\"\",{\"text\":\"[NBS] \",\"color\":\"gold\",\"bold\":\"true\"},{\"text\":\"Data pack \",\"color\":\"yellow\"},{\"text\":\"" + filename_name(fn) + "\",\"color\":\"gold\",\"underlined\":\"true\"},{\"text\":\" uninstalled successfully. You may now remove it from your data pack folder.\",\"color\":\"yellow\"}]"
+		inputString += "tellraw @s [\"\",{\"text\":\"[NBS] \",\"color\":\"gold\",\"bold\":true},{\"text\":\"Data pack \",\"color\":\"yellow\"},{\"text\":\"" + filename_name(fn) + "\",\"color\":\"gold\",\"underlined\":true},{\"text\":\" uninstalled successfully. You may now remove it from your data pack folder.\",\"color\":\"yellow\"}]"
 		dat_writefile(inputString, functiondir + "uninstall.mcfunction")
 	
 		if (add_teams) {
@@ -189,7 +194,7 @@ function datapack_export() {
 		instance_destroy()
 	}
 
-	if (language != 1) message("Data pack saved!" + br + br + "To play the song in-game, use:" + br + br + "/function " + functionpath + "play" + br + "/function " + functionpath + "pause" + br + "/function " + functionpath + "stop" + br + br + "If you wish to uninstall it from" + br + "your world, run:" + br + br + "/function " + functionpath + "uninstall" + br + br + "and then remove it from the " + br + "'datapacks' folder.","Data Pack Export")
+	if (language != 1) message("Data pack saved!" + br + br + br + "To play the song in-game, use:" + br + br + "/function " + functionpath + "play" + br + "/function " + functionpath + "pause" + br + "/function " + functionpath + "stop" + br + br + br + "To play the song using a command block or function, use:" + br + br + "/execute as @p at @s run function " + functionpath + "play" + br + br + "(Replace @p with the player(s) you want to play the song to.)" + br + br + br + "If you wish to uninstall it from your world, run:" + br + br + "/function " + functionpath + "uninstall" + br + br + "and then remove it from the 'datapacks' folder.","Data Pack Export")
 	else message("数据包已保存！" + br + br + "如想在游戏内播放，使用命令：" + br + br + "/function " + functionpath + "play" + br + "/function " + functionpath + "pause" + br + "/function " + functionpath + "stop" + br + br + "如果你想从你的世界中卸载它，" + br + "使用命令：" + br + br + "/function " + functionpath + "uninstall" + br + br + "然后从“datapacks”文件夹" + br + "取出就行了。","导出数据包")
 	window = w_datapack_export
 

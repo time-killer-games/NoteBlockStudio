@@ -60,45 +60,13 @@ function selection_add() {
 	    songs[song].selection_y = y1
 	    songs[song].selection_l = al
 	    songs[song].selection_h = ah
-	    if (al > songs[song].selection_arraylength) { // New length
-	        for (a = songs[song].selection_arraylength + 1; a <= al; a += 1) {
-	            songs[song].selection_colfirst[a] = -1
-	            songs[song].selection_collast[a] = -1
-	            for (b = 0; b <= songs[song].selection_arrayheight; b += 1) {
-	                songs[song].selection_exists[a, b] = 0
-	            }
-	        }
-	        songs[song].selection_arraylength = al
-	    }
-	    if (ah > songs[song].selection_arrayheight) { // New height
-	        for (a = 0; a <= songs[song].selection_arraylength; a += 1) {
-	            for (b = songs[song].selection_arrayheight + 1; b <= ah; b += 1) {
-	                songs[song].selection_exists[a, b] = 0
-	            }
-	        }
-	        songs[song].selection_arrayheight = ah
-	    }
+		selection_extend_length(al)
+		selection_extend_height(ah)
 	} else { // Add to existing
 	    al = songs[song].selection_l + max(0, songs[song].selection_x - x1) + max(0, x2 - (songs[song].selection_x + songs[song].selection_l))
 	    ah = songs[song].selection_h + max(0, songs[song].selection_y - y1) + max(0, y2 - (songs[song].selection_y + songs[song].selection_h))
-	    if (al > songs[song].selection_arraylength) { // New length
-	        for (a = songs[song].selection_arraylength + 1; a <= al; a += 1) {
-	            songs[song].selection_colfirst[a] = -1
-	            songs[song].selection_collast[a] = -1
-	            for (b = 0; b <= songs[song].selection_arrayheight; b += 1) {
-	                songs[song].selection_exists[a, b] = 0
-	            }
-	        }
-	        songs[song].selection_arraylength = al
-	    }
-	    if (ah > songs[song].selection_arrayheight) { // New height
-	        for (a = 0; a <= songs[song].selection_arraylength; a += 1) {
-	            for (b = songs[song].selection_arrayheight + 1; b <= ah; b += 1) {
-	                songs[song].selection_exists[a, b] = 0
-	            }
-	        }
-	        songs[song].selection_arrayheight = ah
-	    }
+	    selection_extend_length(al)
+		selection_extend_height(ah)
 	    if (x1 < songs[song].selection_x || y1 < songs[song].selection_y) { // Move blocks
 	        var temp_colfirst, temp_collast, temp_exists, temp_ins, temp_key, temp_vel, temp_pan, temp_pit, temp_played;
 	        for (a = 0; a < songs[song].selection_l; a += 1) {

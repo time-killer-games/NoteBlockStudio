@@ -3,8 +3,11 @@ function reset() {
 	var a, b;
 
 	// File
+	songs[song].filename = ""
+	songs[song].changed = 0
 	songs[song].song_midi = songs[song].midifile
 	songs[song].midifile = ""
+	songs[song].song_download_display_name = ""
 
 	// Playback
 	playing = 0
@@ -64,6 +67,8 @@ function reset() {
 	save_version = nbs_version
 	tonextsave = 0
 	tonextbackup = 0
+	backup_delete_own_instance()
+	songs[song].song_backupname = "Unsaved song " + string(song_backupid) + ".nbs"
 
 
 }
