@@ -434,13 +434,11 @@ function draw_window_preferences() {
 	        menu = show_menu_ext("language", x1 + 40, y1 + 239 + 16 + 21 + (theme = 3) * 22 + 5, check(language = 0) + "English|" + check(language = 1) + "简体中文")
 	    }
 	    draw_text_dynamic(x1 + 43, y1 + 239 + 19 + (theme = 3) * 22 + 5, condstr(language = 0, "English") + condstr(language = 1, "简体中文"))
-		if (os_type = os_windows) {
-			if (theme = 3) draw_theme_font(font_info_med)
-			if (language != 1) draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "Icon")
-			else draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "图标")
-			if (theme = 3) draw_theme_font(font_main)
-			if (draw_checkbox(x1 + 276, y1 + (theme = 3) * 22 + 239 + 16 + 5 + 4, window_icon, condstr(language != 1, "Old icon", "旧图标"), condstr(language != 1, "Whether to use the old icon instead of the new icon.", "使用旧图标替换新图标。"), false, true)) window_icon = !window_icon
-		}
+		if (theme = 3) draw_theme_font(font_info_med)
+		if (language != 1) draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "Icon")
+		else draw_areaheader(x1 + 258, y1 + 239 + (theme = 3) * 22, 220, 65, "图标")
+		if (theme = 3) draw_theme_font(font_main)
+		if (draw_checkbox(x1 + 276, y1 + (theme = 3) * 22 + 239 + 16 + 5 + 4, window_icon, condstr(language != 1, "Fruity icon", "macOS样式图标"), condstr(language != 1, "Whether to use the a fruity themed icon instead of the regular icon.", "使用macOS风格图标替换普通图标。"), false, true)) window_icon = !window_icon
 	} else if (selected_tab = 2) {
 		if (language != 1) {
 		if (theme = 3) draw_theme_font(font_info_med)
