@@ -1,7 +1,7 @@
 {
-  "option_mac_display_name": "Minecraft Note Block Studio",
+  "option_mac_display_name": "Note Block Studio",
   "option_mac_app_id": "org.opennbs.onbs",
-  "option_mac_version": "3.10.0",
+  "option_mac_version": "3.12.0",
   "option_mac_output_dir": "~/GameMaker-Studio/mcnbs",
   "option_mac_team_id": "",
   "option_mac_signing_identity": "Developer ID Application: ",

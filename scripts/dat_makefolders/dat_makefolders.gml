@@ -1,11 +1,9 @@
-function dat_makefolders(argument0, argument1) {
+function dat_makefolders(path, namespace, function_registry) {
 	//dat_makefolders(path, namespace)
 	//create folder structure prior to creating the datapack files
 	//returns: functiondir
 
 	var i
-	var path = argument0
-	var namespace = argument1
 
 	var folders = []
 	var foldercount = 0
@@ -25,16 +23,16 @@ function dat_makefolders(argument0, argument1) {
 	}
 
 	var tempdir = data_directory + "TempDatapack\\"
-	if (directory_exists_lib(tempdir)) directory_destroy(tempdir)
+	if (directory_exists_lib(tempdir)) directory_delete_lib(tempdir)
 
 	directory_create_lib(tempdir)
 	directory_create_lib(tempdir + "data\\")
 	directory_create_lib(tempdir + "data\\minecraft\\")
 	directory_create_lib(tempdir + "data\\minecraft\\tags\\")
-	directory_create_lib(tempdir + "data\\minecraft\\tags\\functions\\")
+	directory_create_lib(tempdir + "data\\minecraft\\tags\\" + function_registry + "\\")
 	directory_create_lib(tempdir + "data\\" + namespace +"\\")
 
-	var functiondir = tempdir + "data\\" + namespace + "\\functions\\"
+	var functiondir = tempdir + "data\\" + namespace + "\\" + function_registry + "\\"
 	directory_create_lib(functiondir)
 
 	// Dinamically create function folder

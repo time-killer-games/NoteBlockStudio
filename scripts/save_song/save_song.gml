@@ -121,6 +121,7 @@ function save_song() {
 
 	if (!backup) {
 		cursong.filename = fn
+		update_backup_name()
 		cursong.changed = false
 		if (autosave) tonextsave = autosavemins
 		add_to_recent(fn)

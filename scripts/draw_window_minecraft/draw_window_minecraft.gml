@@ -147,10 +147,10 @@ function draw_window_minecraft() {
 		    else draw_text_dynamic(x1 + 45, yy + 16, "目前速度为每秒 " + string(songs[song].tempo) + " 红石刻。")
 		    if (draw_button2(x1 + 45, yy + 34, 140, condstr(language != 1, "Fix tempo for schematic", "针对 Schematic 调整速度"), 0, 1)) {
 		        var otempo = songs[song].tempo
-		        if (otempo > 10) songs[song].tempo = 10
-		        if (otempo < 10) songs[song].tempo = 10
-		        if (otempo < 7.5) songs[song].tempo = 5
-		        if (otempo < 3.75) songs[song].tempo = 2.5
+		        if (otempo > 10) songs[song].tempo = 10 songs[song].changed = 1
+		        if (otempo < 10) songs[song].tempo = 10 songs[song].changed = 1
+		        if (otempo < 7.5) songs[song].tempo = 5 songs[song].changed = 1
+		        if (otempo < 3.75) songs[song].tempo = 2.5 songs[song].changed = 1
 		    }
 		}
 		draw_theme_color()
@@ -315,16 +315,16 @@ function draw_window_minecraft() {
 			if (draw_button2(x1 + 45, yy + 50, 180, condstr(language != 1, "Optimize tempo for data pack", "针对数据包调整速度"), 0, 1)) {
 			    var otempo
 				otempo = songs[song].tempo
-				if (otempo >= 15) songs[song].tempo = 20
-		        if (otempo < 15) songs[song].tempo = 10
-		        if (otempo < 7.5) songs[song].tempo = 5
-		        if (otempo < 4.5) songs[song].tempo = 4
-		        if (otempo < 3.25) songs[song].tempo = 2.5
-				if (otempo < 2.25) songs[song].tempo = 2
-				if (otempo < 1.625) songs[song].tempo = 1.25
-				if (otempo < 1.125) songs[song].tempo = 1
-				if (otempo < 0.75) songs[song].tempo = 0.5
-				if (otempo < 0.375) songs[song].tempo = 0.25
+				if (otempo >= 15) songs[song].tempo = 20 songs[song].changed = 1
+		        if (otempo < 15) songs[song].tempo = 10 songs[song].changed = 1
+		        if (otempo < 7.5) songs[song].tempo = 5 songs[song].changed = 1
+		        if (otempo < 4.5) songs[song].tempo = 4 songs[song].changed = 1
+		        if (otempo < 3.25) songs[song].tempo = 2.5 songs[song].changed = 1
+				if (otempo < 2.25) songs[song].tempo = 2 songs[song].changed = 1
+				if (otempo < 1.625) songs[song].tempo = 1.25 songs[song].changed = 1
+				if (otempo < 1.125) songs[song].tempo = 1 songs[song].changed = 1
+				if (otempo < 0.75) songs[song].tempo = 0.5 songs[song].changed = 1
+				if (otempo < 0.375) songs[song].tempo = 0.25 songs[song].changed = 1
 		    }
 		}
 		draw_theme_color()
@@ -356,15 +356,15 @@ function draw_window_minecraft() {
 		        if (language != 1) draw_text_dynamic(x1 + 45, yy + 32, "There are " + string(songs[song].block_outside) + " blocks outside the 2 octave range.")
 		        else draw_text_dynamic(x1 + 45, yy + 32, "有 " + string(songs[song].block_outside) + " 个方块在 2 八度范围外。")
 		    }
-		    if (draw_button2(x1 + 45, yy + 50, 120, condstr(language != 1, "Select lower blocks", "选择过低的音符"), 0, 1)) {
+		    if (draw_button2(x1 + 45, yy + 50, 80, condstr(language != 1, "Select lower", "选择过低音符"), 0, 1)) {
 		        select_outside(true, false)
 		        windowclose = 1
 		    }
-			if (draw_button2(x1 + 175, yy + 50, 120, condstr(language != 1, "Select higher blocks", "选择过高的音符"), 0, 1)) {
+			if (draw_button2(x1 + 135, yy + 50, 80, condstr(language != 1, "Select higher", "选择过高音符"), 0, 1)) {
 		        select_outside(false, true)
 		        windowclose = 1
 		    }
-		    if (draw_button2(x1 + 305, yy + 50, 100, condstr(language != 1, "Transpose notes", "转换音符"), 0, 1)) {
+		    if (draw_button2(x1 + 225, yy + 50, 100, condstr(language != 1, "Transpose notes", "转换音符"), 0, 1)) {
 				if (language != 1) {
 		        if (question("Transpose notes so that they fall within Minecraft's 2 octaves?", "Transpose notes")) {
 		            select_all(-1, 0)
@@ -378,7 +378,10 @@ function draw_window_minecraft() {
 		            selection_place(0)
 		        }
 				}
-		    }
+			}
+			if (draw_button2(x1 + 335, yy + 50, 120, condstr(language != 1, "Save resource pack", "保存资源包"), 0, 1)) {
+				datapack_getextranotes()
+			}
 		} else {
 			if (theme != 3) {
 				draw_sprite(spr_yesno, 1, x1 + 25, yy + 8)

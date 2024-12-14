@@ -1,7 +1,7 @@
 function macros() {
 #macro gm_runtime_version "2022.6.1.40"
-#macro version_date "2023.12.13"
-#macro version "3.10.1-beta.1"
+#macro version_date "2024.12.13"
+#macro version "3.12.0-dev"
 #macro is_prerelease 1 // remember to change to 0 in the release!
 #macro nbs_version 5
 #macro pat_version 1
@@ -13,6 +13,11 @@ function macros() {
 #macro link_changelog "https://opennbs.org/changelog"
 #macro link_website "https://opennbs.org/"
 #macro link_discord "https://discord.gg/sKPGjyVcyy"
+#macro link_twitter "https://twitter.com/OpenNBS"
+#macro link_github_org "https://github.com/OpenNBS"
+#macro link_youtube "https://youtube.com/@OpenNBS"
+#macro link_donate "https://opencollective.com/OpenNBS/donate"
+#macro link_qq_group "http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=9iT2JIMOPWcrhzVpOROtlv7PJ1jSGEu0&authKey=VmmwRR7507A9fEVxraPmXn224vhbHXc4xs4QmwkveFZBriU%2Fq2NCj9fbYE5QCaLJ&noverify=0&group_code=218993157"
 
 #macro current_directory working_directory
 #macro file_directory    game_save_id
@@ -29,10 +34,12 @@ function macros() {
 #macro pattern_directory condstr(os_type = os_windows, working_directory, file_directory) + "patterns" + condstr(os_type = os_windows, "\\", "/")
 #macro log_file          file_directory + "log.txt"
 #macro temp_file         file_directory + "tmp.file"
-#macro update_file       file_directory + "minecraft note block studio installer.exe"
+#macro update_file       file_directory + "note block studio installer.exe"
 #macro settings_file     file_directory + "settings.ini"
 #macro settings_dev_file file_directory + "settings_dev.ini"
-#macro backup_file       file_directory
+#macro backup_directory  file_directory + "data" + condstr(os_type = os_windows, "\\", "/")
+#macro restore_directory backup_directory + "restored" + condstr(os_type = os_windows, "\\", "/")
+#macro downloaded_song_file temp_directory + "song.nbs"
 
 #macro h_stereoize 12
 #macro h_swaplayer 11
@@ -100,6 +107,7 @@ function macros() {
 #macro w_setaccent 45
 #macro w_track_export 46
 #macro w_dragtab 47
+#macro w_sound_import 48
 
 #macro br "\r\n"
 
@@ -119,5 +127,7 @@ function macros() {
 #macro format_ogg "OGG"
 #macro format_aiff "AIFF"
 #macro format_flac "FLAC"
+
+#macro max_song_download_size 5242880  // 5 MiB
 
 }

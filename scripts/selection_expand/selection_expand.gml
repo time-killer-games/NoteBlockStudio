@@ -4,16 +4,7 @@ function selection_expand() {
 	str = songs[song].selection_code
 	if (songs[song].selected = 0) return 0
 	nw = songs[song].selection_l * 2
-	if (nw > songs[song].selection_arraylength) { // New length
-	    for (a = songs[song].selection_arraylength + 1; a <= nw; a += 1) {
-	        songs[song].selection_colfirst[a] = -1
-	        songs[song].selection_collast[a] = -1
-	        for (b = 0; b <= songs[song].selection_arrayheight; b += 1) {
-	            songs[song].selection_exists[a, b] = 0
-	        }
-	    }
-	    songs[song].selection_arraylength = nw
-	}
+	selection_extend_length(nw)
 	for (a = 0; a < songs[song].selection_l; a += 1) {
 	    if (songs[song].selection_colfirst[a] > -1) {
 	        for (b = songs[song].selection_colfirst[a]; b <= songs[song].selection_collast[a]; b += 1) {

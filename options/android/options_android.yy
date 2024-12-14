@@ -1,7 +1,7 @@
 {
   "option_android_sync_amazon": false,
-  "option_android_display_name": "ONBS",
-  "option_android_version": "3.10.1",
+  "option_android_display_name": "NBS",
+  "option_android_version": "3.12.0",
   "option_android_tools_from_version": false,
   "option_android_build_tools": "",
   "option_android_support_lib": "",
@@ -10,7 +10,7 @@
   "option_android_compile_sdk": "",
   "option_android_package_domain": "org",
   "option_android_package_company": "opennbs",
-  "option_android_package_product": "onbs",
+  "option_android_package_product": "nbs",
   "option_android_arch_armv7": false,
   "option_android_arch_x86": false,
   "option_android_arch_arm64": true,

@@ -26,12 +26,14 @@ function draw_window_set_tempo() {
 		settempo = mouse_rectangle(xx, 57 + song_tab_offset, w, 22)
 	}
 	
+	var otempo = tempo;
+	
 	// Set tempo and close
 	if ((mouse_check_button_released(mb_left) && !settempo && !mouse_rectangle(xx, 57 + song_tab_offset, w, 22)) || keyboard_check_pressed(vk_enter)) {
 		try {
 			songs[song].tempo = real(string_digits_symbol(string_replace(input, ",", "."), ".") / bpm_multiplier)
 		} catch (e) {
-			// Input is imvalid, don't change the tempo!
+			// Input is invalid, don't change the tempo!
 		} finally {
 			if (songs[song].tempo >= 1000) {
 				songs[song].tempo /= 100
@@ -39,6 +41,9 @@ function draw_window_set_tempo() {
 				songs[song].tempo /= 10
 			}
 			songs[song].tempo = median(0.25, songs[song].tempo, 60)
+		}
+		if (tempo != otempo) {
+			changed = 1
 		}
 		settempo = 0
 		text_focus = -1

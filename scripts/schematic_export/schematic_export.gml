@@ -625,13 +625,13 @@ function schematic_export() {
 	        if (o.sch_exp_minecraft_old) {
 	            TAG_String("Text1", "Song generated")
 	            TAG_String("Text2", "by the")
-	            TAG_String("Text3", "Minecraft Note")
-	            TAG_String("Text4", "Block Studio")
+	            TAG_String("Text3", "Note Block")
+	            TAG_String("Text4", "Studio")
 	        } else {
 	            TAG_String("Text1", "{\"text\": \"Song generated\"}")
 	            TAG_String("Text2", "{\"text\": \"by the\"}")
-	            TAG_String("Text3", "{\"text\": \"Minecraft Note\"}")
-	            TAG_String("Text4", "{\"text\": \"Block Studio\"}")
+	            TAG_String("Text3", "{\"text\": \"Note Block\"}")
+	            TAG_String("Text4", "{\"text\": \"Studio\"}")
 	        }
 	        TAG_End()
 	        if (sch_loop) {
@@ -920,8 +920,8 @@ function schematic_export() {
 				TAG_String("id", "minecraft:sign")
 	            TAG_String("Text1", "{\"text\": \"Song generated\"}")
 	            TAG_String("Text2", "{\"text\": \"by the\"}")
-	            TAG_String("Text3", "{\"text\": \"Minecraft Note\"}")
-	            TAG_String("Text4", "{\"text\": \"Block Studio\"}")
+	            TAG_String("Text3", "{\"text\": \"Note Block\"}")
+	            TAG_String("Text4", "{\"text\": \"Studio\"}")
 				TAG_End()
 			TAG_List("pos", 3, 3)
 				buffer_write_int_be(wid - 1 - signy)

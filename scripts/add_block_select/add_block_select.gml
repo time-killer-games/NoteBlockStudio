@@ -33,23 +33,23 @@ function add_block_select(argument0, argument1, argument2, argument3, argument4,
 
 	// Add block
 	songs[song].song_exists[xx, yy] = 1
-	songs[song].song_ins[xx, yy] = ins
-	songs[song].song_key[xx, yy] = key
-	songs[song].song_vel[xx, yy] = vel
-	songs[song].song_pan[xx, yy] = pan
-	songs[song].song_pit[xx, yy] = pit
-	songs[song].song_played[xx, yy] = 0
-	songs[song].song_added[xx, yy] = 0
-	songs[song].colamount[xx] += 1
-	songs[song].rowamount[yy] += 1
+	songs[song].song_ins[@ xx, yy] = ins
+	songs[song].song_key[@ xx, yy] = key
+	songs[song].song_vel[@ xx, yy] = vel
+	songs[song].song_pan[@ xx, yy] = pan
+	songs[song].song_pit[@ xx, yy] = pit
+	songs[song].song_played[@ xx, yy] = 0
+	songs[song].song_added[@ xx, yy] = 0
+	songs[song].colamount[@ xx] += 1
+	songs[song].rowamount[@ yy] += 1
 	ins.num_blocks++
 	if (key < 33 || key > 57) songs[song].block_outside += 1
 	if (ins.user) songs[song].block_custom += 1
 	if (pit != 0) songs[song].block_pitched += 1
 	songs[song].totalblocks += 1
 
-	if (songs[song].colfirst[xx] = -1 || yy < songs[song].colfirst[xx]) songs[song].colfirst[xx] = yy
-	if (yy > songs[song].collast[xx]) songs[song].collast[xx] = yy
+	if (songs[song].colfirst[xx] = -1 || yy < songs[song].colfirst[xx]) songs[song].colfirst[@ xx] = yy
+	if (yy > songs[song].collast[xx]) songs[song].collast[@ xx] = yy
 
 	if (xx >= songs[song].enda) songs[song].enda = xx
 	if (yy >= songs[song].endb) songs[song].endb = yy

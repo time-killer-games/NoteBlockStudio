@@ -61,6 +61,7 @@ function add_layer() {
 		songs[song].layerstereo[l] = songs[song].layerstereo[l - 1]
 		swap_text_edit(400 + l, 400 + l - 1)
 	}
+	songs[song].solostr = string_replace_all(songs[song].solostr, "|" + string(num) + "|", "|" + string(num + 1) + "|")
 
 	// Place layer back
 	if (blocks != "") {

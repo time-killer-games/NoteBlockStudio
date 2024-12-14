@@ -112,7 +112,7 @@ function draw_window_datapack_export() {
 		if ((string_path(dat_name) != "") && (string_path(dat_namespace) != "") && dat_getpath(dat_path) != "") draw_theme_color()
 		draw_text_dynamic(x1 + 16, y1 + 301, "Path:")
 		draw_theme_color()
-		dat_path = draw_inputbox(52,x1 + 16, y1 + 318,145,dat_path,"(optional) Path to the song from the main 'functions'"+br+"folder. You can use '/' to add subfolders.")
+		dat_path = draw_inputbox(52,x1 + 16, y1 + 318,145,dat_path,"(optional) Path to the song from the main function"+br+"folder. You can use '/' to add subfolders.")
 
 		//Preview
 		draw_text_dynamic(x1 + 16, y1 + 348, "Command preview:")
@@ -135,8 +135,13 @@ function draw_window_datapack_export() {
 		if (draw_radiobox(x1 + 264, y1 + 285, dat_source = "voice", "voice", "Controlled by Voice/Speech slider")) dat_source = "voice"
 		if (draw_radiobox(x1 + 264, y1 + 304, dat_source = "weather", "weather", "Controlled by Weather slider")) dat_source = "weather"
 
+		// Minecraft version
+		draw_text_dynamic(x1 + 187, y1 + 334, "Minecraft version")
+		if (draw_radiobox(x1 + 192, y1 + 354, dat_mcversion == 0, "1.13-1.20", "Export to Minecraft: Java Edition\nversions 1.13 to 1.20.6.")) dat_mcversion = 0
+		if (draw_radiobox(x1 + 192, y1 + 374, dat_mcversion == 1, "1.21+", "Export to Minecraft: Java Edition\nversions 1.21 and above.")) dat_mcversion = 1
+
 		//Export as ZIP
-		if (draw_checkbox(x1 + 192, y1 + 334, dat_usezip, "Export as ZIP", "Whether to export the data pack as a ZIP file."+br+"If unchecked, it will be saved as a folder instead.", false, true)) dat_usezip=!dat_usezip
+		if (draw_checkbox(x1 + 192, y1 + 404, dat_usezip, "Export as ZIP", "Whether to export the data pack as a ZIP file."+br+"If unchecked, it will be saved as a folder instead.", false, true)) dat_usezip=!dat_usezip
 
 		//Locked layers
 		if (draw_checkbox(x1 + 362, y1 + 213, dat_includelocked, "Include locked layers", "Whether to include locked layers in the data pack.", false, true)) dat_includelocked=!dat_includelocked
@@ -270,8 +275,13 @@ function draw_window_datapack_export() {
 		if (draw_radiobox(x1 + 264, y1 + 285, dat_source = "voice", "语音", "由语音音量控制")) dat_source = "voice"
 		if (draw_radiobox(x1 + 264, y1 + 304, dat_source = "weather", "天气", "由天气音量控制")) dat_source = "weather"
 
+		// Minecraft version
+		draw_text_dynamic(x1 + 187, y1 + 334, "Minecraft 版本")
+		if (draw_radiobox(x1 + 192, y1 + 354, dat_mcversion == 0, "1.13-1.20", "导出至 Minecraft: Java 版\n版本 1.13 至 1.20.6。")) dat_mcversion = 0
+		if (draw_radiobox(x1 + 192, y1 + 374, dat_mcversion == 1, "1.21+", "导出至 Minecraft: Java 版\n版本 1.21 及以上。")) dat_mcversion = 1
+
 		//Export as ZIP
-		if (draw_checkbox(x1 + 192, y1 + 334, dat_usezip, "导出为 ZIP", "是否导出为 ZIP 格式的文件。"+br+"如关闭，将导出为文件夹。", false, true)) dat_usezip=!dat_usezip
+		if (draw_checkbox(x1 + 192, y1 + 404, dat_usezip, "导出为 ZIP", "是否导出为 ZIP 格式的文件。"+br+"如关闭，将导出为文件夹。", false, true)) dat_usezip=!dat_usezip
 
 		//Locked layers
 		if (draw_checkbox(x1 + 362, y1 + 213, dat_includelocked, "包括已静音的层", "是否在数据包内包括已静音的层。", false, true)) dat_includelocked=!dat_includelocked
