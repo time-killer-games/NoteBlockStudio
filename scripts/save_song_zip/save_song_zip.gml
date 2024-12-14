@@ -34,7 +34,7 @@ function save_song_zip() {
 	// Save song
 	save_song(tempdir + "song.nbs", true);
 	
-	ExecuteShell("7za a -tzip \"" + fn + "\" \"" + data_directory + "Temp\\*\"", true, true);
+	execute_program("7za", "a -tzip \"" + fn + "\" \"" + data_directory + "Temp\\*\"", true);
 	
 	if (!file_exists_lib(fn)) {
 		if (language != 1) message("The song could not be saved!", "Error");
