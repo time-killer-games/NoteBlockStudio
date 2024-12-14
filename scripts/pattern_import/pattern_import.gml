@@ -41,25 +41,8 @@ function pattern_import() {
 		if check_custom_instrument(temp_str) = 0 {
 		//	show_debug_message("selection_code " + string(selection_copied))
 			selection_copied = temp_str
-			if (pat_length > songs[song].selection_arraylength) { // New length
-			    for (a = songs[song].selection_arraylength + 1; a <= pat_length; a += 1) {
-			        songs[song].selection_colfirst[a] = -1
-			        songs[song].selection_collast[a] = -1
-			        for (b = 0; b <= songs[song].selection_arrayheight; b += 1) {
-			            songs[song].selection_exists[a, b] = 0
-			        }
-			    }
-			    songs[song].selection_arraylength = pat_length
-			}
-	
-			if (pat_height > songs[song].selection_arrayheight) { // New height
-			    for (a = 0; a <= songs[song].selection_arraylength; a += 1) {
-			        for (b = songs[song].selection_arrayheight + 1; b <= pat_height; b += 1) {
-			            songs[song].selection_exists[a, b] = 0
-			        }
-			    }
-			    songs[song].selection_arrayheight = pat_height
-			}
+			selection_extend_length(pat_length)
+			selection_extend_height(pat_height)
 	
 			for (a = 0; a < songs[song].selection_l; a += 1) {
 				temp_colfirst[a] = buffer_read_byte_signed()

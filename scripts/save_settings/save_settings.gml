@@ -51,7 +51,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "marker_end",         marker_end)
 	ini_write_real_clean("preferences", "show_layer_volumes", realvolume)
 	ini_write_real_clean("preferences", "use_stereo",         realstereo)
-	ini_write_real_clean("preferences", "loop_to_bar_end",    looptobarend)
+	//ini_write_real_clean("preferences", "loop_to_bar_end",    looptobarend)
 	ini_write_real_clean("preferences", "show_soundcount",    show_soundcount)
 	ini_write_real_clean("preferences", "use_bpm",            use_bpm)
 	ini_write_real_clean("preferences", "save_version",       save_version)
@@ -74,6 +74,7 @@ function save_settings() {
 	ini_write_real_clean("preferences", "keynames_flat",      keynames_flat)
 	ini_write_real_clean("preferences", "hires",              hires)
 	ini_write_string(    "preferences", "current_resource",   current_resource)
+	ini_write_real_clean("preferences", "acrylic_successful", acrylic_successful)
 
 	// Midi import settings
 	ini_write_real_clean("midi_import", "remember",        w_midi_remember)
@@ -141,6 +142,7 @@ function save_settings() {
 	ini_write_string(    "datapack_export", "namespace",     dat_namespace)
 	ini_write_string(    "datapack_export", "path",          dat_path)
 	ini_write_string(    "datapack_export", "source",        dat_source)
+	ini_write_real_clean("datapack_export", "mcversion",     dat_mcversion)
 	ini_write_real_clean("datapack_export", "use_zip",       dat_usezip)
 	ini_write_real_clean("datapack_export", "locked",        dat_includelocked)
 	ini_write_real_clean("datapack_export", "out_of_range",  dat_includeoutofrange)
@@ -168,6 +170,7 @@ function save_settings() {
 	ini_write_real_clean("warnings", "instrument", warning_instrument)
 	ini_write_real_clean("warnings", "schematics", warning_schematic)
 	ini_write_real_clean("warnings", "tempobox", tutorial_tempobox)
+	ini_write_real_clean("warnings", "donate_banner_time", donate_banner_time)
 
 	ini_close()
 	return 1

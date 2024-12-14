@@ -19,7 +19,8 @@ function pattern_export() {
 	//	show_debug_message("endb " + string(endb))
 	buffer_write_short(songs[song].selection_l)
 	//	show_debug_message("selection_l " + string(selection_l))
-	buffer_write_string(songs[song].selection_code)
+	// The selection code will be decompressed to keep the file compatible with older versions
+	buffer_write_string(try_decompress_selection(songs[song].selection_code))
 	//	show_debug_message("selection_code " + string(selection_code))
 	
 	for (a = 0; a < songs[song].selection_l; a ++) {

@@ -11,24 +11,8 @@ function selection_invert() {
 	    select_all(-1, 0)
 	    return 0
 	}
-	if (songs[song].enda > songs[song].selection_arraylength) { // New length
-	    for (a = songs[song].selection_arraylength + 1; a <= songs[song].enda; a += 1) {
-	        songs[song].selection_colfirst[a] = -1
-	        songs[song].selection_collast[a] = -1
-	        for (b = 0; b <= songs[song].selection_arrayheight; b += 1) {
-	            songs[song].selection_exists[a, b] = 0
-	        }
-	    }
-	    songs[song].selection_arraylength = songs[song].enda
-	}
-	if (songs[song].endb > songs[song].selection_arrayheight) { // New height
-	    for (a = 0; a <= songs[song].selection_arraylength; a += 1) {
-	        for (b = songs[song].selection_arrayheight + 1; b <= songs[song].endb; b += 1) {
-	            songs[song].selection_exists[a, b] = 0
-	        }
-	    }
-	    songs[song].selection_arrayheight = songs[song].endb
-	}
+	selection_extend_length()
+	selection_extend_height()
 	xx = songs[song].selection_x
 	yy = songs[song].selection_y
 	str = songs[song].selection_code

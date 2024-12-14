@@ -6,6 +6,8 @@ midiname = ""
 song_midi = ""
 timesignature = 4
 song_backupid = string(floor(random(800000)))
+song_backupname = "Unsaved song " + string(song_backupid) + ".nbs"
+song_download_display_name = ""
 
 // Playback
 tempo = 10
@@ -71,6 +73,7 @@ selection_arraylength = 0
 selection_arrayheight = 0
 selection_colfirst[0] = -1
 selection_collast[0] = -1
+selected_layers = ds_list_create()
 
 // Layers
 layername[0] = ""
@@ -84,6 +87,7 @@ loop_session = 0
 loop = 0
 loopmax = 0
 loopstart = 0
+loopend = 0
 
 // Song properties
 song_name = ""

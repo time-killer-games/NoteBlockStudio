@@ -43,23 +43,25 @@ function menu_click(argument0) {
 	        }
 	        if (sel = b + 4) save_song(songs[song].filename)
 	        if (sel = b + 5) save_song("")
-			if (sel = b + 6) window = w_saveoptions
-	        if (sel = b + 7) pattern_import("")
-	        if (sel = b + 8) pattern_export("")
-	        if (sel = b + 9) open_midi("")
-	        if (sel = b + 10) open_schematic("")
-	        if (sel = b + 11) window = w_mp3_export
-	        if (sel = b + 12) {
+			if (sel = b + 6) save_song_zip("")
+			if (sel = b + 7) window = w_saveoptions
+			if (sel = b + 8) open_url(backup_directory)
+	        if (sel = b + 9) pattern_import("")
+	        if (sel = b + 10) pattern_export("")
+	        if (sel = b + 11) open_midi("")
+	        if (sel = b + 12) open_schematic("")
+	        if (sel = b + 13) window = w_mp3_export
+	        if (sel = b + 14) {
 	            if (calculate_size()) window = w_schematic_export
 	        }
-	        if (sel = b + 13) {
+	        if (sel = b + 15) {
 	            if (calculate_size()) window = w_track_export
 	        }
-	        if (sel = b + 14) {
+	        if (sel = b + 16) {
 	            if (calculate_size()) window = w_branch_export
 	        }
-			if(sel = b + 15) window = w_datapack_export
-	        if (sel = b + 16) game_end()
+			if(sel = b + 17) window = w_datapack_export
+	        if (sel = b + 18) game_end()
 	        break
 	    }
 	    case "edit": {
@@ -170,11 +172,12 @@ function menu_click(argument0) {
 			ins -= floor((ins) / 26) // subtract the "More..." entries to get the instrument number
 	        if (sel < insoffset + 1) {songs[song].instrument = songs[song].instrument_list[| ins]; selected_vel = 100; selected_pan = 100; selected_pit = 0}
 	        if (sel = insoffset + 1) window = w_instruments
-	        if (sel = insoffset + 2) window = w_songinfoedit
-	        if (sel = insoffset + 3) window = w_properties
-	        if (sel = insoffset + 4) {selection_place(0) window = w_stats}
-	        if (sel = insoffset + 5) window = w_mididevices
-	        if (sel = insoffset + 6) window = w_preferences
+			if (sel = insoffset + 2) { window = w_sound_import update_asset_index_menu() }
+	        if (sel = insoffset + 3) window = w_songinfoedit
+	        if (sel = insoffset + 4) window = w_properties
+	        if (sel = insoffset + 5) {selection_place(0) window = w_stats}
+	        if (sel = insoffset + 6) window = w_mididevices
+	        if (sel = insoffset + 7) window = w_preferences
 	        break
 	    }
 	    case "help": {
@@ -195,8 +198,16 @@ function menu_click(argument0) {
 			if (sel = 7) open_url(link_github)
 			if (sel = 8) open_url(link_discord)
 	        if (sel = 9) open_url(link_report)
-	        if (sel = 10) window = w_changelist
-	        if (sel = 11) window = w_about
+			if (language == 0) {
+		        if (sel = 10) open_url(link_donate)
+		        if (sel = 11) window = w_changelist
+		        if (sel = 12) window = w_about
+			} else if (language == 1) {
+		        if (sel = 10) open_url(link_qq_group)
+		        if (sel = 11) open_url(link_donate)
+		        if (sel = 12) window = w_changelist
+		        if (sel = 13) window = w_about
+			}
 	        break
 	    }
 	    case "section": {
@@ -336,14 +347,14 @@ function menu_click(argument0) {
 		case "tempo": {
 			if (sel = 0) use_bpm = false
 			else if (sel = 1) use_bpm = true
-			else if (sel = 2) songs[song].tempo = 10
-			else if (sel = 3) songs[song].tempo = 12
-			else if (sel = 4) songs[song].tempo = 14
-			else if (sel = 5) songs[song].tempo = 16
-			else if (sel = 6) songs[song].tempo = 18
-			else if (sel = 7) songs[song].tempo = 20
-			else if (sel = 8) songs[song].tempo = 30
-			else if (sel = 9) songs[song].tempo = 60
+			else if (sel = 2) { songs[song].tempo = 10 songs[song].changed = 1 }
+			else if (sel = 3) { songs[song].tempo = 12 songs[song].changed = 1 }
+			else if (sel = 4) { songs[song].tempo = 14 songs[song].changed = 1 }
+			else if (sel = 5) { songs[song].tempo = 16 songs[song].changed = 1 }
+			else if (sel = 6) { songs[song].tempo = 18 songs[song].changed = 1 }
+			else if (sel = 7) { songs[song].tempo = 20 songs[song].changed = 1 }
+			else if (sel = 8) { songs[song].tempo = 30 songs[song].changed = 1 }
+			else if (sel = 9) { songs[song].tempo = 60 songs[song].changed = 1 }
 			else if (sel = 10) window = w_tempotapper
 			break
 		}
@@ -420,6 +431,11 @@ function menu_click(argument0) {
 				}
 			}
 			menutab = -1
+			break;
+		}
+		case "sound_import_asset_index": {
+			sound_import_asset_index_select = sel;
+			update_asset_index_menu();
 			break;
 		}
 	}

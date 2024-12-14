@@ -1,52 +1,170 @@
-Changes in v3.10.0 (2022.10.01):
-* The MP3 export functionality has been reworked from scratch:
-   * Renamed to 'Audio export', and added more output formats: WAV, AIFF, FLAC.
-   * Added stereo support! Panning on notes and layers will now be rendered
-      correctly.
-   * Added smart clipping detection! Clipping will no longer occur on louder parts
-      of the song, which is now normalized to 0 dBFS.
-   * Added an option to choose the sampling rate of the exported track.
-   * Added an option to choose between mono and stereo.
-   * Fixed exported notes getting out-of-tune as they moved away from their
-      original key.
-   * The export time has been cut down by about 60%.
-* Added drop mode! In this mode, instead of their usual grid arrangement, notes
-   will scroll vertically and follow their corresponding key on the piano.
-   This mode is only accessible in the player mode.
-* The player mode can now be accessed from the greeting window, through a
-   new button in the bottom-right corner, or by pressing F12.
-* Added smooth scrolling! The workspace no longer clips to the grid while the
-   song is playing. This behavior can be enabled in Preferences > Playback.
-* Added a track export option, to create schematics in a straight line.
-* Added a setting to show flat symbols (b) instead of sharp symbols (#) on the
-   piano.
-* Added a fading border effect when removing a note block by right-clicking, or
-   deleting a selection. This effect can be toggled in the Preferences.
-* Added Ctrl + middle-click to copy note velocity, panning and pitch values.
-* Added custom block selections for structure block export.
-* Added an option to place command blocks instead of note blocks in schematic
-   export.
-* Added the ability to drag and drop pattern files into the window.
-* The 'Set velocity' macro can now be set above 100% in percentage mode.
-* Bugfixes and improvements:
-   * Note Block Studio is now compiled to a native executable with YYC, which
-      should lead to a significant performance boost.
-   * Added a preference to optimize the window scale for high resolutions. With
-      this option enabled, setting the window scale larger than 100% will no longer
-      cause blurriness. (Only available in the Fluent theme.)
-   * The icon details in the Fluent theme will now reflect the accent color.
-   * The Note Block Studio icon has been updated. It's possible to return to the
-      previous icon in Preferences.
-   * The color of the window title bar will now match the program's theme.
-   * The master volume bar can now be changed with the mouse wheel.
-   * Fixed a rounding error in the global pitch calculation, which caused all played
-      notes to gradually drift out of tune the more they moved away from their
-      original key.
-   * Fixed the 'Get extra notes resource pack' button not working.
-   * Fixed the mouse cursor flashing when dragging the edges of the window.
-   * Fixed the master volume bar being changeable while a window is open.
-   * Fixed popups in the main area appearing while a window is open.
-   * Fixed crashes under various circumstances.
+Changes in v3.11.0 Release Candidate 1 (2024.12.04):
+
+Additions
+
+* Added a 'Loop end tick' option in the song properties.
+   * Setting it to a tick greater than the song length will add a silent note at that
+   tick to move the loop point further.
+
+* The MIDI import instrument mappings have been tweaked to be more accurate
+   to General MIDI (GM) instruments.
+
+Bugfixes and improvements:
+
+* Fixed layer buttons triggering inconsistently when dragging from bottom to top.
+* Fixed window animations not working after opening the 'Import sounds' window.
+* Fixed uninstall function of exported data packs not loading correctly.
+* Updated the NBS icon to a flat version. The previous icon can still be used with
+   the 'Old icon' setting.
+* Changed all instances of 'Minecraft Note Block Studio' and 'Open Note Block
+   Studio' to Note Block Studio, as part of an ongoing rebrand.
+* Replaced the icon for the 'Browse songs' button in the greeting window with
+   the Note Block World website icon.
+* Improved wording across various places.
+
+
+
+Changes in v3.11.0 Beta 5 (2024.12.02):
+
+Additions:
+
+* The behavior for clicking layer buttons has been changed:
+   * Multiple buttons can now be pressed consecutively by holding the left mouse
+   button and dragging the mouse over them.
+   * This should make it much easier to add, remove, select, lock and solo multiple
+   layers!
+
+* Holding Ctrl is no longer necessary to select multiple layers.
+
+* Selected layers can now be deselected by pressing the 'Select all blocks in this
+   layer' button a second time.
+
+* Removed the 'Loop to bar end' option.
+   * This option was misleading in that it 'masked' the true loop point of the song,
+   which is after the last tick, causing playback behavior to vary across different
+   NBS installations.
+   * To make sure your songs loop at the right point, add a note block with velocity
+   0 at the last tick before the looping point.
+   * This setting may be re-added in the future as a property stored in each song file.
+
+* Added an entry in the File menu for restoring unsaved files.
+
+* If present, song author and original author are now displayed in the main view
+   for the Player Mode.
+
+Bugfixes and improvements:
+
+* Fixed songs not loading when opened via Explorer or by dragging and dropping.
+* Fixed backup file for packed songs being saved with the .zip extension, despite
+   them being .nbs files.
+* Lag compensation is now cancelled if too much time has elapsed (for example,
+   when moving the window around). Playback will resume from the previous
+   point instead of skipping a large section.
+* Lag compensation is now applied to more timers, which should be more
+    accurate:
+   * Auto-save and backup saving timers;
+   * Flash animation when editing piano keyboard shortcuts;
+   * Time tracker for minutes spent in a song;
+   * Scrollbar appear animation for fullscreen mode.
+* Ticks behind the playback marker will no longer play when dragging it around.
+* Silent notes have been added at the end of the demo songs to make sure they
+   loop at the proper point.
+* Songs opened via the nbs:// URL protocol have the file extension removed from
+   their display name.
+* Fixed pointer cursor not appearing when hovering keys at the edges of the
+   piano in Player Mode.
+* Fixed the Player Mode playback progress bar going past its intended length at
+   the end of a song.
+* Fixed blurry appearance of the Player Mode's central area with odd window
+   dimensions.
+* Fixed dropdown menu for MIDI devices not displaying text properly in the
+   English language.
+* Fixed incorrect entries for the bass drum sounds in the sounds.json file for the
+   extra notes resource pack.
+* Fixed the Stereo macro being referred to as 'delay' in the tooltip for the
+   'Reversed' checkbox.
+* Fixed a crash when playing an instrument that was assigned to a MIDI device.
+* Fixed swapped arrows for the instrument selection box when using
+   high-resolution textures.
+* Fixed original author not displaying in the accent color in the song stats window
+   when using the Fluent theme.
+* Added a debug launch option to get additional logs for bug reporting.
+* Updated the asset index version names for Minecraft: Java Edition 1.21.2 and
+   1.21.4 (18 and 19).
+* Removed the 'experimental' label from the max. frame rate setting.
+
+Hidden changes:
+
+* Tempo can no longer be set to under 0.25 ticks per second with tempo changers.
+* Added tempo change indicators to the timeline.
+
+
+
+Changes in v3.11.0 Beta 4 (2024.11.28):
+
+* Fixed note panning taking the value of velocity when loading a song.
+* The 'Check for development releases' is now enabled by default when installing
+   a development release.
+
+
+
+Changes in v3.11.0 Beta 3 (2024.11.28):
+
+Additions:
+
+* Added a new auto-recovery system which takes multiple open instances into
+   account:
+   * Songs with unsaved changes are saved to a backup directory every 10 minutes.
+   * When NBS quits abnormally (due to a crash, power loss or system restart),
+   you'll be prompted to recover the files the next time you open the program.
+   * Clicking 'Yes' will copy the files to a restore directory so you can move them
+   somewhere else.
+   * Clicking 'No' will leave the unsaved files in the backup directory so you can
+   recover them later.
+
+* The fade in and fade out macros now work relatively to each note's velocity,
+   multiplying it by the decay factor.
+   * Previously, only the first note block in each selected column would be taken
+   into account for determining all velocity values in that column.
+   * Notes at each end of the selection will no longer go down to velocity 0, or
+   into negative values.
+
+* Blackout mode is now available in Player Mode, including the shortcut (F10)!
+
+* Added a button to the greeting window to open Note Block World, our brand
+   new website for browsing and sharing note block songs!
+
+Bugfixes and improvements:
+
+* The link for the OpenNBS QQ group will be displayed instead of Discord when
+   the language is set to Chinese.
+* Added a small banner to the greeting window which lets you buy us a coffee.
+   Thank you!
+* Macro windows are now closed immediately if no note blocks are selected,
+   which should prevent certain softlock cases.
+* Fixed auto-save ticking down into negative values and saving the song every
+   frame once the timer reaches zero.
+* Fixed opening songs with the nbs:// URL protocol not working in some cases.
+* Fixed a crash when compressing a selection with some particular note
+   arrangements.
+* Loading and saving songs have been made much faster.
+* Fixed the application name in Task Manager, Programs and Resources etc.
+   being incorrectly set to a description.
+* Fixed solo button states not moving together with the layers when adding a
+   new layer above a solo layer.
+* Fixed the volume slider number popup going past the intended range.
+* Transparency effects are now disabled if setting them up failed in the last
+   session.
+* Fixed the piano keybind flashing faster while being edited according to your
+   FPS setting.
+* Reduced the maximum channel count with 'Use more audio channels' enabled
+   from 32,768 to 1,024, the largest possible value.
+* Removed the button to watch tutorial videos from the greeting window.
+* Fixed offset of vertical bars (|) in the greeting window links while using the
+   classic themes due to their wider font.
+* Replaced the opennbs.org url with noteblock.studio.
+* Updated credits in the About window.
+
 
 
 

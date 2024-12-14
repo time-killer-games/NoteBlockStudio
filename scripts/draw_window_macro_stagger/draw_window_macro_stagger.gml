@@ -1,20 +1,20 @@
 function draw_window_macro_stagger() {
 	// draw_window_macro_stagger()
 	var x1, y1, a, b, i, pattern, str, total_vals, val, arplen, maxlength, conf;
+	if (songs[song].selected == 0) {
+		window = 0
+		return 0
+	}
 	windowanim = 1
 	if (theme = 3) draw_set_alpha(windowalpha)
 	curs = cr_default
 	text_exists[0] = 0
-	if (songs[song].selected = 0) return 0
 	x1 = floor(rw / 2 - 80)
 	y1 = floor(rh / 2 - 70) + windowoffset
 	draw_window(x1, y1, x1 + 150, y1 + 160)
 	draw_theme_color()
 	draw_theme_font(font_main_bold)
 	draw_text_dynamic(x1 + 8, y1 + 8, "Stagger")
-	draw_set_color(c_red)
-	if (language != 1) draw_text_dynamic(x1 + 8, y1 + 23, "(CANNOT BE UNDONE)")
-	else draw_text_dynamic(x1 + 8, y1 + 23, "（无法还原！！）")
 	draw_theme_color()
 	pattern = ""
 	draw_theme_font(font_main)
@@ -47,18 +47,18 @@ function draw_window_macro_stagger() {
 		windowopen = 0
 		window = 0
 		str = songs[song].selection_code
-		arr_data = selection_to_array(str)
-		total_vals = string_count("|", str)
+		var arr_data = selection_to_array_ext()
+		total_vals = array_length(arr_data)
 		val = 0
 		conf = 0
 		pattern = string_digits_symbol(pattern, "|")
 		pattern = string(pattern + "|")
-		arp = selection_to_array(pattern)
+		var arp = selection_to_array(pattern)
 		arplen = string_count("|", pattern)
 
 		maxlength = 0;
 	
-		var patlen = array_length_1d(arp);
+		var patlen = array_length(arp);
 		for (i = 0; i < patlen; i++) { // Calculate highest number in given pattern
 		    if (arp[i] > arp[maxlength]) {
 		        maxlength = i;
@@ -75,10 +75,10 @@ function draw_window_macro_stagger() {
 		while (val < total_vals) {
 			for (i = 0; i < arplen; i++;) {
 				val += 1
-				arr_data[val] = real(arr_data[val]) + real(arp[i])
+				arr_data[val] = arr_data[val] + arp[i]
 				val += 6
 				while arr_data[val] != -1 {
-					arr_data[val] = real(arr_data[val]) + real(arp[i])
+					arr_data[val] = arr_data[val] + arp[i]
 					val += 6
 				}
 			val ++
@@ -86,10 +86,12 @@ function draw_window_macro_stagger() {
 			}
 		if val >= total_vals break
 		}
-		str = array_to_selection(arr_data, total_vals)
-		selection_load(songs[song].selection_x,songs[song].selection_y,str,true)
-		selection_code_update()
+		var sel_x = songs[song].selection_x
+		var sel_y = songs[song].selection_y
+		selection_delete(true)
+		selection_load_from_array(sel_x, sel_y, arr_data)
 		history_set(h_selectchange, songs[song].selection_x, songs[song].selection_y, songs[song].selection_code, songs[song].selection_x, songs[song].selection_y, str)
+		if(!keyboard_check(vk_alt)) selection_place(false)
 	}
 	if (draw_button2(x1 + 75, y1 + 128, 60, condstr(language != 1, "Cancel", "取消")) && (windowopen = 1 || theme != 3)) {windowclose = 1}
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) {
