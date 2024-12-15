@@ -58,8 +58,12 @@ function draw_window_update() {
 			draw_text_dynamic(x1 + 32, y1 + 32, "感谢你更新到 " + version + " 版本！")
 		}
 	}
-	if (language != 1 && draw_button2(x1 + 500 - 120 - 8, y1 + 8, 120, "Watch release video")) {
-		open_url("https://bit.ly/NBS311_video");
+	if (draw_button2(x1 + 500 - 120 - 8, y1 + 8, 120, language != 1 ? "Watch release video" : "观看更新视频")) {
+		if (language != 1) {
+			open_url("https://youtu.be/gya4NAQunEc");
+		} else {
+			open_url("https://www.bilibili.com/video/BV1qWq9Y2ESX/");
+		}
 	}
 	draw_area(x1 + 16, y1 + 58, x1 + 487 + theme_offset, y1 + 357)
 	n = string_count("\n", fullstr) 
