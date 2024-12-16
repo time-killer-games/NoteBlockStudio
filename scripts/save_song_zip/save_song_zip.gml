@@ -34,10 +34,7 @@ function save_song_zip() {
 	// Save song
 	save_song(tempdir + "song.nbs", true);
 	
-	if (os_type = os_windows) cmd = "a -tzip \"" + fn + "\" \"" + data_directory + "temp\\*\""
-	else cmd = "a -tzip \"" + fn + "\" \"" + data_directory + "temp/*\""
-	
-	execute_program(get_7z_exc_name(), cmd, true);
+	execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + data_directory + "temp" + condstr(os_type = os_windows, "\\", "/") + "*\"", true);
 	
 	if (!file_exists_lib(fn)) {
 		if (language != 1) message("The song could not be saved!", "Error");

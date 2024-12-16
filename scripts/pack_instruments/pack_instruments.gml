@@ -7,7 +7,7 @@ function pack_instruments() {
 	else fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, "") + " - ") + "Instruments.zip", "", "导出音色至 ZIP 文件"));
 	if (fn = "") return 0;
 	
-	tempdir = data_directory + "Temp\\";
+	tempdir = data_directory + "temp" + condstr(os_type = os_windows, "\\", "/");
 	if (directory_exists_lib(tempdir)) {
 		directory_delete_lib(tempdir);
 	}
@@ -32,7 +32,7 @@ function pack_instruments() {
 		}
 	}
 	
-	execute_program("7za", "a -tzip \"" + fn + "\" \"" + data_directory + "Temp\\*\"", true)
+	execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + data_directory + "Temp" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
 	directory_delete_lib(tempdir);
 	if (language != 1) message(string(count) + " instrument" + condstr(count > 1, "s were", " was") + " saved!", "Pack instruments");
 	else message(string(count) + "个音色已保存！", "导出音色");

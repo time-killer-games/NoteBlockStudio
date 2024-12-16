@@ -50,7 +50,7 @@ function datapack_export() {
 		}
 	
 		// Create folder structure
-		tempdir = data_directory + "TempDatapack\\"
+		tempdir = data_directory + "tempdatapack" + condstr(os_type = os_windows, "\\", "/")
 		if (directory_exists_lib(tempdir)) {
 			directory_delete_lib(tempdir)
 		}
@@ -185,9 +185,10 @@ function datapack_export() {
 	
 		// Execute shell command to create ZIP, or to move temp folder to location
 		if (o.dat_usezip) {
-			execute_program("7za", "a -tzip \"" + fn + "\" \"" + data_directory + "TempDatapack\\*\"", true)
+			execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + data_directory + "tempdatapack" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
 		} else {
-			execute_program("cmd", "\"" + data_directory + "move.bat\" \"" + fn + "\\\"", true)
+			if (os_type = os_windows) execute_program("cmd", "\"" + data_directory + "move.bat\" \"" + fn + "\\\"", true)
+			else execute_program("cp", "-r \"" + data_directory + "tempdatapack\" \"" + fn + "/\"", true);
 		}
 	
 		directory_delete_lib(tempdir)

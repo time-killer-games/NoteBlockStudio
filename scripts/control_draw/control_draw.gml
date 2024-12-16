@@ -1652,10 +1652,10 @@ function control_draw() {
 		                             inactive(current_song.selected != 0)+"Import pattern...|"+
 									 inactive(current_song.selected = 0)+"Export pattern...|"+"Import from MIDI...|"+inactive(os_type != os_windows)+"Import from schematic...|-|"+
 		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as audio track...|"+
-		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as schematic...|"+
-		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as track schematic...|"+
+		                             inactive(current_song.totalblocks = 0) + "Export as schematic...|"+
+		                             inactive(current_song.totalblocks = 0) + "Export as track schematic...|"+
 		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as branch schematic...|"+
-									 inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as data pack...|-|" + 
+									 inactive(current_song.totalblocks = 0) + "Export as data pack...|-|" + 
 		                             get_hotkey("exit") + "$Exit")
 			else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|-|" + get_hotkey("exit") + "$Exit")
 							
@@ -1741,10 +1741,10 @@ function control_draw() {
 		                             inactive(current_song.selected != 0)+"导入片段......|"+
                                      inactive(current_song.selected = 0)+"导出片段......|"+"从 MIDI 文件导入......|"+inactive(os_type != os_windows)+"从 Schematic 文件导入......|-|"+
 		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出音频文件......|"+
-		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出为 schematic......|"+
-		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出为直轨 schematic......|"+
+		                             inactive(current_song.totalblocks = 0) + "导出为 schematic......|"+
+		                             inactive(current_song.totalblocks = 0) + "导出为直轨 schematic......|"+
 		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出为分支 schematic......|"+
-									 inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出为数据包......|-|" +
+									 inactive(current_song.totalblocks = 0) + "导出为数据包......|-|" +
 		                             get_hotkey("exit") + "$退出")
 			else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|-|" + get_hotkey("exit") + "$退出")
 							
