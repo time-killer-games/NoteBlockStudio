@@ -1,11 +1,11 @@
 function save_song_zip() {
-	var fn, tempdir, ins, src, dst, count;
+	var fn, tempdir, ins, src, dst, count, cmd;
 	
 	if (language != 1) fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, ".zip")), "", "Save song with custom sounds"));
 	else fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, ".zip")), "", "连带自定义音色一起导出"));
 	if (fn = "") return 0;
 	
-	tempdir = data_directory + "Temp\\";
+	tempdir = data_directory + "temp" + condstr(os_type = os_windows, "\\", "/");
 	if (directory_exists_lib(tempdir)) {
 		directory_delete_lib(tempdir);
 	}
@@ -18,7 +18,7 @@ function save_song_zip() {
 		ins = ds_list_find_value(songs[song].instrument_list, i);
 		if (ins.filename != "") {
 			src = sounds_directory + ins.filename;
-			dst = tempdir + "sounds\\" + ins.filename;
+			dst = tempdir + "sounds" + condstr(os_type = os_windows, "\\", "/") + ins.filename;
 			if (!file_exists_lib(src)) {
 				continue;
 			}
@@ -34,7 +34,10 @@ function save_song_zip() {
 	// Save song
 	save_song(tempdir + "song.nbs", true);
 	
-	execute_program("7za", "a -tzip \"" + fn + "\" \"" + data_directory + "Temp\\*\"", true);
+	if (os_type = os_windows) cmd = "a -tzip \"" + fn + "\" \"" + data_directory + "temp\\*\""
+	else cmd = "a -tzip \"" + fn + "\" \"" + data_directory + "temp/*\""
+	
+	execute_program(get_7z_exc_name(), cmd, true);
 	
 	if (!file_exists_lib(fn)) {
 		if (language != 1) message("The song could not be saved!", "Error");
