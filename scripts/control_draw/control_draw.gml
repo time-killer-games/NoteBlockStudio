@@ -36,21 +36,12 @@ function control_draw() {
 	var centerx = floor(rw / 2)
 	var centery = floor(rh / 2)
 	
-	// Update window scale
-	if (window_scale != prev_scale) {
-		camera_set_view_size(cam_window, rw, rh)
-		msgx = rw
-		msgy = rh * 0.8
-	}
-	prev_scale = window_scale
+	update_window_scale()
 	
 	if (channelstoggle) channels = 1024
 	else channels = 256
 	audio_channel_num(channels)
-	if (icon_display && os_type = os_windows) {
-		if (window_icon) window_set_icon_raw(window_handle(), buffer_get_address(icon_buffer), buffer_get_address(icon_size_buffer))
-		else window_reset_icon_raw(window_handle())
-	}
+	update_window_icon()
 	
 	if (mouse_check_button_pressed(mb_left)) {
 		mousepress_x = mouse_x
@@ -61,19 +52,18 @@ function control_draw() {
 	showmenu = 0
 	cursmarker = 0
 	compx = 160
-	for (var nn = 0; nn < array_length(songs); nn++) {
-		songs[nn].song_title = condstr((songs[nn].filename = "" || songs[nn].filename = "-player") && (songs[nn].midiname = "" || !isplayer), condstr(language != 1, "Unsaved song", "新文件")) + condstr(songs[nn].filename != "-player", filename_name(songs[nn].filename)) + condstr((songs[nn].filename = "" || songs[nn].filename = "-player") && songs[nn].midiname != "" && isplayer, songs[nn].midiname)
-	}
-	//window_set_caption(songs[song].song_title + condstr(songs[song].changed && songs[song].filename != "" && songs[song].filename != "-player", "*") + condstr(os_type != os_macosx, " - Minecraft Note Block Studio" + condstr(isplayer, " - Player Mode")))
-	window_set_caption(condstr((songs[song].song_download_display_name != ""), songs[song].song_download_display_name, condstr((songs[song].filename = "" || songs[song].filename = "-player") && (songs[song].midiname = "" || !isplayer), condstr(language != 1, "Unsaved song", "新文件")) + condstr(songs[song].filename != "-player", filename_name(songs[song].filename)) + condstr((songs[song].filename = "" || songs[song].filename = "-player") && songs[song].midiname != "" && isplayer, songs[song].midiname) + condstr(songs[song].changed && songs[song].filename != "" && songs[song].filename != "-player", "*")) + condstr(os_type != os_macosx, " - Note Block Studio" + condstr(isplayer, " - Player Mode")))
-	// Performance indicator: "(" + string_format(currspeed * 100, 1, 0) + "%) "
+	
+	// update tabs name and window title accordingly
+	update_tabs_name()
+	update_window_caption(current_song)
+	
 	draw_set_alpha(1)
 	draw_theme_color()
 	draw_theme_font(font_main)
-	if refreshrate = 1 game_set_speed(60,gamespeed_fps)
-	if refreshrate = 2 game_set_speed(120,gamespeed_fps)
-	if refreshrate = 3 game_set_speed(144,gamespeed_fps)
-	if refreshrate = 4 game_set_speed(240,gamespeed_fps)
+	
+	update_refreshrate()
+	
+	// time dependent updates
 	editline += 30 / (room_speed) * (1 / currspeed)
 	if (editline > 60) editline = 0
 	if (delay > 0) delay -= 1 / (room_speed / 20)
@@ -82,17 +72,15 @@ function control_draw() {
 		current_song.work_mins += 1 / (room_speed * 60)  * (1 / currspeed)
 	}
 	
+	// get drag and drop files
 	file_dnd_set_files("*.nbs;*.mid;*.midi;*.nbp", 1, 0, 0)
 	dndfile = file_dnd_get_files()
 
+	// remove sound instances that are time to remove
 	remove_emitters()
 
-	if (current_song.selected = 0) {
-		if (current_song.block_outside = 0 && current_song.block_custom = 0) {
-			if ((current_song.tempo = 10 || current_song.tempo = 5 || current_song.tempo = 2.5) && current_song.block_pitched = 0) current_song.compatible = 1
-			else current_song.compatible = 2
-		} else current_song.compatible = 0
-	}
+	// update minecraft compatible status
+	update_compatible(current_song)
 
 	sela = -1
 	selb = -1
