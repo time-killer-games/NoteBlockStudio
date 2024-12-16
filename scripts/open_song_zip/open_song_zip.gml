@@ -1,6 +1,6 @@
 function open_song_zip(filename, replace = false) {
 
-	var dst_path = temp_directory + "nbs\\";
+	var dst_path = temp_directory + "nbs" + condstr(os_type = os_windows, "\\", "/");
 	
 	if (directory_exists_lib(dst_path)) {
 		directory_delete_lib(dst_path);
@@ -12,7 +12,7 @@ function open_song_zip(filename, replace = false) {
 	}
 	
 	var song_path = dst_path + "song.nbs";
-	var sounds_path = dst_path + "sounds\\";
+	var sounds_path = dst_path + "sounds" + condstr(os_type = os_windows, "\\", "/");
 	
 	if (!file_exists_lib(song_path)) {
 		throw("This is not a valid zipped song file!");
