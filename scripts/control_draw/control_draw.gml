@@ -1019,6 +1019,8 @@ function control_draw() {
 	}
 	if (keyboard_check_released(vk_f3)) debug_option = 0
 	
+	if (!isplayer) {
+		
 	if (keyboard_check_pressed(vk_numpad1)) {
 		reference_option = 0; 
 		set_msg("Reference mute"); 
@@ -1045,7 +1047,6 @@ function control_draw() {
 		}
 	}
 	
-	if (!isplayer) {
 	// Selecting note blocks
 	if (select > 0) {
 	    curs = cr_handpoint
@@ -2018,24 +2019,26 @@ function control_draw() {
 		volume_scroll = 0
 	}
 	draw_set_alpha(1)
-	xx += 120
-	if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
-		reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
-		reference_audio = audio_create_stream(reference_audio_file)
-		if (reference_audio < 0) {
-		    if (language != 1) message("Couldn't load the file", "Error")
-		    else message("找不到文件", "错误")
-			reference_audio_file = ""
-			reference_audio = -1
+	if (!isplayer) {
+		xx += 120
+		if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
+			reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
+			reference_audio = audio_create_stream(reference_audio_file)
+			if (reference_audio < 0) {
+			    if (language != 1) message("Couldn't load the file", "Error")
+			    else message("找不到文件", "错误")
+				reference_audio_file = ""
+				reference_audio = -1
+			}
 		}
+		draw_theme_color()
+		xx += 100
+		if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Offset (ms): ", "偏移量（毫秒）: "))
+		xx += 90
+		if (reference_audio >= 0) reference_offset = median(0, draw_dragvalue(13, xx, yy + 5, reference_offset, 0.5), 1000000)
+		xx += 30
+		if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Loaded file: ", "已加载音频: ") + reference_audio_file)
 	}
-	draw_theme_color()
-	xx += 100
-	if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Offset (ms): ", "偏移量（毫秒）: "))
-	xx += 90
-	if (reference_audio >= 0) reference_offset = median(0, draw_dragvalue(13, xx, yy + 5, reference_offset, 0.5), 1000000)
-	xx += 30
-	if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Loaded file: ", "已加载音频: ") + reference_audio_file)
 
 	// Compatible
 	if (!isplayer) {
