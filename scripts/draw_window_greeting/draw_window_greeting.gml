@@ -251,9 +251,7 @@ function draw_window_greeting() {
 	draw_set_color(accent[4]);
 	b += (-16);
 	c += 8;
-	draw_circle(b + 300 - 10, c, 8, false);
-	draw_rectangle(b + 300 - 8, c - 7, b + 300 + 8, c + 8, false);
-	draw_circle(b + 300 + 10, c, 8, false);
+	draw_roundrect_ext(b + 300 - 18, c - 7, b + 300 + 20, c + 8, 15, 15, false);
 	draw_set_color(c_white);
 	draw_theme_font(font_main_bold);
 	draw_text_dynamic(b + 300 - 14, c - 6, "NEW!");
