@@ -812,7 +812,7 @@ function control_draw() {
 					set_msg(condstr(language = 1, "窗口缩放", "Window scale") + " => " + string(window_scale * 100) + "%")
 				}
 	        }
-	        if ((os_type != os_macosx && keyboard_check_pressed(vk_delete)) || (os_type = os_macosx && keyboard_check_pressed(vk_backspace)) && current_song.selected > 0 && !isplayer) {
+	        if (keyboard_check_pressed(vk_delete) || (os_type = os_macosx && keyboard_check_pressed(vk_backspace)) && current_song.selected > 0 && !isplayer) {
 				selection_delete(0)
 				current_song.changed = 1
 			}
