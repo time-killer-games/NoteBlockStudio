@@ -352,61 +352,6 @@ function control_draw() {
 	draw_set_alpha(1)
 	draw_set_halign(fa_left)
 
-	// Play column
-	if (floor(current_song.marker_pos) != floor(current_song.marker_prevpos) && floor(current_song.marker_pos) <= current_song.enda && (floor(current_song.marker_pos) != current_song.section_end || window = w_dragmarker || forward<>0 || marker_end = 0 || current_song.marker_prevpos >= current_song.section_end)) {
-	    var diff = floor(current_song.marker_pos) - floor(current_song.marker_prevpos)
-	    var start
-	    if (!playing || diff < 0 || diff > 3) {
-	        start = floor(current_song.marker_pos)
-	    } else {
-	        start = floor(current_song.marker_prevpos) + 1
-	    }
-	    for (i = start; i <= floor(current_song.marker_pos); i++) {
-	        xx = i
-		    if (current_song.colamount[xx] > 0) {
-		        for (b = current_song.colfirst[xx]; b <= current_song.collast[xx]; b += 1) {
-		            if (current_song.song_exists[xx, b]) {
-		                a = 1
-						c = 1
-						d = 0
-						e = 0
-		                if (b < current_song.endb2) {
-							c = (current_song.layervol[b] /100) * current_song.song_vel[xx, b]
-							if current_song.layerstereo[b] = 100 {
-								d = current_song.song_pan[xx, b]
-							} else { 
-								d = (current_song.layerstereo[b] + current_song.song_pan[xx, b]) / 2
-							}
-							e = current_song.song_pit[xx, b]
-						}
-		                if (current_song.solostr != "") {
-		                    if (string_count("|" + string(b) + "|", current_song.solostr) = 0) {
-		                        a = 0
-		                    } else if (current_song.layerlock[b] = 1) {
-		                        a = 0
-		                    }
-		                } else if (b < current_song.endb2) {
-		                    if (current_song.layerlock[b] = 1) {
-		                        a = 0
-		                    }
-		                }
-		                if (record = 1 && playing = 1) {
-		                    if (current_time - current_song.song_added[xx, b] < 1000) a = 0
-		                }
-		                if (a) {
-		                    if (current_song.song_ins[xx, b].loaded && c > 0 && reference_option != 1) play_sound(current_song.song_ins[xx, b], current_song.song_key[xx, b], c , d, e, b + 1)
-							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Tempo Changer") current_song.tempo = floor(abs(e)) / 15
-							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Toggle Rainbow") {rainbowtoggle = !rainbowtoggle draw_accent_init()}
-							if (current_song.instrument_list[| ds_list_find_index(current_song.instrument_list, current_song.song_ins[xx, b])].name = "Sound Stopper") {remove_emitters_all(floor(e), floor(d - 100))}
-		                    if (current_song.song_ins[xx, b].press || isplayer) key_played[current_song.song_key[xx, b]] = current_time
-		                    current_song.song_played[xx, b] = current_time
-		                }
-		            }
-		        }
-		    }
-		}
-	}
-	
 	if (checkplaying > 0) {
 		if (reference_option > 0 && !audio_is_playing(reference_sound)) {
 			reference_sound = audio_play_sound(reference_audio, 1, 0)
