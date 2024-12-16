@@ -598,6 +598,12 @@ function control_create() {
 	    window = w_update
 	    update_success = 1
 		donate_banner = 1 // Enable donate banner after each update
+		if (os_type != os_windows) {
+		} else {
+		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_data_directory) + @'" "' + filename_dir(data_directory) + @'"', true)
+		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_songs_directory) + @'" "' + filename_dir(songs_directory) + @'"', true)
+		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_pattern_directory) + @'" "' + filename_dir(pattern_directory) + @'"', true)
+		}
 	}
 	
 	// Download song
