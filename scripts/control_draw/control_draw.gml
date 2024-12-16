@@ -573,6 +573,7 @@ function control_draw() {
 	        current_song.selection_y = max(0, current_song.selection_y)
 	        history_set(h_selectmove, current_song.selection_x, current_song.selection_y, selection_sx, selection_sy)
 	        window = w_releasemouse
+			selection_expand_layers()
 	    }
 	}
 	if (!isplayer) {

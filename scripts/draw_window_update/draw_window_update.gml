@@ -41,10 +41,10 @@ function draw_window_update() {
 	
 	// Refresh changelog button (debug)
 	if (NOT_RUN_FROM_IDE != 1) {
-		if (draw_button2(x1 + 500 - 144 - 16, y1 + 8, 72, "Open file")) {
+		if (draw_button2(x1 + 500 - 144 - 16, y1 + 8 + 24, 72, "Open file")) {
 			open_url(data_directory + "changelog.txt");
 		}
-		if (draw_button2(x1 + 500 - 72 - 8, y1 + 8, 72, "Refresh")) {
+		if (draw_button2(x1 + 500 - 72 - 8, y1 + 8 + 24, 72, "Refresh")) {
 			changelogstr = load_text(data_directory + "changelog.txt");
 		}
 	}
@@ -56,6 +56,13 @@ function draw_window_update() {
 	} else {
 		if (window = w_update) {
 			draw_text_dynamic(x1 + 32, y1 + 32, "感谢你更新到 " + version + " 版本！")
+		}
+	}
+	if (draw_button2(x1 + 500 - 120 - 8, y1 + 8, 120, language != 1 ? "Watch release video" : "观看更新视频")) {
+		if (language != 1) {
+			open_url("https://youtu.be/gya4NAQunEc");
+		} else {
+			open_url("https://www.bilibili.com/video/BV1qWq9Y2ESX/");
 		}
 	}
 	draw_area(x1 + 16, y1 + 58, x1 + 487 + theme_offset, y1 + 357)

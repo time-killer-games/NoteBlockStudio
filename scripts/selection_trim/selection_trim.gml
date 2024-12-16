@@ -2,6 +2,7 @@ function selection_trim() {
 	// selection_trim()
 	// Removes unneccesary space from selection.
 	var x1, y1, x2, y2, a, b, temp_colfirst, temp_collast, temp_exists, temp_ins, temp_vel, temp_pan, temp_key, temp_pit, temp_played;
+	selection_expand_columns()
 	for (x1 = 0; x1 < songs[song].selection_l; x1 += 1) {
 	    if (songs[song].selection_colfirst[x1] > -1) break
 	}

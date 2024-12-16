@@ -63,4 +63,5 @@ function selection_load(argument0, argument1, argument2, argument3) {
 	songs[song].selection_l = ca + 1
 	songs[song].selection_h = h + 1
 	selection_code_update()
+	selection_expand_layers()
 }

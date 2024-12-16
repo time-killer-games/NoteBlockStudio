@@ -32,16 +32,17 @@ function draw_window_sound_import() {
 		"Java Edition installation." + "\n" +
 		"Before continuing, ensure you have launched the version you want from" + "\n" +
 		"the Minecraft Launcher." + "\n" +
-		"Select a version from the list, and then click 'Import' to look for sounds!" : 
+		"Select a version from the list, and then click 'Get sounds' to import the" + "\n" +
+		"sounds from that version!" :
 		"本向导将帮助您从您的 Minecraft：Java 版中提取音效。" + "\n" +
 		"在开始之前，请确保您从您的启动器至少启动过一次您想要选择的版本。" + "\n" +
-		"从列表中选择一个游戏版本，然后点击“导入”来选择音效！"
+		"从列表中选择一个游戏版本，然后点击“获取音效”来导入该版本的音效！"
 		)
 	)
 	
 	// Minecraft installation path
 	x1 = startx;
-	y1 += 110;
+	y1 += 115;
 	draw_text_dynamic(x1, y1, ((language == 0) ? "1. Set your Minecraft installation path:" : "1. 设定您的.minecraft目录："));
 	x1 += 16;
 	y1 += 20;
