@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Controller",
-    "path": "folders/Scripts/Controller.yy",
+    "name": "Interface",
+    "path": "folders/Scripts/Interface.yy",
   },
   "resourceVersion": "1.0",
-  "name": "control_step",
+  "name": "get_tab_texty",
   "tags": [],
   "resourceType": "GMScript",
 }
