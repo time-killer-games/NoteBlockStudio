@@ -1,4 +1,9 @@
 /shaders/sh_blur_realtime/
 /shaders/sh_blur_static/
+/shaders/__ba_sh_blur_baked/
+/shaders/__ba_sh_blur_gaussian/
+/shaders/__ba_sh_blur_noise/
+/shaders/__ba_sh_downscale/
 /scripts/blur_scripts/
+/scripts/__blur_area_functions/
 **/.DS_Store

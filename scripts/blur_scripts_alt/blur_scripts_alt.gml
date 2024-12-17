@@ -23,12 +23,15 @@ function sprite_create_blur_alt(sprite, downamount, width, height, blurradius, q
 
 function draw_surface_blur_alt(surface, x, y, w, h, downamount) {
 	try {
-		if (os_type = os_windows) {
+		if (true) {
+			var scale_factor = 0.25
 			obj_controller.blur_temp_surface = surface_create(w * obj_controller.window_scale, h * obj_controller.window_scale)
+			obj_controller.blur_area_id = blur_area_create()
 			var temp_tex_filter = gpu_get_tex_filter()
 			surface_set_target(obj_controller.blur_temp_surface)
 			draw_surface_part(surface, x * obj_controller.window_scale, y * obj_controller.window_scale, w * obj_controller.window_scale, h * obj_controller.window_scale, 0, 0)
-			draw_surface_blur(obj_controller.blur_temp_surface, 0, 0, w * obj_controller.window_scale, h * obj_controller.window_scale, downamount * (1 / obj_controller.window_scale));
+			//draw_surface_blur(obj_controller.blur_temp_surface, 0, 0, w * obj_controller.window_scale, h * obj_controller.window_scale, downamount * (1 / obj_controller.window_scale));
+			blur_area_draw(obj_controller.blur_area_id, obj_controller.blur_temp_surface, BLUR_TYPE.GAUSSIAN, 0, 0, w * obj_controller.window_scale, h * obj_controller.window_scale, 0, 0, scale_factor * downamount * (1 / obj_controller.window_scale))
 			surface_reset_target()
 			surface_set_target(surface)
 			gpu_set_tex_filter(true)
@@ -37,30 +40,33 @@ function draw_surface_blur_alt(surface, x, y, w, h, downamount) {
 			gpu_set_tex_filter(temp_tex_filter)
 			surface_reset_target()
 			surface_free(obj_controller.blur_temp_surface)
-		} else {
-			var scale_factor = 0.25 * (1 / obj_controller.window_scale)
-			obj_controller.blur_temp_surface = surface_create(w * obj_controller.window_scale, h * obj_controller.window_scale)
-			obj_controller.blur_temp_surface_scaled = surface_create(w * obj_controller.window_scale * downamount * scale_factor, h * obj_controller.window_scale * downamount * scale_factor)
-			var temp_tex_filter = gpu_get_tex_filter()
-			surface_set_target(obj_controller.blur_temp_surface)
-			draw_surface_part(surface, x * obj_controller.window_scale, y * obj_controller.window_scale, w * obj_controller.window_scale, h * obj_controller.window_scale, 0, 0)
-			surface_reset_target()
-			surface_set_target(obj_controller.blur_temp_surface_scaled)
-			draw_surface_stretched(obj_controller.blur_temp_surface, 0, 0, w * obj_controller.window_scale * downamount * scale_factor, h * obj_controller.window_scale * downamount * scale_factor)
-			surface_reset_target()
-			surface_set_target(surface)
-			gpu_set_tex_filter(true)
-			draw_rectangle_color(x, y, x + w - 1, y + h - 1, 0, 0, 0, 0, 0)
-			draw_surface_stretched(obj_controller.blur_temp_surface_scaled, x, y, w, h)
-			gpu_set_tex_filter(temp_tex_filter)
-			surface_reset_target()
-			surface_free(obj_controller.blur_temp_surface)
-			surface_free(obj_controller.blur_temp_surface_scaled)
+			blur_area_destroy(obj_controller.blur_area_id)
 		}
+		//} else {
+		//	var scale_factor = 0.125 * (1 / obj_controller.window_scale)
+		//	obj_controller.blur_temp_surface = surface_create(w * obj_controller.window_scale, h * obj_controller.window_scale)
+		//	obj_controller.blur_temp_surface_scaled = surface_create(w * obj_controller.window_scale * downamount * scale_factor, h * obj_controller.window_scale * downamount * scale_factor)
+		//	var temp_tex_filter = gpu_get_tex_filter()
+		//	surface_set_target(obj_controller.blur_temp_surface)
+		//	draw_surface_part(surface, x * obj_controller.window_scale, y * obj_controller.window_scale, w * obj_controller.window_scale, h * obj_controller.window_scale, 0, 0)
+		//	surface_reset_target()
+		//	surface_set_target(obj_controller.blur_temp_surface_scaled)
+		//	draw_surface_stretched(obj_controller.blur_temp_surface, 0, 0, w * obj_controller.window_scale * downamount * scale_factor, h * obj_controller.window_scale * downamount * scale_factor)
+		//	surface_reset_target()
+		//	surface_set_target(surface)
+		//	gpu_set_tex_filter(true)
+		//	draw_rectangle_color(x, y, x + w - 1, y + h - 1, 0, 0, 0, 0, 0)
+		//	draw_surface_stretched(obj_controller.blur_temp_surface_scaled, x, y, w, h)
+		//	gpu_set_tex_filter(temp_tex_filter)
+		//	surface_reset_target()
+		//	surface_free(obj_controller.blur_temp_surface)
+		//	surface_free(obj_controller.blur_temp_surface_scaled)
+		//}
 	} catch (exc) {
 		if (surface_get_target() != application_surface) surface_reset_target()
 		if (surface_exists(obj_controller.blur_temp_surface)) surface_free(obj_controller.blur_temp_surface)
-		if (surface_exists(obj_controller.blur_temp_surface_scaled)) surface_free(obj_controller.blur_temp_surface_scaled)
+		if (blur_area_exists(obj_controller.blur_area_id)) blur_area_destroy(obj_controller.blur_area_id)
+		//if (surface_exists(obj_controller.blur_temp_surface_scaled)) surface_free(obj_controller.blur_temp_surface_scaled)
 		return;
 	}
 }
