@@ -28,7 +28,7 @@ function draw_surface_blur_alt(surface, x, y, w, h, downamount) {
 			var temp_tex_filter = gpu_get_tex_filter()
 			surface_set_target(obj_controller.blur_temp_surface)
 			draw_surface_part(surface, x * obj_controller.window_scale, y * obj_controller.window_scale, w * obj_controller.window_scale, h * obj_controller.window_scale, 0, 0)
-			draw_surface_blur(obj_controller.blur_temp_surface, 0, 0, w * obj_controller.window_scale, h * obj_controller.window_scale, downamount * obj_controller.window_scale);
+			draw_surface_blur(obj_controller.blur_temp_surface, 0, 0, w * obj_controller.window_scale, h * obj_controller.window_scale, downamount * (1 / obj_controller.window_scale));
 			surface_reset_target()
 			surface_set_target(surface)
 			gpu_set_tex_filter(true)
@@ -38,7 +38,7 @@ function draw_surface_blur_alt(surface, x, y, w, h, downamount) {
 			surface_reset_target()
 			surface_free(obj_controller.blur_temp_surface)
 		} else {
-			var scale_factor = 0.25
+			var scale_factor = 0.25 * (1 / obj_controller.window_scale)
 			obj_controller.blur_temp_surface = surface_create(w * obj_controller.window_scale, h * obj_controller.window_scale)
 			obj_controller.blur_temp_surface_scaled = surface_create(w * obj_controller.window_scale * downamount * scale_factor, h * obj_controller.window_scale * downamount * scale_factor)
 			var temp_tex_filter = gpu_get_tex_filter()
