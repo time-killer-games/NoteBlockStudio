@@ -70,7 +70,7 @@ function control_create() {
 	msgcontent = ""
 	msgstart = 0
 	currentfont = 0
-	acrylic = (os_type = os_windows)
+	acrylic = 1
 	can_draw_mica = 1
 	acrylic_successful = 1
 	mouseover = 0

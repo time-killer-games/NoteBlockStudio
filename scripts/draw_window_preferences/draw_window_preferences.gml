@@ -340,7 +340,8 @@ function draw_window_preferences() {
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 20 + 25, blackout, "全黑模式", "使背景变为纯黑色，可以用于剪辑时扣掉。", false, true)) blackout = !blackout
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 25, windowsound, "界面音效", "是否在浏览时播放音效。\n（仅限 Fluent 主题）", (theme != 3), true)) windowsound = !windowsound
 		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 25, fdark, "暗色模式", "是否在界面上使用暗色调。\n（仅限 Fluent 主题）", (theme != 3), true)) {fdark = !fdark if (fdark) window_set_darkmode() else window_unset_darkmode()}
-		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", condstr(os_type = os_windows, "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", "该功能在非Windows平台不可用。"), (theme != 3 || os_type != os_windows), true)) {acrylic = !acrylic change_theme()}
+		//if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", condstr(os_type = os_windows, "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", "该功能在非Windows平台不可用。"), (theme != 3 || os_type != os_windows), true)) {acrylic = !acrylic change_theme()}
+		if (draw_checkbox(x1 + 40, y1 + (theme = 3) * 22 + 74 + 16 + 20 + 20 + 20 + 25, acrylic, "透明效果", "是否在界面上显示透明效果。\n（仅限 Fluent 主题）", theme != 3, true)) {acrylic = !acrylic change_theme()}
 		}
 		
 		// Accent color picker
