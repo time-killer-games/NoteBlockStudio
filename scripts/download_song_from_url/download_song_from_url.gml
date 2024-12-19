@@ -63,6 +63,10 @@ function download_song_from_url() {
 				song_downloaded_size = song_total_size; // prevent freezing under 100%
 				show_debug_message(override_fn);
 				load_song(song_download_file, true); // load as backup file (keep unsaved, don't add to recent etc.)
+				if (autoplay) {
+					window = 0
+					playing = 1
+				}
 				if (override_fn != "") {
 					song_download_display_name = filename_change_ext(override_fn, ""); // override title bar display name
 				}
