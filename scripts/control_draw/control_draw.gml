@@ -2362,7 +2362,7 @@ function control_draw() {
 				draw_set_alpha(0.5)
 				draw_separator(7 + (tabwidth - 1) + tab * (tabwidth - 1) + 1, 24 + 8)
 				draw_set_alpha(1)
-				draw_sprite_ext(spr_closetab, 2, 7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35 + 13, 24 + 5 + 8, 1, 1, 0, -1 + (!fdark), 1)
+				draw_sprite_ext(spr_closetab, 2, 7 + (tabwidth - 1) + tab * (tabwidth - 1) - 35 + 12, 24 + 5 + 7, 1, 1, 0, -1 + (!fdark), 1)
 			}
 			if (taba = 1 && mouse_check_button_released(mb_right)) {
 				menutab = tab
