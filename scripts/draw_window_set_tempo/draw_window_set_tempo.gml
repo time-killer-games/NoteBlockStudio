@@ -26,7 +26,7 @@ function draw_window_set_tempo() {
 		settempo = mouse_rectangle(xx, 57 + song_tab_offset, w, 22)
 	}
 	
-	var otempo = tempo;
+	var otempo = songs[song].tempo;
 	
 	// Set tempo and close
 	if ((mouse_check_button_released(mb_left) && !settempo && !mouse_rectangle(xx, 57 + song_tab_offset, w, 22)) || keyboard_check_pressed(vk_enter)) {
@@ -42,7 +42,7 @@ function draw_window_set_tempo() {
 			}
 			songs[song].tempo = median(0.25, songs[song].tempo, 60)
 		}
-		if (tempo != otempo) {
+		if (songs[song].tempo != otempo) {
 			changed = 1
 		}
 		settempo = 0
