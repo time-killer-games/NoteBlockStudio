@@ -185,7 +185,8 @@ function datapack_export() {
 	
 		// Execute shell command to create ZIP, or to move temp folder to location
 		if (o.dat_usezip) {
-			execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + data_directory + "tempdatapack" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
+			if (os_type = os_macosx) execute_program("ditto", "-c -k \"" + data_directory + "tempdatapack" + "\" \"" + fn + "\"", true);
+			else execute_program(get_7z_exc_name(), "a -tzip \"" + fn + "\" \"" + data_directory + "tempdatapack" + condstr(os_type = os_windows, "\\", "/") + "*\"", true)
 		} else {
 			if (os_type = os_windows) execute_program("cmd", "\"" + data_directory + "move.bat\" \"" + fn + "\\\"", true)
 			else execute_program("cp", "-r \"" + data_directory + "tempdatapack\" \"" + fn + "/\"", true);
