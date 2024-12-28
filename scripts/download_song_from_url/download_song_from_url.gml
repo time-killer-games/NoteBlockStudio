@@ -69,9 +69,9 @@ function download_song_from_url() {
 				files_delete_lib(song_download_file);
 			} else {
 				if (language != 1) {
-					show_message("The song could not be downloaded! Please try again with a different song.");
+					message("The song could not be downloaded! Please try again with a different song.", "Note Block Studio");
 				} else {
-					show_message("歌曲下载失败！请更换歌曲重试。");
+					message("歌曲下载失败！请更换歌曲重试。", "Note Block Studio");
 				}
 				game_end();
 			}

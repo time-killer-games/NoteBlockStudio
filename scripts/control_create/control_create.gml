@@ -558,8 +558,8 @@ function control_create() {
 	} else {
 		acrylic = 0
 		can_draw_mica = 0
-		if (language != 1) show_message("Note Block Studio encountered an error creating the background sprite. Transparency effects will be disabled.\nThis usually happens when your desktop wallpaper is either too tall or too long.")
-		else show_message("Note Block Studio 在创建背景贴图时遇到错误，透明效果将被关闭。\n这种情况一般是由于您的桌面壁纸图片过高或过长。")
+		if (language != 1) message("Note Block Studio encountered an error creating the background sprite. Transparency effects will be disabled.\nThis usually happens when your desktop wallpaper is either too tall or too long.", "Note Block Studio")
+		else message("Note Block Studio 在创建背景贴图时遇到错误，透明效果将被关闭。\n这种情况一般是由于您的桌面壁纸图片过高或过长。", "Note Block Studio")
 	}
 	if (show_welcome) window = w_greeting
 	draw_accent_init()
@@ -675,8 +675,8 @@ function control_create() {
 			file_find_close();
 			
 			// Open restore folder
-			if (language != 1) show_message(string(restored_count) + " " + condstr(restored_count > 1, "files have been restored.", "file has been restored."));
-			else show_message(string(restored_count) + "个文件已恢复。");
+			if (language != 1) message(string(restored_count) + " " + condstr(restored_count > 1, "files have been restored.", "file has been restored."), "Auto-recovery");
+			else message(string(restored_count) + "个文件已恢复。", "自动恢复");
 			open_url(restore_directory);
 		}
 	}

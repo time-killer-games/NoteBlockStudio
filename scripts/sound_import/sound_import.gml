@@ -89,8 +89,8 @@ function load_asset_index(copy = false) {
 	if (selected_asset_list == "") return;
 	var asset_index_path = assets_dir + "indexes\\" + selected_asset_list + ".json";
 	if (!file_exists(asset_index_path)) {
-		if (language != 1) show_message("The file for the specified asset index could not be found!")
-		else show_message("未找到该索引所指向的文件！")
+		if (language != 1) message("The file for the specified asset index could not be found!", "Note Block Studio")
+		else message("未找到该索引所指向的文件！", "Note Block Studio")
 		return;
 	}
 	var file_buffer = buffer_load(asset_index_path);
