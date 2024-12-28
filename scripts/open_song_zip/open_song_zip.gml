@@ -1,6 +1,6 @@
 function open_song_zip(filename, replace = false) {
 
-	var dst_path = temp_directory + "nbs" + condstr(os_type = os_windows, "\\", "/");
+	var dst_path = temp_directory_included + "nbs" + condstr(os_type = os_windows, "\\", "/");
 	
 	if (directory_exists_lib(dst_path)) {
 		directory_delete_lib(dst_path);

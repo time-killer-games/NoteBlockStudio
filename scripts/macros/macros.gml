@@ -39,7 +39,8 @@ function macros() {
 #macro settings_dev_file file_directory + "settings_dev.ini"
 #macro backup_directory  file_directory + "data" + condstr(os_type = os_windows, "\\", "/")
 #macro restore_directory backup_directory + "restored" + condstr(os_type = os_windows, "\\", "/")
-#macro downloaded_song_file temp_directory + "song.nbs"
+#macro temp_directory_included file_directory + "temp" + condstr(os_type = os_windows, "\\", "/")
+#macro downloaded_song_file temp_directory_included + "song.nbs"
 
 #macro h_stereoize 12
 #macro h_swaplayer 11

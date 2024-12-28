@@ -63,7 +63,7 @@ function control_step() {
 	}
 	
 	// get drag and drop files
-	file_dnd_set_files("*.nbs;*.mid;*.midi;*.nbp", 1, 0, 0)
+	file_dnd_set_files("*.nbs;*.mid;*.midi;*.nbp;*.zip", 1, 0, 0)
 	dndfile = file_dnd_get_files()
 
 	// remove sound instances that are time to remove

@@ -128,7 +128,7 @@ function control_create() {
 
 	// Audio
 	channels = 256
-	channelstoggle = 0
+	channelstoggle = 1
 	sounds = 0
 	audio_channel_num(channels)
 	show_soundcount = 0
@@ -194,6 +194,7 @@ function control_create() {
 	tabdrag = 0
 	draggingtab = -1
 	tabdest = -1
+	if (directory_exists(temp_directory_included)) directory_destroy(temp_directory_included)
 
 	// Instruments
 	//current_resource = "Vanilla"

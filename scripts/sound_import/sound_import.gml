@@ -23,8 +23,8 @@ function get_assets_dir() {
 function find_asset_indexes() {
 
 	if (!directory_exists(mc_install_path)) {
-		if (language != 1) show_message("No Minecraft installation was found\nat the selected location!");
-		else show_message("在所选位置未找到有Minecraft安装！");
+		if (language != 1) message("No Minecraft installation was found\nat the selected location!", "Sound import");
+		else message("在所选位置未找到有Minecraft安装！", "音效导入");
 		return [];
 	}
 	
