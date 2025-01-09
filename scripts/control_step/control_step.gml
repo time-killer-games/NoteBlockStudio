@@ -47,6 +47,54 @@ function control_step() {
 		mousepress_y = mouse_y
 	}
 	
+	// handle midi messages
+	var b,i,listMessage;
+	ds_list_clear(midiMessages)//midiMessages is a ds_list that was created previously, and holds all MIDI messages that came in on this step
+	b = rtmidi_check_message()	
+	while b > 0 {
+		listMessage = ds_list_create()
+		for (i = 0; i < b; i += 1){	
+			ds_list_add(listMessage,rtmidi_get_message(i))		
+			}		
+		ds_list_add(midiMessages,listMessage)	
+		b = rtmidi_check_message()	
+	}
+	for (i = 0; i < ds_list_size(midiMessages); i++) {
+		var midi_status = midiMessages[| i][| 0]
+		var midi_msg1 = midiMessages[| i][| 1]
+		var midi_msg2 = midiMessages[| i][| 2]
+		ds_list_destroy(midiMessages[| i])
+		
+		if (midi_status == 144 && midi_msg2 == 0) midi_status = 128; // Key press at volume 0 = release
+	    switch (midi_status) {
+	        case 128: { // Key release (msg1: note)
+	            //key.time = time;
+	            ds_list_add(midi_keyreleases, midi_msg1);
+	            break;
+	        }
+	        case 144: { // Key press (msg1: note, msg2: velocity)
+	            //key.time = time;
+	            ds_list_add(midi_keypresses, [midi_msg1, midi_msg2]);
+	            break;
+	        }
+	        //case 11: { // Control (msg1: type, msg2: data)
+	        //    devices.at(deviceN).control[midi_msg1] = midi_msg2;
+	        //    break;
+	        //}
+	        //case 12: { // Patch change (msg1: patch)
+	        //    if (time - devices.at(deviceN).lastMessage < 100) break; // Patch change sends two messages? Only first one is correct
+	        //    devices.at(deviceN).instrument = midi_msg1;
+	        //    devices.at(deviceN).lastMessage = time;
+	        //    break;
+	        //}
+	        //case 14: { // Pitch wheel change (msg2: value)
+	        //    devices.at(deviceN).pitchWheel = midi_msg2;
+	        //    break;
+	        //}
+	    }
+		show_debug_message("status: " + string(midi_status) + ", msg1: " + string(midi_msg1) + ", msg2: " + string(midi_msg2))
+	}
+	
 	// update tabs name and window title accordingly
 	update_tabs_name()
 	update_window_caption(current_song)

@@ -14,5 +14,6 @@ function control_end() {
 	
 		save_settings()
 	}
+	rtmidi_deinit()
 
 }

@@ -24,8 +24,9 @@ function midi_input_set_key(argument0, argument1) {
 		                key_press[key] = 1
 		                break
 		            }
-		        }                
-		    } else {
+		        }      
+			}
+		    if (key_midipress[key]) {
 		        for (k = 0; k < midi_releases[d]; k += 1) {
 		            if (midi_input_key_release_note(d, k) = key + 21) {
 		                key_midipress[key] = 0

@@ -280,6 +280,7 @@ function menu_click(argument0) {
 	        break
 	    }
 	    case "mididevices_ins": {
+			if (sel != 0 && midi_device_current != obj_menu.mididevice) midi_set_device(obj_menu.mididevice)
 	        if (sel - 3 < 0)
 	            mididevice_instrument[obj_menu.mididevice] = sel - 3
 	        else

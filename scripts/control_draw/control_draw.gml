@@ -1437,642 +1437,640 @@ function control_draw() {
 
 	// Tabs
 	if (!fullscreen) {
-	if (theme = 0 && !(isplayer && blackout)) draw_sprite_ext(spr_tabbar, 0, 0, 0, rw, 1, 0, -1, 1)
-	tab_x = 1
-	draw_theme_font(font_small)
-	draw_theme_color()
-	if (isplayer && blackout) draw_set_color(c_white)
-	if (language != 1) {
-		if (draw_tab("File")) {
-		    str = ""
-		    for (b = 0; b < 11; b += 1) {
-		        if (recent_song[b] = "") break
-		        c = floor(date_second_span(recent_song_time[b], date_current_datetime()))
-		        str += seconds_to_str(c) + "$" + string_truncate(clean(filename_name(recent_song[b])), 310) + "|"
-		    }
-		    if (!isplayer) show_menu_ext("file", 0, 19, icon(icons.NEW)+get_hotkey("new_song") + "$New song|"+
-		                             icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+
-		                             icon(icons.SAVE)+get_hotkey("save_song") + "$Save song|"+
-		                             icon(icons.SAVE_AS)+"Save song as a new file...|"+
-									 inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "Save song with custom sounds...|Save options...|Restore unsaved files...|-|"+
-		                             inactive(current_song.selected != 0)+"Import pattern...|"+
-									 inactive(current_song.selected = 0)+"Export pattern...|"+"Import from MIDI...|"+inactive(os_type != os_windows)+"Import from schematic...|-|"+
-		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as audio track...|"+
-		                             inactive(current_song.totalblocks = 0) + "Export as schematic...|"+
-		                             inactive(current_song.totalblocks = 0) + "Export as track schematic...|"+
-		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as branch schematic...|"+
-									 inactive(current_song.totalblocks = 0) + "Export as data pack...|-|" + 
-		                             get_hotkey("exit") + "$Exit")
-			else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|-|" + get_hotkey("exit") + "$Exit")
-							
-		}
-		if (!isplayer) if (draw_tab("Edit")) {
-		    str = ""
-		    customstr = ""
-			insmenu = 1
-		    for (a = 0; a < ds_list_size(current_song.instrument_list); a += 1) {
-		        var ins = current_song.instrument_list[| a];
-		        if (ins.user)
-		            customstr += "...to " + clean(ins.name) + "|"
-		        else
-		            str += "...to " + clean(ins.name) + "|"
-				if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
-					customstr += "-|More...|\\|"
-					insmenu++
-				}
-		    }
-		    show_menu_ext("edit", 29, 19, inactive(current_song.historypos = current_song.historylen) + icon(icons.UNDO - (current_song.historypos = current_song.historylen)) + get_hotkey("undo") + "$Undo|"+
-		                              inactive(current_song.historypos = 0) + icon(icons.REDO - (current_song.historypos = 0)) + get_hotkey("redo") + "$Redo|-|"+
-		                              inactive(current_song.selected = 0) + icon(icons.COPY - (current_song.selected = 0)) + get_hotkey("copy") + "$Copy|"+
-		                              inactive(current_song.selected = 0) + icon(icons.CUT - (current_song.selected = 0)) + get_hotkey("cut") + "$Cut|"+
-		                              inactive(selection_copied = "") + icon(icons.PASTE - (selection_copied = "")) + get_hotkey("paste") + "$Paste|"+
-		                              inactive(current_song.selected = 0) + icon(icons.DELETE - (current_song.selected = 0)) + get_hotkey("delete") + "$Delete|-|"+
-		                              inactive(current_song.totalblocks = 0) + get_hotkey("select_all") + "$Select all|"+
-		                              inactive(current_song.selected = 0) + "Deselect all|"+
-		                              inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey("invert_selection") + "$Invert selection|-|"+
-		                              inactive(current_song.instrument.num_blocks = 0) + "Select all " + clean(current_song.instrument.name) + "|"+
-		                              inactive(current_song.instrument.num_blocks = current_song.totalblocks) + "Select all but " + clean(current_song.instrument.name) + "|-|"+
-		                                inactive(current_song.selected = 0) + get_hotkey("action_1") + "$" + get_mode_actions(1) + "|"+
-		                                inactive(current_song.selected = 0) + get_hotkey("action_2") + "$" + get_mode_actions(2) + "|"+
-		                                inactive(current_song.selected = 0) + get_hotkey("action_3") + "$" + get_mode_actions(3) + "|"+
-		                                inactive(current_song.selected = 0) + get_hotkey("action_4") + "$" + get_mode_actions(4) + "|"+
-												condstr((editmode != m_key), inactive(current_song.selected = 0) + get_hotkey("action_5") + "$" + get_mode_actions(5) + "|") +
-												condstr((editmode != m_key), inactive(current_song.selected = 0) + get_hotkey("action_6") + "$" + get_mode_actions(6) + "|") +
-		                                inactive(current_song.selected = 0) + "Change instrument...|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) + "-|" +
-		                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Expand selection|"+
-		                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Compress selection|"+
-		                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Macros...|\\||"+ "Tremolo...|"+ "Stereo...|"+ "Arpeggio...|"+ "Portamento...|"+ "Vibrato|"+ "Stagger...|"+ "Chorus|"+ "Volume LFO|"+ "Fade in|"+ "Fade out|"+ "Replace key|"+ "Set velocity...|"+ "Set panning...|"+ "Set pitch...|"+ "Reset all properties|"+ "/|-|"+
-		                                inactive(current_song.selected = 0) + "Transpose notes outside octave range")
-		}
-		if (draw_tab("Settings")) {
-		    str = ""
-		    customstr = ""
-			insmenu = 1
-		    for (a = 0; a < ds_list_size(current_song.instrument_list); a++) {
-		        var ins = current_song.instrument_list[| a];
-		        if (ins.user)
-		            customstr += check(current_song.instrument = ins) + clean(ins.name) + "|"
-		        else{
-					if(a < 9){
-						 str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-					}else{
-					  str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl_shift") + string((a + 2) % 10) + "$" + clean(ins.name) + "|"
-					}
-				}
-				if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
-					customstr += "-|More...|\\|"
-					insmenu++
-				}
-		    }
-		    if (!isplayer) show_menu_ext("settings", 59, 19, "Instrument|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) +
-		                        icon(icons.INSTRUMENTS)+"Instrument settings...|Import sounds from Minecraft...|/|-|" + icon(icons.INFORMATION) + "Song info...|" + icon(icons.PROPERTIES) + "Song properties...|Song stats...|-|" + icon(icons.MIDI_INPUT) + inactive(os_type != os_windows) + "MIDI device manager|" + get_hotkey("preferences") + "$Preferences...")
-			else show_menu_ext("settingsp", 29, 19, icon(icons.INFORMATION) + "Song info...|" + "Song stats...|-|" + get_hotkey("preferences") + "$Preferences...")
-		}
-		if (draw_tab("Help")) {
-		    show_menu_ext("help", 109 - 30 * isplayer, 19, icon(icons.HELP) + "Tutorial videos|\\|Part 1: Composing note block music|Part 2: Opening MIDI files|Part 3: Importing songs into Minecraft|Part 4: Editing songs made in Minecraft     |-|F1$View all|/|-|" + icon(icons.INTERNET) + "Website...|GitHub...|Discord server...|Report a bug...|Donate...|-|Changelist...|About...")
-		}
-	} else {
-		if (draw_tab("文件")) {
-		    str = ""
-		    for (b = 0; b < 11; b += 1) {
-		        if (recent_song[b] = "") break
-		        c = floor(date_second_span(recent_song_time[b], date_current_datetime()))
-		        str += seconds_to_str(c) + "$" + string_truncate(clean(filename_name(recent_song[b])), 310) + "|"
-		    }
-		    if (!isplayer) show_menu_ext("file", 0, 19, icon(icons.NEW)+get_hotkey("new_song") + "$新文件|"+
-		                             icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+
-		                             icon(icons.SAVE)+get_hotkey("save_song") + "$保存歌曲|"+
-		                             icon(icons.SAVE_AS)+"另存为|"+
-									 inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + "连带自定义音色一起导出......|保存选项......|恢复未保存的歌曲......|-|" +
-		                             inactive(current_song.selected != 0)+"导入片段......|"+
-                                     inactive(current_song.selected = 0)+"导出片段......|"+"从 MIDI 文件导入......|"+inactive(os_type != os_windows)+"从 Schematic 文件导入......|-|"+
-		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出音频文件......|"+
-		                             inactive(current_song.totalblocks = 0) + "导出为 schematic......|"+
-		                             inactive(current_song.totalblocks = 0) + "导出为直轨 schematic......|"+
-		                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出为分支 schematic......|"+
-									 inactive(current_song.totalblocks = 0) + "导出为数据包......|-|" +
-		                             get_hotkey("exit") + "$退出")
-			else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|-|" + get_hotkey("exit") + "$退出")
-							
-		}
-		if (!isplayer) if (draw_tab("编辑")) {
-		    str = ""
-		    customstr = ""
-			insmenu = 1
-		    for (a = 0; a < ds_list_size(current_song.instrument_list); a += 1) {
-		        var ins = current_song.instrument_list[| a];
-		        if (ins.user)
-		            customstr += "...为 " + clean(ins.name) + "|"
-		        else
-		            str += "...为 " + clean(ins.name) + "|"
-				if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
-					customstr += "-|更多......|\\|"
-					insmenu++
-				}
-		    }
-		    show_menu_ext("edit", 29, 19, inactive(current_song.historypos = current_song.historylen) + icon(icons.UNDO - (current_song.historypos = current_song.historylen)) + get_hotkey("undo") + "$撤销|"+
-		                              inactive(current_song.historypos = 0) + icon(icons.REDO - (current_song.historypos = 0)) + get_hotkey("redo") + "$重做|-|"+
-		                              inactive(current_song.selected = 0) + icon(icons.COPY - (current_song.selected = 0)) + get_hotkey("copy") + "$复制|"+
-		                              inactive(current_song.selected = 0) + icon(icons.CUT - (current_song.selected = 0)) + get_hotkey("cut") + "$剪切|"+
-		                              inactive(selection_copied = "") + icon(icons.PASTE - (selection_copied = "")) + get_hotkey("paste") + "$粘贴|"+
-		                              inactive(current_song.selected = 0) + icon(icons.DELETE - (current_song.selected = 0)) + get_hotkey("delete") + "$删除|-|"+
-		                              inactive(current_song.totalblocks = 0) + get_hotkey("select_all") + "$全选|"+
-		                              inactive(current_song.selected = 0) + "全不选|"+
-		                              inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey("invert_selection") + "$选择反转|-|"+
-		                              inactive(current_song.instrument.num_blocks = 0) + "选择所有 " + clean(current_song.instrument.name) + "|"+
-		                              inactive(current_song.instrument.num_blocks = current_song.totalblocks) + "选择所有除了 " + clean(current_song.instrument.name) + "|-|"+
-		                                inactive(current_song.selected = 0) + get_hotkey("action_1") + "$" + get_mode_actions(1) + "|"+
-		                                inactive(current_song.selected = 0) + get_hotkey("action_2") + "$" + get_mode_actions(2) + "|"+
-		                                inactive(current_song.selected = 0) + get_hotkey("action_3") + "$" + get_mode_actions(3) + "|"+
-		                                inactive(current_song.selected = 0) + get_hotkey("action_4") + "$" + get_mode_actions(4) + "|"+
-												condstr((editmode != m_key), inactive(current_song.selected = 0) + get_hotkey("action_5") + "$" + get_mode_actions(5) + "|") +
-												condstr((editmode != m_key), inactive(current_song.selected = 0) + get_hotkey("action_6") + "$" + get_mode_actions(6) + "|") +
-		                                inactive(current_song.selected = 0) + "更改音色......|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) + "-|" +
-		                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "扩展选区|"+
-		                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "压缩选区|"+
-		                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "快捷键......|\\||"+ "Tremolo...|"+ "Stereo...|"+ "Arpeggio...|"+ "Portamento...|"+ "Vibrato|"+ "Stagger...|"+ "Chorus|"+ "Volume LFO|"+ "淡入|"+ "淡出|"+ "替换音|"+ "设定音量......|"+ "设定声道......|"+ "设定音高......|"+ "重置所有属性|"+ "/|-|"+
-		                                inactive(current_song.selected = 0) + "转换所有超出八度范围的音符")
-		}
-		if (draw_tab("设置")) {
-		    str = ""
-		    customstr = ""
-			insmenu = 1
-		    for (a = 0; a < ds_list_size(current_song.instrument_list); a++) {
-		        var ins = current_song.instrument_list[| a];
-		        if (ins.user)
-		            customstr += check(current_song.instrument = ins) + clean(ins.name) + "|"
-		        else{
-					if(a < 10){
-						 str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-					}else{
-					  str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl_shift") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
-					}
-				}
-				if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
-					customstr += "-|更多......|\\|"
-					insmenu++
-				}
-		    }
-		    if (!isplayer) show_menu_ext("settings", 59, 19, "音色|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) +
-		                        icon(icons.INSTRUMENTS)+"音色设置......|从 Minecraft 游戏文件中获取音效......|/|-|" + icon(icons.INFORMATION) + "歌曲信息......|" + icon(icons.PROPERTIES) + "歌曲属性......|歌曲数据......|-|" + icon(icons.MIDI_INPUT) + inactive(os_type != os_windows) + "MIDI 设备管理器|" + get_hotkey("preferences") + "$首选项......")
-			else show_menu_ext("settingsp", 29, 19, icon(icons.INFORMATION) + "歌曲信息......|" + "歌曲数据......|-|" + get_hotkey("preferences") + "$首选项......")
-		}
-		if (draw_tab("帮助")) {
-		    show_menu_ext("help", 109 - 30 * isplayer, 19, icon(icons.HELP) + "教程视频|\\|第 1 集：编写音符盒乐曲|第 2 集：打开 MIDI 文件|第 3 集：将乐曲导入进 Minecraft|第 4 集：编辑在 Minecraft 中创作的乐曲     |-|F1$观看所有|/|-|" + icon(icons.INTERNET) + "官方网站......|GitHub......|Discord 服务器......|反馈 bug......|QQ 群......|捐赠......|-|更新历史......|关于......")
-		}
-	}
-
-	// Icons
-	if (theme != 3) {
-		if (dropmode) {
-			draw_set_color(15790320)
-			if (theme = 1) draw_set_color(13160660)
-			if (theme = 2) draw_set_color(c_dark)
-			draw_rectangle(0, 20, rw, 49, 0)
-		}
-		draw_sprite(spr_iconbar, 0, 0, 20 + song_tab_offset)
-		draw_sprite_ext(spr_iconbar, 1, 2, 20 + song_tab_offset, (rw - 4), 1, 0, -1, 1)
-		draw_sprite(spr_iconbar, 2, rw - 2, 20 + song_tab_offset)
-	}
-	xx = 6
-	yy = 23 + song_tab_offset
-	if (language != 1) {
-	if (!isplayer) if (draw_icon(icons.NEW, xx, yy, "New song", 0, 0)) {new_song()} if (!isplayer) xx += 25
-	if (draw_icon(icons.OPEN, xx, yy, "Open song", 0, 0)) {playing = 0 load_song("") if (isplayer) current_song = songs[song]} xx += 25 + isplayer * 4
-	if (!isplayer) if (draw_icon(icons.SAVE, xx, yy, "Save song", 0, 0)) {save_song(current_song.filename)} if (!isplayer) xx += 25 + 4
-	draw_separator(xx, yy + 3) xx += 4
-	if (draw_icon(icons.PLAY + playing, xx, yy, "Play / Pause song", 0, 0)) toggle_playing(totalcols) timestoloop = real(current_song.loopmax)
-	if (isplayer && !dropmode) if (draw_icon(icons.PLAY + playing, centerx - 12, centery + 50, "Play / Pause song", 0, 0)) toggle_playing(totalcols) timestoloop = real(current_song.loopmax)
-	xx += 25
-	if (draw_icon(icons.STOP, xx, yy, "Stop song", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1} xx += 25
-	if (isplayer && !dropmode) if (draw_icon(icons.STOP, centerx - 12 - 100, centery + 50, "Stop song", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1}
-	forward = 0
-	if (draw_icon(icons.BACK, xx, yy, "Rewind song", 0, 0)) {forward = -1} xx += 25
-	if (isplayer && !dropmode) if (draw_icon(icons.BACK, centerx - 12 - 50, centery + 50, "Rewind song", 0, 0)) {forward = -1}
-	if (draw_icon(icons.FORWARD, xx, yy, "Fast-forward song", 0, 0)) {forward = 1} xx += 25
-	if (isplayer && !dropmode) if (draw_icon(icons.FORWARD, centerx - 12 + 50, centery + 50, "Fast-forward song", 0, 0)) {forward = 1}
-	if (!isplayer) if (draw_icon(icons.RECORD, xx, yy, "Record key presses", 0, playing > 0 && record)) {playing = 0.25 record=!record} if (!isplayer) xx += 25 
-	if (draw_icon(icons.LOOP_INACTIVE + current_song.loop_session, xx, yy, "Toggle looping", 0, 0)) current_song.loop_session = !current_song.loop_session if (!isplayer) xx += 25
-	if (isplayer && !dropmode) if (draw_icon(icons.LOOP_INACTIVE + current_song.loop_session, centerx - 12 + 100, centery + 50, "Toggle looping", 0, 0)) current_song.loop_session = !current_song.loop_session if (!isplayer)
-	if metronome {
-		if (metronome_played == -1 || (metronome_played - 1) mod 8 == 0) metricon = icons.METRONOME_1
-		else metricon = icons.METRONOME_2
-	} else {
-		metricon = icons.METRONOME_INACTIVE
-	}
-	if (!isplayer) if(draw_icon(metricon, xx, yy, "Toggle metronome", 0, 0)) metronome = !metronome
-	xx += 25 + 4
-	if (playing = 0) record = 0
-	draw_separator(xx, yy + 3) xx += 4
-	if (!isplayer) if (draw_icon(icons.EDITMODE_KEY, xx, yy, "Edit note key", 0, editmode = 0)) {editmode = 0} if (!isplayer) xx += 25
-	if (!isplayer) if (draw_icon(icons.EDITMODE_VEL, xx, yy, "Edit note velocity", 0, editmode = 1)) {editmode = 1}  if (!isplayer) xx += 25
-	if (!isplayer) if (draw_icon(icons.EDITMODE_PAN, xx, yy, "Edit note panning", 0, editmode = 2)) {editmode = 2} if (!isplayer) xx += 25
-	if (!isplayer) if (draw_icon(icons.EDITMODE_PIT, xx, yy, "Edit note pitch", 0, editmode = 3)) {editmode = 3} if (!isplayer) xx += 25 + 4
-	if (!isplayer) draw_separator(xx, yy + 3) if (!isplayer) xx += 4
-	} else {
-	if (!isplayer) if (draw_icon(icons.NEW, xx, yy, "新文件", 0, 0)) {new_song()} if (!isplayer) xx += 25
-	if (draw_icon(icons.OPEN, xx, yy, "打开歌曲", 0, 0)) {playing = 0 load_song("") if (isplayer) current_song = songs[song]} xx += 25 + isplayer * 4
-	if (!isplayer) if (draw_icon(icons.SAVE, xx, yy, "保存歌曲", 0, 0)) {save_song(current_song.filename)} if (!isplayer) xx += 25 + 4
-	draw_separator(xx, yy + 3) xx += 4
-	if (draw_icon(icons.PLAY + playing, xx, yy, "播放 / 暂停", 0, 0)) toggle_playing(totalcols) timestoloop = real(current_song.loopmax)
-	if (isplayer && !dropmode) if (draw_icon(icons.PLAY + playing, centerx - 12, centery + 50, "播放 / 暂停", 0, 0)) toggle_playing(totalcols) timestoloop = real(current_song.loopmax)
-	xx += 25
-	if (draw_icon(icons.STOP, xx, yy, "停止歌曲", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1} xx += 25
-	if (isplayer && !dropmode) if (draw_icon(icons.STOP, centerx - 12 - 100, centery + 50, "停止歌曲", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1}
-	forward = 0
-	if (draw_icon(icons.BACK, xx, yy, "快退", 0, 0)) {forward = -1} xx += 25
-	if (isplayer && !dropmode) if (draw_icon(icons.BACK, centerx - 12 - 50, centery + 50, "快退", 0, 0)) {forward = -1}
-	if (draw_icon(icons.FORWARD, xx, yy, "快进", 0, 0)) {forward = 1} xx += 25
-	if (isplayer && !dropmode) if (draw_icon(icons.FORWARD, centerx - 12 + 50, centery + 50, "快进", 0, 0)) {forward = 1}
-	if (!isplayer) if (draw_icon(icons.RECORD, xx, yy, "录制按键", 0, playing > 0 && record)) {playing = 0.25 record=!record} if (!isplayer) xx += 25 
-	if (draw_icon(icons.LOOP_INACTIVE + current_song.loop_session, xx, yy, "开关循环", 0, 0)) current_song.loop_session = !current_song.loop_session if (!isplayer) xx += 25
-	if (isplayer && !dropmode) if (draw_icon(icons.LOOP_INACTIVE + current_song.loop_session, centerx - 12 + 100, centery + 50, "开关循环", 0, 0)) current_song.loop_session = !current_song.loop_session if (!isplayer)
-	if metronome {
-		if (metronome_played == -1 || (metronome_played - 1) mod 8 == 0) metricon = icons.METRONOME_1
-		else metricon = icons.METRONOME_2
-	} else {
-		metricon = icons.METRONOME_INACTIVE
-	}
-	if (!isplayer) if(draw_icon(metricon, xx, yy, "开关节拍器", 0, 0)) metronome = !metronome
-	xx += 25 + 4
-	if (playing = 0) record = 0
-	draw_separator(xx, yy + 3) xx += 4
-	if (!isplayer) if (draw_icon(icons.EDITMODE_KEY, xx, yy, "音调模式", 0, editmode = 0)) {editmode = 0} if (!isplayer) xx += 25
-	if (!isplayer) if (draw_icon(icons.EDITMODE_VEL, xx, yy, "音量模式", 0, editmode = 1)) {editmode = 1}  if (!isplayer) xx += 25
-	if (!isplayer) if (draw_icon(icons.EDITMODE_PAN, xx, yy, "声道模式", 0, editmode = 2)) {editmode = 2} if (!isplayer) xx += 25
-	if (!isplayer) if (draw_icon(icons.EDITMODE_PIT, xx, yy, "音高模式", 0, editmode = 3)) {editmode = 3} if (!isplayer) xx += 25 + 4
-	if (!isplayer) draw_separator(xx, yy + 3) if (!isplayer) xx += 4
-	}
-
-	// Expandable instrument box
-	var ins_count = ds_list_size(current_song.instrument_list)
-	var ins_icons = median(5, ceil((rw - 920) / 25), ins_count)
-	if (ins_icons = ins_count - 1) ins_icons += 1
-	var ins_rows = ceil(ins_count / ins_icons)
-	if (!isplayer) if (showinsbox) {
-		window = w_insbox
+		if (theme = 0 && !(isplayer && blackout)) draw_sprite_ext(spr_tabbar, 0, 0, 0, rw, 1, 0, -1, 1)
+		tab_x = 1
+		draw_theme_font(font_small)
 		draw_theme_color()
-		draw_window(xx - 2, yy - 2, xx + (ins_icons * 25) + 2, yy + (ins_rows * 25) + 2)
-		for (a = 0; a < ins_rows; a += 1) {
-			for (b = 0; b < ins_icons; b += 1) {
-				var insindex = (a * ins_icons + b)
-				if (insindex >= ds_list_size(current_song.instrument_list)) break
-				var ins = current_song.instrument_list[| insindex];
-				if (draw_icon_insbox(insindex, xx + b * 25, yy + a * 25, condstr(language != 1, "Change instrument to ", "更改音色为") + ins.name, true, false, current_song.instrument = ins)) {
+		if (isplayer && blackout) draw_set_color(c_white)
+		if (language != 1) {
+			if (draw_tab("File")) {
+			    str = ""
+			    for (b = 0; b < 11; b += 1) {
+			        if (recent_song[b] = "") break
+			        c = floor(date_second_span(recent_song_time[b], date_current_datetime()))
+			        str += seconds_to_str(c) + "$" + string_truncate(clean(filename_name(recent_song[b])), 310) + "|"
+			    }
+			    if (!isplayer) show_menu_ext("file", 0, 19, icon(icons.NEW)+get_hotkey("new_song") + "$New song|"+
+			                             icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+
+			                             icon(icons.SAVE)+get_hotkey("save_song") + "$Save song|"+
+			                             icon(icons.SAVE_AS)+"Save song as a new file...|"+
+										 inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + icon(icons.INSTRUMENTS) + "Save song with custom sounds...|Save options...|Restore unsaved files...|-|"+
+			                             inactive(current_song.selected != 0)+"Import pattern...|"+
+										 inactive(current_song.selected = 0)+"Export pattern...|"+"Import from MIDI...|"+inactive(os_type != os_windows)+"Import from schematic...|-|"+
+			                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as audio track...|"+
+			                             inactive(current_song.totalblocks = 0) + "Export as schematic...|"+
+			                             inactive(current_song.totalblocks = 0) + "Export as track schematic...|"+
+			                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "Export as branch schematic...|"+
+										 inactive(current_song.totalblocks = 0) + "Export as data pack...|-|" + 
+			                             get_hotkey("exit") + "$Exit")
+				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$Open song...|Recent songs...|\\|" + str + condstr(recent_song[0] != "", "-|Clear recent songs") + condstr(recent_song[0] = "", "^!No recent songs") + "|/|-|"+"Import from MIDI...|Import from schematic...|-|" + get_hotkey("exit") + "$Exit")
+							
+			}
+			if (!isplayer) if (draw_tab("Edit")) {
+			    str = ""
+			    customstr = ""
+				insmenu = 1
+			    for (a = 0; a < ds_list_size(current_song.instrument_list); a += 1) {
+			        var ins = current_song.instrument_list[| a];
+			        if (ins.user)
+			            customstr += "...to " + clean(ins.name) + "|"
+			        else
+			            str += "...to " + clean(ins.name) + "|"
+					if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
+						customstr += "-|More...|\\|"
+						insmenu++
+					}
+			    }
+			    show_menu_ext("edit", 29, 19, inactive(current_song.historypos = current_song.historylen) + icon(icons.UNDO - (current_song.historypos = current_song.historylen)) + get_hotkey("undo") + "$Undo|"+
+			                              inactive(current_song.historypos = 0) + icon(icons.REDO - (current_song.historypos = 0)) + get_hotkey("redo") + "$Redo|-|"+
+			                              inactive(current_song.selected = 0) + icon(icons.COPY - (current_song.selected = 0)) + get_hotkey("copy") + "$Copy|"+
+			                              inactive(current_song.selected = 0) + icon(icons.CUT - (current_song.selected = 0)) + get_hotkey("cut") + "$Cut|"+
+			                              inactive(selection_copied = "") + icon(icons.PASTE - (selection_copied = "")) + get_hotkey("paste") + "$Paste|"+
+			                              inactive(current_song.selected = 0) + icon(icons.DELETE - (current_song.selected = 0)) + get_hotkey("delete") + "$Delete|-|"+
+			                              inactive(current_song.totalblocks = 0) + get_hotkey("select_all") + "$Select all|"+
+			                              inactive(current_song.selected = 0) + "Deselect all|"+
+			                              inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey("invert_selection") + "$Invert selection|-|"+
+			                              inactive(current_song.instrument.num_blocks = 0) + "Select all " + clean(current_song.instrument.name) + "|"+
+			                              inactive(current_song.instrument.num_blocks = current_song.totalblocks) + "Select all but " + clean(current_song.instrument.name) + "|-|"+
+			                                inactive(current_song.selected = 0) + get_hotkey("action_1") + "$" + get_mode_actions(1) + "|"+
+			                                inactive(current_song.selected = 0) + get_hotkey("action_2") + "$" + get_mode_actions(2) + "|"+
+			                                inactive(current_song.selected = 0) + get_hotkey("action_3") + "$" + get_mode_actions(3) + "|"+
+			                                inactive(current_song.selected = 0) + get_hotkey("action_4") + "$" + get_mode_actions(4) + "|"+
+													condstr((editmode != m_key), inactive(current_song.selected = 0) + get_hotkey("action_5") + "$" + get_mode_actions(5) + "|") +
+													condstr((editmode != m_key), inactive(current_song.selected = 0) + get_hotkey("action_6") + "$" + get_mode_actions(6) + "|") +
+			                                inactive(current_song.selected = 0) + "Change instrument...|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) + "-|" +
+			                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Expand selection|"+
+			                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Compress selection|"+
+			                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "Macros...|\\||"+ "Tremolo...|"+ "Stereo...|"+ "Arpeggio...|"+ "Portamento...|"+ "Vibrato|"+ "Stagger...|"+ "Chorus|"+ "Volume LFO|"+ "Fade in|"+ "Fade out|"+ "Replace key|"+ "Set velocity...|"+ "Set panning...|"+ "Set pitch...|"+ "Reset all properties|"+ "/|-|"+
+			                                inactive(current_song.selected = 0) + "Transpose notes outside octave range")
+			}
+			if (draw_tab("Settings")) {
+			    str = ""
+			    customstr = ""
+				insmenu = 1
+			    for (a = 0; a < ds_list_size(current_song.instrument_list); a++) {
+			        var ins = current_song.instrument_list[| a];
+			        if (ins.user)
+			            customstr += check(current_song.instrument = ins) + clean(ins.name) + "|"
+			        else{
+						if(a < 9){
+							 str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
+						}else{
+						  str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl_shift") + string((a + 2) % 10) + "$" + clean(ins.name) + "|"
+						}
+					}
+					if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
+						customstr += "-|More...|\\|"
+						insmenu++
+					}
+			    }
+			    if (!isplayer) show_menu_ext("settings", 59, 19, "Instrument|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) +
+			                        icon(icons.INSTRUMENTS)+"Instrument settings...|Import sounds from Minecraft...|/|-|" + icon(icons.INFORMATION) + "Song info...|" + icon(icons.PROPERTIES) + "Song properties...|Song stats...|-|" + icon(icons.MIDI_INPUT) + "MIDI device manager|" + get_hotkey("preferences") + "$Preferences...")
+				else show_menu_ext("settingsp", 29, 19, icon(icons.INFORMATION) + "Song info...|" + "Song stats...|-|" + get_hotkey("preferences") + "$Preferences...")
+			}
+			if (draw_tab("Help")) {
+			    show_menu_ext("help", 109 - 30 * isplayer, 19, icon(icons.HELP) + "Tutorial videos|\\|Part 1: Composing note block music|Part 2: Opening MIDI files|Part 3: Importing songs into Minecraft|Part 4: Editing songs made in Minecraft     |-|F1$View all|/|-|" + icon(icons.INTERNET) + "Website...|GitHub...|Discord server...|Report a bug...|Donate...|-|Changelist...|About...")
+			}
+		} else {
+			if (draw_tab("文件")) {
+			    str = ""
+			    for (b = 0; b < 11; b += 1) {
+			        if (recent_song[b] = "") break
+			        c = floor(date_second_span(recent_song_time[b], date_current_datetime()))
+			        str += seconds_to_str(c) + "$" + string_truncate(clean(filename_name(recent_song[b])), 310) + "|"
+			    }
+			    if (!isplayer) show_menu_ext("file", 0, 19, icon(icons.NEW)+get_hotkey("new_song") + "$新文件|"+
+			                             icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+
+			                             icon(icons.SAVE)+get_hotkey("save_song") + "$保存歌曲|"+
+			                             icon(icons.SAVE_AS)+"另存为|"+
+										 inactive(current_song.totalblocks = 0 || ds_list_size(current_song.instrument_list) <= first_custom_index) + "连带自定义音色一起导出......|保存选项......|恢复未保存的歌曲......|-|" +
+			                             inactive(current_song.selected != 0)+"导入片段......|"+
+	                                     inactive(current_song.selected = 0)+"导出片段......|"+"从 MIDI 文件导入......|"+inactive(os_type != os_windows)+"从 Schematic 文件导入......|-|"+
+			                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出音频文件......|"+
+			                             inactive(current_song.totalblocks = 0) + "导出为 schematic......|"+
+			                             inactive(current_song.totalblocks = 0) + "导出为直轨 schematic......|"+
+			                             inactive(current_song.totalblocks = 0 || os_type != os_windows) + "导出为分支 schematic......|"+
+										 inactive(current_song.totalblocks = 0) + "导出为数据包......|-|" +
+			                             get_hotkey("exit") + "$退出")
+				else show_menu_ext("filep", 0, 19, icon(icons.OPEN)+get_hotkey("open_song") + "$打开歌曲......|最近歌曲......|\\|" + str + condstr(recent_song[0] != "", "-|清除最近歌曲") + condstr(recent_song[0] = "", "^!无最近歌曲") + "|/|-|"+"从 MIDI 文件导入......|从 Schematic 文件导入......|-|" + get_hotkey("exit") + "$退出")
+							
+			}
+			if (!isplayer) if (draw_tab("编辑")) {
+			    str = ""
+			    customstr = ""
+				insmenu = 1
+			    for (a = 0; a < ds_list_size(current_song.instrument_list); a += 1) {
+			        var ins = current_song.instrument_list[| a];
+			        if (ins.user)
+			            customstr += "...为 " + clean(ins.name) + "|"
+			        else
+			            str += "...为 " + clean(ins.name) + "|"
+					if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
+						customstr += "-|更多......|\\|"
+						insmenu++
+					}
+			    }
+			    show_menu_ext("edit", 29, 19, inactive(current_song.historypos = current_song.historylen) + icon(icons.UNDO - (current_song.historypos = current_song.historylen)) + get_hotkey("undo") + "$撤销|"+
+			                              inactive(current_song.historypos = 0) + icon(icons.REDO - (current_song.historypos = 0)) + get_hotkey("redo") + "$重做|-|"+
+			                              inactive(current_song.selected = 0) + icon(icons.COPY - (current_song.selected = 0)) + get_hotkey("copy") + "$复制|"+
+			                              inactive(current_song.selected = 0) + icon(icons.CUT - (current_song.selected = 0)) + get_hotkey("cut") + "$剪切|"+
+			                              inactive(selection_copied = "") + icon(icons.PASTE - (selection_copied = "")) + get_hotkey("paste") + "$粘贴|"+
+			                              inactive(current_song.selected = 0) + icon(icons.DELETE - (current_song.selected = 0)) + get_hotkey("delete") + "$删除|-|"+
+			                              inactive(current_song.totalblocks = 0) + get_hotkey("select_all") + "$全选|"+
+			                              inactive(current_song.selected = 0) + "全不选|"+
+			                              inactive(current_song.selected = 0 && current_song.totalblocks = 0) + get_hotkey("invert_selection") + "$选择反转|-|"+
+			                              inactive(current_song.instrument.num_blocks = 0) + "选择所有 " + clean(current_song.instrument.name) + "|"+
+			                              inactive(current_song.instrument.num_blocks = current_song.totalblocks) + "选择所有除了 " + clean(current_song.instrument.name) + "|-|"+
+			                                inactive(current_song.selected = 0) + get_hotkey("action_1") + "$" + get_mode_actions(1) + "|"+
+			                                inactive(current_song.selected = 0) + get_hotkey("action_2") + "$" + get_mode_actions(2) + "|"+
+			                                inactive(current_song.selected = 0) + get_hotkey("action_3") + "$" + get_mode_actions(3) + "|"+
+			                                inactive(current_song.selected = 0) + get_hotkey("action_4") + "$" + get_mode_actions(4) + "|"+
+													condstr((editmode != m_key), inactive(current_song.selected = 0) + get_hotkey("action_5") + "$" + get_mode_actions(5) + "|") +
+													condstr((editmode != m_key), inactive(current_song.selected = 0) + get_hotkey("action_6") + "$" + get_mode_actions(6) + "|") +
+			                                inactive(current_song.selected = 0) + "更改音色......|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) + "-|" +
+			                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "扩展选区|"+
+			                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "压缩选区|"+
+			                                inactive(current_song.selected = 0 || current_song.selection_l = 0) + "快捷键......|\\||"+ "Tremolo...|"+ "Stereo...|"+ "Arpeggio...|"+ "Portamento...|"+ "Vibrato|"+ "Stagger...|"+ "Chorus|"+ "Volume LFO|"+ "淡入|"+ "淡出|"+ "替换音|"+ "设定音量......|"+ "设定声道......|"+ "设定音高......|"+ "重置所有属性|"+ "/|-|"+
+			                                inactive(current_song.selected = 0) + "转换所有超出八度范围的音符")
+			}
+			if (draw_tab("设置")) {
+			    str = ""
+			    customstr = ""
+				insmenu = 1
+			    for (a = 0; a < ds_list_size(current_song.instrument_list); a++) {
+			        var ins = current_song.instrument_list[| a];
+			        if (ins.user)
+			            customstr += check(current_song.instrument = ins) + clean(ins.name) + "|"
+			        else{
+						if(a < 10){
+							 str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
+						}else{
+						  str += check(current_song.instrument = ins) + get_hotkey("ins_ctrl_shift") + string((a + 1) % 10) + "$" + clean(ins.name) + "|"
+						}
+					}
+					if (a % 25 == 0 && a > 1 && a < ds_list_size(current_song.instrument_list) - 1) {
+						customstr += "-|更多......|\\|"
+						insmenu++
+					}
+			    }
+			    if (!isplayer) show_menu_ext("settings", 59, 19, "音色|\\|" + str + condstr(customstr != "", "-|") + customstr + string_repeat("/|", insmenu) +
+			                        icon(icons.INSTRUMENTS)+"音色设置......|从 Minecraft 游戏文件中获取音效......|/|-|" + icon(icons.INFORMATION) + "歌曲信息......|" + icon(icons.PROPERTIES) + "歌曲属性......|歌曲数据......|-|" + icon(icons.MIDI_INPUT) + "MIDI 设备管理器|" + get_hotkey("preferences") + "$首选项......")
+				else show_menu_ext("settingsp", 29, 19, icon(icons.INFORMATION) + "歌曲信息......|" + "歌曲数据......|-|" + get_hotkey("preferences") + "$首选项......")
+			}
+			if (draw_tab("帮助")) {
+			    show_menu_ext("help", 109 - 30 * isplayer, 19, icon(icons.HELP) + "教程视频|\\|第 1 集：编写音符盒乐曲|第 2 集：打开 MIDI 文件|第 3 集：将乐曲导入进 Minecraft|第 4 集：编辑在 Minecraft 中创作的乐曲     |-|F1$观看所有|/|-|" + icon(icons.INTERNET) + "官方网站......|GitHub......|Discord 服务器......|反馈 bug......|QQ 群......|捐赠......|-|更新历史......|关于......")
+			}
+		}
+
+		// Icons
+		if (theme != 3) {
+			if (dropmode) {
+				draw_set_color(15790320)
+				if (theme = 1) draw_set_color(13160660)
+				if (theme = 2) draw_set_color(c_dark)
+				draw_rectangle(0, 20, rw, 49, 0)
+			}
+			draw_sprite(spr_iconbar, 0, 0, 20 + song_tab_offset)
+			draw_sprite_ext(spr_iconbar, 1, 2, 20 + song_tab_offset, (rw - 4), 1, 0, -1, 1)
+			draw_sprite(spr_iconbar, 2, rw - 2, 20 + song_tab_offset)
+		}
+		xx = 6
+		yy = 23 + song_tab_offset
+		if (language != 1) {
+			if (!isplayer) if (draw_icon(icons.NEW, xx, yy, "New song", 0, 0)) {new_song()} if (!isplayer) xx += 25
+			if (draw_icon(icons.OPEN, xx, yy, "Open song", 0, 0)) {playing = 0 load_song("") if (isplayer) current_song = songs[song]} xx += 25 + isplayer * 4
+			if (!isplayer) if (draw_icon(icons.SAVE, xx, yy, "Save song", 0, 0)) {save_song(current_song.filename)} if (!isplayer) xx += 25 + 4
+			draw_separator(xx, yy + 3) xx += 4
+			if (draw_icon(icons.PLAY + playing, xx, yy, "Play / Pause song", 0, 0)) toggle_playing(totalcols) timestoloop = real(current_song.loopmax)
+			if (isplayer && !dropmode) if (draw_icon(icons.PLAY + playing, centerx - 12, centery + 50, "Play / Pause song", 0, 0)) toggle_playing(totalcols) timestoloop = real(current_song.loopmax)
+			xx += 25
+			if (draw_icon(icons.STOP, xx, yy, "Stop song", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1} xx += 25
+			if (isplayer && !dropmode) if (draw_icon(icons.STOP, centerx - 12 - 100, centery + 50, "Stop song", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1}
+			forward = 0
+			if (draw_icon(icons.BACK, xx, yy, "Rewind song", 0, 0)) {forward = -1} xx += 25
+			if (isplayer && !dropmode) if (draw_icon(icons.BACK, centerx - 12 - 50, centery + 50, "Rewind song", 0, 0)) {forward = -1}
+			if (draw_icon(icons.FORWARD, xx, yy, "Fast-forward song", 0, 0)) {forward = 1} xx += 25
+			if (isplayer && !dropmode) if (draw_icon(icons.FORWARD, centerx - 12 + 50, centery + 50, "Fast-forward song", 0, 0)) {forward = 1}
+			if (!isplayer) if (draw_icon(icons.RECORD, xx, yy, "Record key presses", 0, playing > 0 && record)) {playing = 0.25 record=!record} if (!isplayer) xx += 25 
+			if (draw_icon(icons.LOOP_INACTIVE + current_song.loop_session, xx, yy, "Toggle looping", 0, 0)) current_song.loop_session = !current_song.loop_session if (!isplayer) xx += 25
+			if (isplayer && !dropmode) if (draw_icon(icons.LOOP_INACTIVE + current_song.loop_session, centerx - 12 + 100, centery + 50, "Toggle looping", 0, 0)) current_song.loop_session = !current_song.loop_session if (!isplayer)
+			if metronome {
+				if (metronome_played == -1 || (metronome_played - 1) mod 8 == 0) metricon = icons.METRONOME_1
+				else metricon = icons.METRONOME_2
+			} else {
+				metricon = icons.METRONOME_INACTIVE
+			}
+			if (!isplayer) if(draw_icon(metricon, xx, yy, "Toggle metronome", 0, 0)) metronome = !metronome
+			xx += 25 + 4
+			if (playing = 0) record = 0
+			draw_separator(xx, yy + 3) xx += 4
+			if (!isplayer) if (draw_icon(icons.EDITMODE_KEY, xx, yy, "Edit note key", 0, editmode = 0)) {editmode = 0} if (!isplayer) xx += 25
+			if (!isplayer) if (draw_icon(icons.EDITMODE_VEL, xx, yy, "Edit note velocity", 0, editmode = 1)) {editmode = 1}  if (!isplayer) xx += 25
+			if (!isplayer) if (draw_icon(icons.EDITMODE_PAN, xx, yy, "Edit note panning", 0, editmode = 2)) {editmode = 2} if (!isplayer) xx += 25
+			if (!isplayer) if (draw_icon(icons.EDITMODE_PIT, xx, yy, "Edit note pitch", 0, editmode = 3)) {editmode = 3} if (!isplayer) xx += 25 + 4
+			if (!isplayer) draw_separator(xx, yy + 3) if (!isplayer) xx += 4
+		} else {
+			if (!isplayer) if (draw_icon(icons.NEW, xx, yy, "新文件", 0, 0)) {new_song()} if (!isplayer) xx += 25
+			if (draw_icon(icons.OPEN, xx, yy, "打开歌曲", 0, 0)) {playing = 0 load_song("") if (isplayer) current_song = songs[song]} xx += 25 + isplayer * 4
+			if (!isplayer) if (draw_icon(icons.SAVE, xx, yy, "保存歌曲", 0, 0)) {save_song(current_song.filename)} if (!isplayer) xx += 25 + 4
+			draw_separator(xx, yy + 3) xx += 4
+			if (draw_icon(icons.PLAY + playing, xx, yy, "播放 / 暂停", 0, 0)) toggle_playing(totalcols) timestoloop = real(current_song.loopmax)
+			if (isplayer && !dropmode) if (draw_icon(icons.PLAY + playing, centerx - 12, centery + 50, "播放 / 暂停", 0, 0)) toggle_playing(totalcols) timestoloop = real(current_song.loopmax)
+			xx += 25
+			if (draw_icon(icons.STOP, xx, yy, "停止歌曲", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1} xx += 25
+			if (isplayer && !dropmode) if (draw_icon(icons.STOP, centerx - 12 - 100, centery + 50, "停止歌曲", 0, 0)) {playing = 0 current_song.marker_pos = 0 current_song.marker_prevpos = 0 timestoloop = real(current_song.loopmax) remove_emitters_all_schedule = 1}
+			forward = 0
+			if (draw_icon(icons.BACK, xx, yy, "快退", 0, 0)) {forward = -1} xx += 25
+			if (isplayer && !dropmode) if (draw_icon(icons.BACK, centerx - 12 - 50, centery + 50, "快退", 0, 0)) {forward = -1}
+			if (draw_icon(icons.FORWARD, xx, yy, "快进", 0, 0)) {forward = 1} xx += 25
+			if (isplayer && !dropmode) if (draw_icon(icons.FORWARD, centerx - 12 + 50, centery + 50, "快进", 0, 0)) {forward = 1}
+			if (!isplayer) if (draw_icon(icons.RECORD, xx, yy, "录制按键", 0, playing > 0 && record)) {playing = 0.25 record=!record} if (!isplayer) xx += 25 
+			if (draw_icon(icons.LOOP_INACTIVE + current_song.loop_session, xx, yy, "开关循环", 0, 0)) current_song.loop_session = !current_song.loop_session if (!isplayer) xx += 25
+			if (isplayer && !dropmode) if (draw_icon(icons.LOOP_INACTIVE + current_song.loop_session, centerx - 12 + 100, centery + 50, "开关循环", 0, 0)) current_song.loop_session = !current_song.loop_session if (!isplayer)
+			if metronome {
+				if (metronome_played == -1 || (metronome_played - 1) mod 8 == 0) metricon = icons.METRONOME_1
+				else metricon = icons.METRONOME_2
+			} else {
+				metricon = icons.METRONOME_INACTIVE
+			}
+			if (!isplayer) if(draw_icon(metricon, xx, yy, "开关节拍器", 0, 0)) metronome = !metronome
+			xx += 25 + 4
+			if (playing = 0) record = 0
+			draw_separator(xx, yy + 3) xx += 4
+			if (!isplayer) if (draw_icon(icons.EDITMODE_KEY, xx, yy, "音调模式", 0, editmode = 0)) {editmode = 0} if (!isplayer) xx += 25
+			if (!isplayer) if (draw_icon(icons.EDITMODE_VEL, xx, yy, "音量模式", 0, editmode = 1)) {editmode = 1}  if (!isplayer) xx += 25
+			if (!isplayer) if (draw_icon(icons.EDITMODE_PAN, xx, yy, "声道模式", 0, editmode = 2)) {editmode = 2} if (!isplayer) xx += 25
+			if (!isplayer) if (draw_icon(icons.EDITMODE_PIT, xx, yy, "音高模式", 0, editmode = 3)) {editmode = 3} if (!isplayer) xx += 25 + 4
+			if (!isplayer) draw_separator(xx, yy + 3) if (!isplayer) xx += 4
+		}
+
+		// Expandable instrument box
+		var ins_count = ds_list_size(current_song.instrument_list)
+		var ins_icons = median(5, ceil((rw - 920) / 25), ins_count)
+		if (ins_icons = ins_count - 1) ins_icons += 1
+		var ins_rows = ceil(ins_count / ins_icons)
+		if (!isplayer) if (showinsbox) {
+			window = w_insbox
+			draw_theme_color()
+			draw_window(xx - 2, yy - 2, xx + (ins_icons * 25) + 2, yy + (ins_rows * 25) + 2)
+			for (a = 0; a < ins_rows; a += 1) {
+				for (b = 0; b < ins_icons; b += 1) {
+					var insindex = (a * ins_icons + b)
+					if (insindex >= ds_list_size(current_song.instrument_list)) break
+					var ins = current_song.instrument_list[| insindex];
+					if (draw_icon_insbox(insindex, xx + b * 25, yy + a * 25, condstr(language != 1, "Change instrument to ", "更改音色为") + ins.name, true, false, current_song.instrument = ins)) {
+						play_sound(ins, selected_key, 100, 100, 0)
+						current_song.instrument = ins
+						selected_vel = 100
+						selected_pan = 100
+						selected_pit = 0
+						// Set the first instrument of the collapsed row
+						insbox_start = min(floor(insindex / ins_icons) * ins_icons, ds_list_size(current_song.instrument_list) - ins_icons)
+					}
+				}
+			}
+			// Click away
+			if (mouse_check_button_released(mb_left)) && !(mouse_rectangle(xx, yy, ins_icons * 25, ins_rows * 25)) {
+				showinsbox = 0
+				window = 0
+			}
+			xx += ins_icons * 25
+			// 'Collapse' button
+			if (language != 1) draw_icon_insbox(icons.INSBOX_COLLAPSE, xx, yy, "Less instruments", true) // it's a fake button since clicking anywhere works :D
+			else draw_icon_insbox(icons.INSBOX_COLLAPSE, xx, yy, "收回音色", true)
+			xx += 25
+		} else {
+			// Ensure current instrument appears
+			a = ds_list_find_index(current_song.instrument_list, current_song.instrument)
+			if (a < current_song.insbox_start) {
+				current_song.insbox_start -= ins_icons
+				current_song.insbox_start = floor(current_song.insbox_start / ins_icons) * ins_icons
+			} else if (a > current_song.insbox_start + ins_icons - 1) {
+				current_song.insbox_start += ins_icons
+				current_song.insbox_start = floor(current_song.insbox_start / ins_icons) * ins_icons
+			}
+			// Prevent overflow
+			current_song.insbox_start = median(0, current_song.insbox_start, ds_list_size(current_song.instrument_list) - ins_icons)
+			for (a = current_song.insbox_start; a < current_song.insbox_start + ins_icons; a += 1) {
+			    var ins = current_song.instrument_list[| a];
+			    if (draw_icon_insbox(a, xx, yy, condstr(language != 1, "Change instrument to ", "更改音色为") + ins.name, false, false, current_song.instrument = ins)) {
 					play_sound(ins, selected_key, 100, 100, 0)
 					current_song.instrument = ins
 					selected_vel = 100
 					selected_pan = 100
 					selected_pit = 0
-					// Set the first instrument of the collapsed row
-					insbox_start = min(floor(insindex / ins_icons) * ins_icons, ds_list_size(current_song.instrument_list) - ins_icons)
 				}
+				xx += 25
+			}
+			if (ins_icons < ds_list_size(current_song.instrument_list)) {
+				if (draw_icon_insbox(icons.INSBOX_EXPAND, xx, yy, condstr(language != 1, "More instruments...", "展开音色......"), false, true, 0)) {showinsbox = 1}
+				xx += 25
 			}
 		}
-		// Click away
-		if (mouse_check_button_released(mb_left)) && !(mouse_rectangle(xx, yy, ins_icons * 25, ins_rows * 25)) {
-			showinsbox = 0
-			window = 0
-		}
-		xx += ins_icons * 25
-		// 'Collapse' button
-		if (language != 1) draw_icon_insbox(icons.INSBOX_COLLAPSE, xx, yy, "Less instruments", true) // it's a fake button since clicking anywhere works :D
-		else draw_icon_insbox(icons.INSBOX_COLLAPSE, xx, yy, "收回音色", true)
-		xx += 25
-	} else {
-		// Ensure current instrument appears
-		a = ds_list_find_index(current_song.instrument_list, current_song.instrument)
-		if (a < current_song.insbox_start) {
-			current_song.insbox_start -= ins_icons
-			current_song.insbox_start = floor(current_song.insbox_start / ins_icons) * ins_icons
-		} else if (a > current_song.insbox_start + ins_icons - 1) {
-			current_song.insbox_start += ins_icons
-			current_song.insbox_start = floor(current_song.insbox_start / ins_icons) * ins_icons
-		}
-		// Prevent overflow
-		current_song.insbox_start = median(0, current_song.insbox_start, ds_list_size(current_song.instrument_list) - ins_icons)
-		for (a = current_song.insbox_start; a < current_song.insbox_start + ins_icons; a += 1) {
-		    var ins = current_song.instrument_list[| a];
-		    if (draw_icon_insbox(a, xx, yy, condstr(language != 1, "Change instrument to ", "更改音色为") + ins.name, false, false, current_song.instrument = ins)) {
-				play_sound(ins, selected_key, 100, 100, 0)
-				current_song.instrument = ins
-				selected_vel = 100
-				selected_pan = 100
-				selected_pit = 0
+		if (!isplayer) {xx += 4 draw_separator(xx, yy + 3) xx += 4}
+		if (language != 1) {
+			while (1) {
+				if (!isplayer) {if (draw_icon(icons.UNDO, xx, yy, "Undo the last change", current_song.historypos = current_song.historylen, 0)) {playing = 0 action_undo()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.REDO, xx, yy, "Redo the last undo", current_song.historypos = 0, 0)) {playing = 0 action_redo()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.COPY, xx, yy, "Copy the selected note blocks", current_song.selected = 0, 0)) {playing = 0 action_copy()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.CUT, xx, yy, "Cut the selected note blocks", current_song.selected = 0, 0)) {playing = 0 action_cut()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.PASTE, xx, yy, "Paste the copied note blocks", selection_copied = "", 0)) {playing = 0 action_paste(current_song.starta, current_song.startb)} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.DELETE, xx, yy, "Delete the selected note blocks", current_song.selected = 0, 0)) {playing = 0 action_delete()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {xx += 4 draw_separator(xx, yy + 3) xx += 4 if (xx > rw - 312) break}
+				if (draw_icon(icons.INFORMATION, xx, yy, "View song info")) {if (!isplayer) playing = 0 window = w_songinfoedit * !isplayer + w_songinfo * isplayer} xx += 25 if (xx > rw - 312) break
+				if (!isplayer) {if (draw_icon(icons.PROPERTIES, xx, yy, "Edit song properties")) {playing = 0 window = w_properties} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.INSTRUMENTS, xx, yy, "Edit instruments")) {playing = 0 window = w_instruments} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.MIDI_INPUT, xx, yy, "MIDI device manager")) {playing = 0 window = w_mididevices} xx += 25 if (xx > rw - 312) break}
+				xx += 4 draw_separator(xx, yy + 3) xx += 4 if (xx > rw - 312) break
+				if (draw_icon(icons.HELP, xx, yy, "Watch tutorial videos")) {
+				    open_url("http://www.youtube.com/playlist?list=PL7EA4F0D271DA6E86")
+				} xx += 25 if (xx > rw - 312) break
+				if (draw_icon(icons.INTERNET, xx, yy, "Visit the Note Block Studio website")) {open_url(link_website)} xx += 25 if (xx > rw - 312) break
+				break
 			}
-			xx += 25
-		}
-		if (ins_icons < ds_list_size(current_song.instrument_list)) {
-			if (draw_icon_insbox(icons.INSBOX_EXPAND, xx, yy, condstr(language != 1, "More instruments...", "展开音色......"), false, true, 0)) {showinsbox = 1}
-			xx += 25
-		}
-	}
-	if (!isplayer) {xx += 4 draw_separator(xx, yy + 3) xx += 4}
-	if (language != 1) {
-	while (1) {
-	if (!isplayer) {if (draw_icon(icons.UNDO, xx, yy, "Undo the last change", current_song.historypos = current_song.historylen, 0)) {playing = 0 action_undo()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.REDO, xx, yy, "Redo the last undo", current_song.historypos = 0, 0)) {playing = 0 action_redo()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.COPY, xx, yy, "Copy the selected note blocks", current_song.selected = 0, 0)) {playing = 0 action_copy()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.CUT, xx, yy, "Cut the selected note blocks", current_song.selected = 0, 0)) {playing = 0 action_cut()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.PASTE, xx, yy, "Paste the copied note blocks", selection_copied = "", 0)) {playing = 0 action_paste(current_song.starta, current_song.startb)} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.DELETE, xx, yy, "Delete the selected note blocks", current_song.selected = 0, 0)) {playing = 0 action_delete()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {xx += 4 draw_separator(xx, yy + 3) xx += 4 if (xx > rw - 312) break}
-	if (draw_icon(icons.INFORMATION, xx, yy, "View song info")) {if (!isplayer) playing = 0 window = w_songinfoedit * !isplayer + w_songinfo * isplayer} xx += 25 if (xx > rw - 312) break
-	if (!isplayer) {if (draw_icon(icons.PROPERTIES, xx, yy, "Edit song properties")) {playing = 0 window = w_properties} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.INSTRUMENTS, xx, yy, "Edit instruments")) {playing = 0 window = w_instruments} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.MIDI_INPUT, xx, yy, "MIDI device manager", (os_type != os_windows))) {playing = 0 window = w_mididevices} xx += 25 if (xx > rw - 312) break}
-	xx += 4 draw_separator(xx, yy + 3) xx += 4 if (xx > rw - 312) break
-	if (draw_icon(icons.HELP, xx, yy, "Watch tutorial videos")) {
-	    open_url("http://www.youtube.com/playlist?list=PL7EA4F0D271DA6E86")
-	} xx += 25 if (xx > rw - 312) break
-	if (draw_icon(icons.INTERNET, xx, yy, "Visit the Note Block Studio website")) {open_url(link_website)} xx += 25 if (xx > rw - 312) break
-	break
-	}
-	if (isplayer) if (draw_icon(icons.EDITMODE_KEY, xx, yy, condstr(dropmode, "Exit", "Enter") + " the drop mode", 0, dropmode)) {dropmode = !dropmode if (dropmode) window_maximize() else window_setnormal()} if (isplayer) xx += 25
-	} else {
-	while (1) {
-	if (!isplayer) {if (draw_icon(icons.UNDO, xx, yy, "撤销", current_song.historypos = current_song.historylen, 0)) {playing = 0 action_undo()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.REDO, xx, yy, "重做", current_song.historypos = 0, 0)) {playing = 0 action_redo()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.COPY, xx, yy, "复制", current_song.selected = 0, 0)) {playing = 0 action_copy()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.CUT, xx, yy, "剪切", current_song.selected = 0, 0)) {playing = 0 action_cut()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.PASTE, xx, yy, "粘贴", selection_copied = "", 0)) {playing = 0 action_paste(current_song.starta, current_song.startb)} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.DELETE, xx, yy, "删除", current_song.selected = 0, 0)) {playing = 0 action_delete()} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {xx += 4 draw_separator(xx, yy + 3) xx += 4 if (xx > rw - 312) break}
-	if (draw_icon(icons.INFORMATION, xx, yy, "歌曲信息")) {if (!isplayer) playing = 0 window = w_songinfoedit * !isplayer + w_songinfo * isplayer} xx += 25 if (xx > rw - 312) break
-	if (!isplayer) {if (draw_icon(icons.PROPERTIES, xx, yy, "歌曲属性")) {playing = 0 window = w_properties} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.INSTRUMENTS, xx, yy, "音色设置")) {playing = 0 window = w_instruments} xx += 25 if (xx > rw - 312) break}
-	if (!isplayer) {if (draw_icon(icons.MIDI_INPUT, xx, yy, "MIDI 设备管理器", (os_type != os_windows))) {playing = 0 window = w_mididevices} xx += 25 if (xx > rw - 312) break}
-	xx += 4 draw_separator(xx, yy + 3) xx += 4 if (xx > rw - 312) break
-	if (draw_icon(icons.HELP, xx, yy, "教程视频")) {
-	    open_url("https://www.bilibili.com/video/BV1Mx411a76p")
-	} xx += 25 if (xx > rw - 312) break
-	if (draw_icon(icons.INTERNET, xx, yy, "访问 Note Block Studio 官方网站")) {open_url(link_website)} xx += 25 if (xx > rw - 312) break
-	break
-	}
-	if (isplayer) if (draw_icon(icons.EDITMODE_KEY, xx, yy, condstr(dropmode, "关闭", "开启") + "下落模式", 0, dropmode)) {dropmode = !dropmode if (dropmode) window_maximize() else window_setnormal()} if (isplayer) xx += 25
-	}
-	if (aa = 2 && mouse_check_button_released(mb_left) && windowsound) {
-		play_sound(soundding, 45, 100, 100, 0)
-	}
-	xx += 8
-	mastervol = floor(draw_dragbar(mastervol, 1, xx, yy + 10, 100, 2, clamp(mouse_x - xx, 0, 100), condstr(language != 1, "Master Volume: ", "主音量：") + string(floor(mastervol * 100)), 0) * 100 + 0.5) / 100
-	if (mouse_rectangle(xx - 11, yy, 122, 22) && window = 0) {
-		volume_scroll = 1
-		if (mouse_wheel_up() && mastervol + 0.02 <= 1) mastervol += 0.02
-		if (mouse_wheel_down() && mastervol - 0.02 >= 0) mastervol -= 0.02
-	} else {
-		volume_scroll = 0
-	}
-	draw_set_alpha(1)
-	if (!isplayer) {
-		xx += 120
-		if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
-			reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
-			reference_audio = audio_create_stream(reference_audio_file)
-			if (reference_audio < 0) {
-			    if (language != 1) message("Couldn't load the file", "Error")
-			    else message("找不到文件", "错误")
-				reference_audio_file = ""
-				reference_audio = -1
-			}
-		}
-		draw_theme_color()
-		xx += 100
-		if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Offset (ms): ", "偏移量（毫秒）: "))
-		xx += 90
-		if (reference_audio >= 0) reference_offset = median(0, draw_dragvalue(13, xx, yy + 5, reference_offset, 0.5), 1000000)
-		xx += 30
-		if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Loaded file: ", "已加载音频: ") + reference_audio_file)
-	}
-
-	// Compatible
-	if (!isplayer) {
-	draw_separator(rw - 34, 26 + song_tab_offset)
-	draw_theme_font(font_main_bold)
-	draw_set_halign(fa_right)
-	if (current_song.compatible = 1) {
-		if (theme != 3) {
-			draw_sprite(spr_minecraft, 0, rw - 30, 25 + song_tab_offset)
-			draw_sprite(spr_minecraft, 0, rw - 59, 25 + song_tab_offset)
+			if (isplayer) if (draw_icon(icons.EDITMODE_KEY, xx, yy, condstr(dropmode, "Exit", "Enter") + " the drop mode", 0, dropmode)) {dropmode = !dropmode if (dropmode) window_maximize() else window_setnormal()} if (isplayer) xx += 25
 		} else {
-			if (!hires) {
-				draw_sprite(spr_minecraft_f, fdark * 3, rw - 30, 25 + song_tab_offset)
-				draw_sprite(spr_minecraft_f, fdark * 3, rw - 59, 25 + song_tab_offset)
-				draw_sprite_ext(spr_minecraft_f, 6, rw - 30, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
-				draw_sprite_ext(spr_minecraft_f, 6, rw - 59, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
-			} else {
-				draw_sprite_ext(spr_minecraft_f_hires, fdark * 3, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
-				draw_sprite_ext(spr_minecraft_f_hires, fdark * 3, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
-				draw_sprite_ext(spr_minecraft_f_hires, 6, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
-				draw_sprite_ext(spr_minecraft_f_hires, 6, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+			while (1) {
+				if (!isplayer) {if (draw_icon(icons.UNDO, xx, yy, "撤销", current_song.historypos = current_song.historylen, 0)) {playing = 0 action_undo()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.REDO, xx, yy, "重做", current_song.historypos = 0, 0)) {playing = 0 action_redo()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.COPY, xx, yy, "复制", current_song.selected = 0, 0)) {playing = 0 action_copy()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.CUT, xx, yy, "剪切", current_song.selected = 0, 0)) {playing = 0 action_cut()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.PASTE, xx, yy, "粘贴", selection_copied = "", 0)) {playing = 0 action_paste(current_song.starta, current_song.startb)} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.DELETE, xx, yy, "删除", current_song.selected = 0, 0)) {playing = 0 action_delete()} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {xx += 4 draw_separator(xx, yy + 3) xx += 4 if (xx > rw - 312) break}
+				if (draw_icon(icons.INFORMATION, xx, yy, "歌曲信息")) {if (!isplayer) playing = 0 window = w_songinfoedit * !isplayer + w_songinfo * isplayer} xx += 25 if (xx > rw - 312) break
+				if (!isplayer) {if (draw_icon(icons.PROPERTIES, xx, yy, "歌曲属性")) {playing = 0 window = w_properties} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.INSTRUMENTS, xx, yy, "音色设置")) {playing = 0 window = w_instruments} xx += 25 if (xx > rw - 312) break}
+				if (!isplayer) {if (draw_icon(icons.MIDI_INPUT, xx, yy, "MIDI 设备管理器")) {playing = 0 window = w_mididevices} xx += 25 if (xx > rw - 312) break}
+				xx += 4 draw_separator(xx, yy + 3) xx += 4 if (xx > rw - 312) break
+				if (draw_icon(icons.HELP, xx, yy, "教程视频")) {
+				    open_url("https://www.bilibili.com/video/BV1Mx411a76p")
+				} xx += 25 if (xx > rw - 312) break
+				if (draw_icon(icons.INTERNET, xx, yy, "访问 Note Block Studio 官方网站")) {open_url(link_website)} xx += 25 if (xx > rw - 312) break
+				break
 			}
+			if (isplayer) if (draw_icon(icons.EDITMODE_KEY, xx, yy, condstr(dropmode, "关闭", "开启") + "下落模式", 0, dropmode)) {dropmode = !dropmode if (dropmode) window_maximize() else window_setnormal()} if (isplayer) xx += 25
 		}
-		draw_set_color(c_green)
-		if (theme == 2 || (theme == 3 && fdark)) draw_set_color(c_lime)
-		if (language != 1) draw_text_dynamic(rw - 65, 28 + song_tab_offset, "Fully compatible")
-		else draw_text_dynamic(rw - 65, 28 + song_tab_offset, "完全兼容")
-		draw_theme_color()
-		draw_theme_font(font_main)
-		if (language != 1) popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "This song is compatible with both schematics and data packs.\n(Click for more info.)")
-		else popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "此歌曲兼容 schematic 和数据包。\n（点击查看更多）")
-	} else if (current_song.compatible = 2) {
-		if (theme != 3) {
-			draw_sprite(spr_minecraft, 0, rw - 30, 25 + song_tab_offset)
-			draw_sprite(spr_minecraft, 1, rw - 59, 25 + song_tab_offset)
+		if (aa = 2 && mouse_check_button_released(mb_left) && windowsound) {
+			play_sound(soundding, 45, 100, 100, 0)
+		}
+		xx += 8
+		mastervol = floor(draw_dragbar(mastervol, 1, xx, yy + 10, 100, 2, clamp(mouse_x - xx, 0, 100), condstr(language != 1, "Master Volume: ", "主音量：") + string(floor(mastervol * 100)), 0) * 100 + 0.5) / 100
+		if (mouse_rectangle(xx - 11, yy, 122, 22) && window = 0) {
+			volume_scroll = 1
+			if (mouse_wheel_up() && mastervol + 0.02 <= 1) mastervol += 0.02
+			if (mouse_wheel_down() && mastervol - 0.02 >= 0) mastervol -= 0.02
 		} else {
-			if (!hires) {
-				draw_sprite(spr_minecraft_f, fdark * 3, rw - 30, 25 + song_tab_offset)
-				draw_sprite(spr_minecraft_f, 1 + fdark * 3, rw - 59, 25 + song_tab_offset)
-				draw_sprite_ext(spr_minecraft_f, 6, rw - 30, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
-				draw_sprite_ext(spr_minecraft_f, 1 + 6, rw - 59, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
-			} else {
-				draw_sprite_ext(spr_minecraft_f_hires, fdark * 3, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
-				draw_sprite_ext(spr_minecraft_f_hires, 1 + fdark * 3, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
-				draw_sprite_ext(spr_minecraft_f_hires, 6, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
-				draw_sprite_ext(spr_minecraft_f_hires, 1 + 6, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
-			}
+			volume_scroll = 0
 		}
-		draw_set_color(c_orange)
-		if (language != 1) draw_text_dynamic(rw - 65, 28 + song_tab_offset, "Data pack only")
-		else draw_text_dynamic(rw - 65, 28 + song_tab_offset, "仅限数据包")
-		draw_theme_color()
-		draw_theme_font(font_main)
-		if (language != 1) popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "This song is only compatible with data packs.\n(Click for more info.)")
-		else popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "此歌曲仅兼容数据包。\n（点击查看更多）")
-	} else {
-		if (theme != 3) {
-			draw_sprite(spr_minecraft, 2, rw - 30, 25 + song_tab_offset)
-			draw_sprite(spr_minecraft, 1, rw - 59, 25 + song_tab_offset)
-		} else {
-			if (!hires) {
-				draw_sprite(spr_minecraft_f, 2 + fdark * 3, rw - 30, 25 + song_tab_offset)
-				draw_sprite(spr_minecraft_f, 1 + fdark * 3, rw - 59, 25 + song_tab_offset)
-				draw_sprite_ext(spr_minecraft_f, 2 + 6, rw - 30, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
-				draw_sprite_ext(spr_minecraft_f, 1 + 6, rw - 59, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
-			} else {
-				draw_sprite_ext(spr_minecraft_f_hires, 2 + fdark * 3, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
-				draw_sprite_ext(spr_minecraft_f_hires, 1 + fdark * 3, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
-				draw_sprite_ext(spr_minecraft_f_hires, 2 + 6, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
-				draw_sprite_ext(spr_minecraft_f_hires, 1 + 6, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+		draw_set_alpha(1)
+		if (!isplayer) {
+			xx += 120
+			if (draw_button2(xx, yy, 90, condstr(language != 1, "Reference audio", "参考音频"))) {
+				reference_audio_file = string(get_open_filename_ext("Ogg Vorbis (*.ogg)|*.ogg", "", songfolder, condstr(language != 1, "Load reference audio", "打开参考音频")))
+				reference_audio = audio_create_stream(reference_audio_file)
+				if (reference_audio < 0) {
+				    if (language != 1) message("Couldn't load the file", "Error")
+				    else message("找不到文件", "错误")
+					reference_audio_file = ""
+					reference_audio = -1
+				}
 			}
-		}
-		draw_set_color(c_red)
-		if (language != 1) draw_text_dynamic(rw - 65, 28 + song_tab_offset, "Resource pack only")
-		else draw_text_dynamic(rw - 65, 28 + song_tab_offset, "仅限资源包")
-		draw_theme_color()
-		draw_theme_font(font_main)
-		if (language != 1) popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "This song is compatible with data packs using a resource pack.\n(Click for more info.)")
-		else popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "此歌曲仅兼容带资源包的数据包。\n（点击查看更多）")
-	}
-	draw_set_halign(fa_left)
-
-	a = mouse_rectangle(rw - compx, 24 + song_tab_offset, compx, 25)
-	if (a && window = 0) {
-	    curs = cr_handpoint
-	    if (mouse_check_button_pressed(mb_left)) {
-	        playing = 0
-	        record = 0
-	        selection_place(0)
-	        window = w_minecraft
-	    }
-	}
-
-	// Status bar
-	draw_set_color(make_color_rgb(128, 128, 128))
-	if (!fdark || theme != 3) draw_line(0, rh - 24, rw, rh - 24)
-	draw_set_color(c_white)
-	if (fdark || theme != 3) draw_line(0, rh - 23 - (theme = 3 && fdark), rw, rh - 23 - (theme = 3 && fdark))
-	draw_theme_color()
-	xx = 4
-
-	if (language != 1) {draw_text_dynamic(xx, rh - 18, "Instrument: " + current_song.instrument.name) xx += 180}
-	else {draw_text_dynamic(xx, rh - 18, "音色: " + current_song.instrument.name) xx += 180}
-	draw_separator(xx, rh - 20)
-	draw_theme_color()
-
-	xx += 4
-	if (language != 1) {draw_text_dynamic(xx, rh - 18, "Key: " + get_keyname(selected_key, 1)) xx += 75}
-	else {draw_text_dynamic(xx, rh - 18, "音: " + get_keyname(selected_key, 1)) xx += 75}
-	draw_separator(xx, rh - 20)
-	draw_theme_color()
-	
-	if (selected_vel != 100 || selected_pan != 100 || selected_pit != 0) {
-		xx += 4
-		if (language != 1) {draw_text_dynamic(xx, rh - 18, "Velocity: " + string(selected_vel)) xx += 100}
-		else {draw_text_dynamic(xx, rh - 18, "音量: " + string(selected_vel)) xx += 100}
-		draw_separator(xx, rh - 20)
-		draw_theme_color()
-	
-		xx += 4
-		if (language != 1) {draw_text_dynamic(xx, rh - 18, "Panning: " + string(selected_pan - 100)) xx += 95}
-		else {draw_text_dynamic(xx, rh - 18, "声道: " + string(selected_pan - 100)) xx += 95}
-		draw_separator(xx, rh - 20)
-		draw_theme_color()
-	
-		xx += 4
-		if (language != 1) {draw_text_dynamic(xx, rh - 18, "Pitch: " + string(selected_pit)) xx += 85}
-		else {draw_text_dynamic(xx, rh - 18, "音高: " + string(selected_pit)) xx += 85}
-		draw_separator(xx, rh - 20)
-		draw_theme_color()
-	}
-
-	xx += 4
-	if (language != 1) {draw_text_dynamic(xx, rh - 18, "Tick: " + test(selbx = -1, "None", string(selbx))) xx += 90}
-	else {draw_text_dynamic(xx, rh - 18, "位置: " + test(selbx = -1, "无", string(selbx))) xx += 90}
-	draw_separator(xx, rh - 20)
-	draw_theme_color()
-
-	xx += 4
-	if (language != 1) {draw_text_dynamic(xx, rh - 18, "Layer: " + test(selby = -1, "None", string(selby + 1))) xx += 90}
-	else {draw_text_dynamic(xx, rh - 18, "层: " + test(selby = -1, "无", string(selby + 1))) xx += 90}
-	draw_separator(xx, rh - 20)
-	draw_theme_color()
-
-	xx += 4
-	if (language != 1) {draw_text_dynamic(xx, rh - 18, "Selected: " + string(current_song.selected) + " / " + string(current_song.totalblocks + current_song.selected)) xx += 160}
-	else {draw_text_dynamic(xx, rh - 18, "已选择: " + string(current_song.selected) + " / " + string(current_song.totalblocks + current_song.selected)) xx += 160}
-	draw_separator(xx, rh - 20)
-	draw_theme_color()
-
-	var hovernote = 0
-	if (sela > -1 && selb > -1) {
-		if (selbx < current_song.arraylength && selby < current_song.arrayheight) {
-			if (current_song.song_exists[selbx, selby]) {
-				hovernote = 1
-				xx += 4
-				if (language != 1) draw_text_dynamic(xx, rh - 18, "Key: " + get_keyname(current_song.song_key[selbx, selby], 1))
-				else draw_text_dynamic(xx, rh - 18, "音: " + get_keyname(current_song.song_key[selbx, selby], 1))
-				xx += 90
-				draw_separator(xx, rh - 20)
-				draw_theme_color()
-				xx += 4
-				if (language != 1) draw_text_dynamic(xx, rh - 18, "Velocity: " + string_format(current_song.song_vel[selbx, selby], 1, 0))
-				else draw_text_dynamic(xx, rh - 18, "音量: " + string_format(current_song.song_vel[selbx, selby], 1, 0))
-				xx += 110
-				draw_separator(xx, rh - 20)
-				draw_theme_color()
-				xx += 4
-				if (language != 1) {
-				if (current_song.song_pan[selbx, selby] != 100) {
-					draw_text_dynamic(xx, rh - 18, "Panning: " + condstr(current_song.song_pan[selbx, selby] < 100, "L ", "R ") + " " + string(abs(current_song.song_pan[selbx, selby] - 100)))
-				} else {
-					draw_text_dynamic(xx, rh - 18, "Panning: Center")
-				}
-				} else {
-				if (current_song.song_pan[selbx, selby] != 100) {
-					draw_text_dynamic(xx, rh - 18, "声道: " + condstr(current_song.song_pan[selbx, selby] < 100, "L ", "R ") + " " + string(abs(current_song.song_pan[selbx, selby] - 100)))
-				} else {
-					draw_text_dynamic(xx, rh - 18, "声道: 中央")
-				}
-				}
-				xx += 120
-				draw_separator(xx, rh - 20)
-				draw_theme_color()
-				xx += 4
-				if (language != 1) draw_text_dynamic(xx, rh - 18, "Pitch: " + condstr(current_song.song_pit[selbx, selby] > 0, "+") + string_format(current_song.song_pit[selbx, selby], 1, 0) + " cents")
-				else draw_text_dynamic(xx, rh - 18, "音高: " + condstr(current_song.song_pit[selbx, selby] > 0, "+") + string_format(current_song.song_pit[selbx, selby], 1, 0) + "微分")
-				draw_theme_color()
-			}
-		}
-	}
-	if (!hovernote) {
-		// Auto-save remaining time
-		if (autosave && filename_ext(current_song.filename) = ".nbs") {
 			draw_theme_color()
-			xx += 4
-			if (language != 1) draw_text_dynamic(xx, rh - 18, "Next auto-save: " + string(ceil(tonextsave)) + " minute" + condstr(ceil(tonextsave)<>1, "s"))
-			else draw_text_dynamic(xx, rh - 18, "下次自动保存: " + string(ceil(tonextsave)) + " 分钟")
-			xx += 210
+			xx += 100
+			if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Offset (ms): ", "偏移量（毫秒）: "))
+			xx += 90
+			if (reference_audio >= 0) reference_offset = median(0, draw_dragvalue(13, xx, yy + 5, reference_offset, 0.5), 1000000)
+			xx += 30
+			if (reference_audio >= 0) draw_text_dynamic(xx, yy + 5, condstr(language != 1, "Loaded file: ", "已加载音频: ") + reference_audio_file)
+		}
+
+		// Compatible
+		if (!isplayer) {
+			draw_separator(rw - 34, 26 + song_tab_offset)
+			draw_theme_font(font_main_bold)
+			draw_set_halign(fa_right)
+			if (current_song.compatible = 1) {
+				if (theme != 3) {
+					draw_sprite(spr_minecraft, 0, rw - 30, 25 + song_tab_offset)
+					draw_sprite(spr_minecraft, 0, rw - 59, 25 + song_tab_offset)
+				} else {
+					if (!hires) {
+						draw_sprite(spr_minecraft_f, fdark * 3, rw - 30, 25 + song_tab_offset)
+						draw_sprite(spr_minecraft_f, fdark * 3, rw - 59, 25 + song_tab_offset)
+						draw_sprite_ext(spr_minecraft_f, 6, rw - 30, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
+						draw_sprite_ext(spr_minecraft_f, 6, rw - 59, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
+					} else {
+						draw_sprite_ext(spr_minecraft_f_hires, fdark * 3, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
+						draw_sprite_ext(spr_minecraft_f_hires, fdark * 3, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
+						draw_sprite_ext(spr_minecraft_f_hires, 6, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+						draw_sprite_ext(spr_minecraft_f_hires, 6, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+					}
+				}
+				draw_set_color(c_green)
+				if (theme == 2 || (theme == 3 && fdark)) draw_set_color(c_lime)
+				if (language != 1) draw_text_dynamic(rw - 65, 28 + song_tab_offset, "Fully compatible")
+				else draw_text_dynamic(rw - 65, 28 + song_tab_offset, "完全兼容")
+				draw_theme_color()
+				draw_theme_font(font_main)
+				if (language != 1) popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "This song is compatible with both schematics and data packs.\n(Click for more info.)")
+				else popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "此歌曲兼容 schematic 和数据包。\n（点击查看更多）")
+			} else if (current_song.compatible = 2) {
+				if (theme != 3) {
+					draw_sprite(spr_minecraft, 0, rw - 30, 25 + song_tab_offset)
+					draw_sprite(spr_minecraft, 1, rw - 59, 25 + song_tab_offset)
+				} else {
+					if (!hires) {
+						draw_sprite(spr_minecraft_f, fdark * 3, rw - 30, 25 + song_tab_offset)
+						draw_sprite(spr_minecraft_f, 1 + fdark * 3, rw - 59, 25 + song_tab_offset)
+						draw_sprite_ext(spr_minecraft_f, 6, rw - 30, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
+						draw_sprite_ext(spr_minecraft_f, 1 + 6, rw - 59, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
+					} else {
+						draw_sprite_ext(spr_minecraft_f_hires, fdark * 3, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
+						draw_sprite_ext(spr_minecraft_f_hires, 1 + fdark * 3, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
+						draw_sprite_ext(spr_minecraft_f_hires, 6, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+						draw_sprite_ext(spr_minecraft_f_hires, 1 + 6, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+					}
+				}
+				draw_set_color(c_orange)
+				if (language != 1) draw_text_dynamic(rw - 65, 28 + song_tab_offset, "Data pack only")
+				else draw_text_dynamic(rw - 65, 28 + song_tab_offset, "仅限数据包")
+				draw_theme_color()
+				draw_theme_font(font_main)
+				if (language != 1) popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "This song is only compatible with data packs.\n(Click for more info.)")
+				else popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "此歌曲仅兼容数据包。\n（点击查看更多）")
+			} else {
+				if (theme != 3) {
+					draw_sprite(spr_minecraft, 2, rw - 30, 25 + song_tab_offset)
+					draw_sprite(spr_minecraft, 1, rw - 59, 25 + song_tab_offset)
+				} else {
+					if (!hires) {
+						draw_sprite(spr_minecraft_f, 2 + fdark * 3, rw - 30, 25 + song_tab_offset)
+						draw_sprite(spr_minecraft_f, 1 + fdark * 3, rw - 59, 25 + song_tab_offset)
+						draw_sprite_ext(spr_minecraft_f, 2 + 6, rw - 30, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
+						draw_sprite_ext(spr_minecraft_f, 1 + 6, rw - 59, 25 + song_tab_offset, 1, 1, 0, accent[6 - 2 * !fdark], 1)
+					} else {
+						draw_sprite_ext(spr_minecraft_f_hires, 2 + fdark * 3, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
+						draw_sprite_ext(spr_minecraft_f_hires, 1 + fdark * 3, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, -1, 1)
+						draw_sprite_ext(spr_minecraft_f_hires, 2 + 6, rw - 30, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+						draw_sprite_ext(spr_minecraft_f_hires, 1 + 6, rw - 59, 25 + song_tab_offset, 0.25, 0.25, 0, accent[6 - 2 * !fdark], 1)
+					}
+				}
+				draw_set_color(c_red)
+				if (language != 1) draw_text_dynamic(rw - 65, 28 + song_tab_offset, "Resource pack only")
+				else draw_text_dynamic(rw - 65, 28 + song_tab_offset, "仅限资源包")
+				draw_theme_color()
+				draw_theme_font(font_main)
+				if (language != 1) popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "This song is compatible with data packs using a resource pack.\n(Click for more info.)")
+				else popup_set(rw - compx, 24 + song_tab_offset, compx, 25, "此歌曲仅兼容带资源包的数据包。\n（点击查看更多）")
+			}
+			draw_set_halign(fa_left)
+
+			a = mouse_rectangle(rw - compx, 24 + song_tab_offset, compx, 25)
+			if (a && window = 0) {
+			    curs = cr_handpoint
+			    if (mouse_check_button_pressed(mb_left)) {
+			        playing = 0
+			        record = 0
+			        selection_place(0)
+			        window = w_minecraft
+			    }
+			}
+
+			// Status bar
+			draw_set_color(make_color_rgb(128, 128, 128))
+			if (!fdark || theme != 3) draw_line(0, rh - 24, rw, rh - 24)
+			draw_set_color(c_white)
+			if (fdark || theme != 3) draw_line(0, rh - 23 - (theme = 3 && fdark), rw, rh - 23 - (theme = 3 && fdark))
+			draw_theme_color()
+			xx = 4
+
+			if (language != 1) {draw_text_dynamic(xx, rh - 18, "Instrument: " + current_song.instrument.name) xx += 180}
+			else {draw_text_dynamic(xx, rh - 18, "音色: " + current_song.instrument.name) xx += 180}
 			draw_separator(xx, rh - 20)
 			draw_theme_color()
-		}
-		// Active sounds count
-		if (show_soundcount) {
-			xx += 4
-			if (sounds > channels) {
-				draw_set_color(c_red)
-			}
-			if (language != 1) draw_text_dynamic(xx, rh - 18, "Sounds: " + string(sounds) + " / " + string(channels))
-			else draw_text_dynamic(xx, rh - 18, "声音数: " + string(sounds) + " / " + string(channels))
-			draw_theme_color()
-		}
-	}
 
-	if (os_type = os_windows) {
-		draw_set_halign(fa_right)
-		str = ""
-		for (a = 0; a < midi_devices; a += 1) str += condstr(a > 0, ", ") + midi_input_device_name(a)
-		if (language != 1) {
-		if (midi_devices = 0) str = "No connected MIDI devices"
-		else str = "MIDI devices: " + str
-		} else {
-		if (midi_devices = 0) str = "无 MIDI 设备"
-		else str = "MIDI 设备: " + str
+			xx += 4
+			if (language != 1) {draw_text_dynamic(xx, rh - 18, "Key: " + get_keyname(selected_key, 1)) xx += 75}
+			else {draw_text_dynamic(xx, rh - 18, "音: " + get_keyname(selected_key, 1)) xx += 75}
+			draw_separator(xx, rh - 20)
+			draw_theme_color()
+	
+			if (selected_vel != 100 || selected_pan != 100 || selected_pit != 0) {
+				xx += 4
+				if (language != 1) {draw_text_dynamic(xx, rh - 18, "Velocity: " + string(selected_vel)) xx += 100}
+				else {draw_text_dynamic(xx, rh - 18, "音量: " + string(selected_vel)) xx += 100}
+				draw_separator(xx, rh - 20)
+				draw_theme_color()
+	
+				xx += 4
+				if (language != 1) {draw_text_dynamic(xx, rh - 18, "Panning: " + string(selected_pan - 100)) xx += 95}
+				else {draw_text_dynamic(xx, rh - 18, "声道: " + string(selected_pan - 100)) xx += 95}
+				draw_separator(xx, rh - 20)
+				draw_theme_color()
+	
+				xx += 4
+				if (language != 1) {draw_text_dynamic(xx, rh - 18, "Pitch: " + string(selected_pit)) xx += 85}
+				else {draw_text_dynamic(xx, rh - 18, "音高: " + string(selected_pit)) xx += 85}
+				draw_separator(xx, rh - 20)
+				draw_theme_color()
+			}
+
+			xx += 4
+			if (language != 1) {draw_text_dynamic(xx, rh - 18, "Tick: " + test(selbx = -1, "None", string(selbx))) xx += 90}
+			else {draw_text_dynamic(xx, rh - 18, "位置: " + test(selbx = -1, "无", string(selbx))) xx += 90}
+			draw_separator(xx, rh - 20)
+			draw_theme_color()
+
+			xx += 4
+			if (language != 1) {draw_text_dynamic(xx, rh - 18, "Layer: " + test(selby = -1, "None", string(selby + 1))) xx += 90}
+			else {draw_text_dynamic(xx, rh - 18, "层: " + test(selby = -1, "无", string(selby + 1))) xx += 90}
+			draw_separator(xx, rh - 20)
+			draw_theme_color()
+
+			xx += 4
+			if (language != 1) {draw_text_dynamic(xx, rh - 18, "Selected: " + string(current_song.selected) + " / " + string(current_song.totalblocks + current_song.selected)) xx += 160}
+			else {draw_text_dynamic(xx, rh - 18, "已选择: " + string(current_song.selected) + " / " + string(current_song.totalblocks + current_song.selected)) xx += 160}
+			draw_separator(xx, rh - 20)
+			draw_theme_color()
+
+			var hovernote = 0
+			if (sela > -1 && selb > -1) {
+				if (selbx < current_song.arraylength && selby < current_song.arrayheight) {
+					if (current_song.song_exists[selbx, selby]) {
+						hovernote = 1
+						xx += 4
+						if (language != 1) draw_text_dynamic(xx, rh - 18, "Key: " + get_keyname(current_song.song_key[selbx, selby], 1))
+						else draw_text_dynamic(xx, rh - 18, "音: " + get_keyname(current_song.song_key[selbx, selby], 1))
+						xx += 90
+						draw_separator(xx, rh - 20)
+						draw_theme_color()
+						xx += 4
+						if (language != 1) draw_text_dynamic(xx, rh - 18, "Velocity: " + string_format(current_song.song_vel[selbx, selby], 1, 0))
+						else draw_text_dynamic(xx, rh - 18, "音量: " + string_format(current_song.song_vel[selbx, selby], 1, 0))
+						xx += 110
+						draw_separator(xx, rh - 20)
+						draw_theme_color()
+						xx += 4
+						if (language != 1) {
+							if (current_song.song_pan[selbx, selby] != 100) {
+								draw_text_dynamic(xx, rh - 18, "Panning: " + condstr(current_song.song_pan[selbx, selby] < 100, "L ", "R ") + " " + string(abs(current_song.song_pan[selbx, selby] - 100)))
+							} else {
+								draw_text_dynamic(xx, rh - 18, "Panning: Center")
+							}
+						} else {
+							if (current_song.song_pan[selbx, selby] != 100) {
+								draw_text_dynamic(xx, rh - 18, "声道: " + condstr(current_song.song_pan[selbx, selby] < 100, "L ", "R ") + " " + string(abs(current_song.song_pan[selbx, selby] - 100)))
+							} else {
+								draw_text_dynamic(xx, rh - 18, "声道: 中央")
+							}
+						}
+						xx += 120
+						draw_separator(xx, rh - 20)
+						draw_theme_color()
+						xx += 4
+						if (language != 1) draw_text_dynamic(xx, rh - 18, "Pitch: " + condstr(current_song.song_pit[selbx, selby] > 0, "+") + string_format(current_song.song_pit[selbx, selby], 1, 0) + " cents")
+						else draw_text_dynamic(xx, rh - 18, "音高: " + condstr(current_song.song_pit[selbx, selby] > 0, "+") + string_format(current_song.song_pit[selbx, selby], 1, 0) + "微分")
+						draw_theme_color()
+					}
+				}
+			}
+			if (!hovernote) {
+				// Auto-save remaining time
+				if (autosave && filename_ext(current_song.filename) = ".nbs") {
+					draw_theme_color()
+					xx += 4
+					if (language != 1) draw_text_dynamic(xx, rh - 18, "Next auto-save: " + string(ceil(tonextsave)) + " minute" + condstr(ceil(tonextsave)<>1, "s"))
+					else draw_text_dynamic(xx, rh - 18, "下次自动保存: " + string(ceil(tonextsave)) + " 分钟")
+					xx += 210
+					draw_separator(xx, rh - 20)
+					draw_theme_color()
+				}
+				// Active sounds count
+				if (show_soundcount) {
+					xx += 4
+					if (sounds > channels) {
+						draw_set_color(c_red)
+					}
+					if (language != 1) draw_text_dynamic(xx, rh - 18, "Sounds: " + string(sounds) + " / " + string(channels))
+					else draw_text_dynamic(xx, rh - 18, "声音数: " + string(sounds) + " / " + string(channels))
+					draw_theme_color()
+				}
+			}
+
+			draw_set_halign(fa_right)
+			str = ""
+			for (a = 0; a < midi_devices; a += 1) str += condstr(a > 0, ", ") + midi_input_device_name(a)
+			if (language != 1) {
+				if (midi_devices = 0) str = "No connected MIDI devices"
+				else str = "MIDI devices: " + str
+			} else {
+				if (midi_devices = 0) str = "无 MIDI 设备"
+				else str = "MIDI 设备: " + str
+			}
+			draw_text_dynamic(rw - 6, rh - 18, str)
+			draw_set_halign(fa_left)
 		}
-		draw_text_dynamic(rw - 6, rh - 18, str)
-		draw_set_halign(fa_left)
-		}
-	}
 	
 	}
 

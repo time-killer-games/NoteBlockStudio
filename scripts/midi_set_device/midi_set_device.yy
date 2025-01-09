@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Piano",
-    "path": "folders/Scripts/Interface/Piano.yy",
+    "name": "Midi",
+    "path": "folders/Scripts/Midi.yy",
   },
   "resourceVersion": "1.0",
-  "name": "draw_piano",
+  "name": "midi_set_device",
   "tags": [],
   "resourceType": "GMScript",
 }

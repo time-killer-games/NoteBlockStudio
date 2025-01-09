@@ -9,6 +9,8 @@ function control_create() {
 
 	// Initialize DLLs
 	if (os_type = os_windows) lib_init()
+	rtmidi_init()
+	midiMessages = ds_list_create()
 
 	// Window
 	#macro NOT_RUN_FROM_IDE !string_count("GMS2TEMP", get_execution_command()) // THIS CONSTANT IS A REVERSE BOOLEAN (0 is from IDE)
@@ -282,7 +284,7 @@ function control_create() {
 	array_push(songs, create(obj_song))
 	song = 0
 	for (a = 0; a < 11; a += 1) {
-	    mididevice_instrument[a] = -1
+	    mididevice_instrument[a] = -3
 	    recent_song[a] = ""
 	    recent_song_time[a] = 0
 	}
@@ -331,6 +333,10 @@ function control_create() {
 
 	// Note blocks
 	midi_devices = 0
+	midi_devices_old = 0
+	midi_device_current = 0
+	midi_keypresses = ds_list_create()
+	midi_keyreleases = ds_list_create()
 
 	show_numbers = 1
 	show_octaves = 0
