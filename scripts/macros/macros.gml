@@ -3,6 +3,7 @@ function macros() {
 #macro version_date "2024.12.17"
 #macro version "3.12.0-dev"
 #macro is_prerelease 1 // remember to change to 0 in the release!
+#macro is_development 1 // the more frequent versions that are not on github (no auto update)
 #macro nbs_version 5
 #macro pat_version 1
 

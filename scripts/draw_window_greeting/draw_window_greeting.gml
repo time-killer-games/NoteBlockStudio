@@ -43,7 +43,15 @@ function draw_window_greeting() {
 	var dev_label_offset = (is_prerelease) ? 15 : 0
 	if (NOT_RUN_FROM_IDE != 1) {
 		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Running from the GameMaker IDE.")
-		else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "在 IDE 中运行")	
+		else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "在 IDE 中运行")
+	} else if (is_development) {
+		if (os_type = os_windows || os_type = os_linux) {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新不可用")
+		} else if (os_type = os_macosx) {
+			if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Updates managed by TestFlight app.")
+			else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "由 TestFlight 应用管理更新")
+		}
 	} else if (check_update) {
 		if (update_success) {
 	        draw_set_color(c_lime)
@@ -74,7 +82,7 @@ function draw_window_greeting() {
 		}
 	} else {
 	    draw_set_color(c_red)
-		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled by user")
+		if (language != 1) draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "Update checking disabled by user.")
 	    else draw_text_center(x1 + 132, y1 + 248 + dev_label_offset, "检查更新未开启")
 	}
 	draw_theme_font(font_main)
