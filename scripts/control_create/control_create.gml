@@ -288,7 +288,6 @@ function control_create() {
 	    recent_song[a] = ""
 	    recent_song_time[a] = 0
 	}
-	if (os_type = os_ios) recent_song[0] = bundled_songs_directory + "the_ground's_colour_is_yellow.nbs"
 	//timesignature = 4
 	//randomise()
 	//song_backupid = string(floor(random(800000)))
@@ -617,6 +616,8 @@ function control_create() {
 		    execute_program("Xcopy", @'/E /I /Y "' + filename_dir(bundled_pattern_directory) + @'" "' + filename_dir(pattern_directory) + @'"', true)
 		}
 	}
+	
+	if (os_type = os_ios) recent_song[0] = bundled_songs_directory + "the_ground's_colour_is_yellow.nbs"
 	
 	// Download song
 	protocol_data = pointer_null;
