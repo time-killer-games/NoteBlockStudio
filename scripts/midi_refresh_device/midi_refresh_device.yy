@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Windows",
-    "path": "folders/Scripts/Interface/Windows.yy",
+    "name": "Midi",
+    "path": "folders/Scripts/Midi.yy",
   },
   "resourceVersion": "1.0",
-  "name": "draw_window_mididevices",
+  "name": "midi_refresh_device",
   "tags": [],
   "resourceType": "GMScript",
 }

@@ -337,6 +337,8 @@ function control_create() {
 	midi_device_current = 0
 	midi_keypresses = ds_list_create()
 	midi_keyreleases = ds_list_create()
+	midi_device_names = []
+	midi_refresh_device()
 
 	show_numbers = 1
 	show_octaves = 0

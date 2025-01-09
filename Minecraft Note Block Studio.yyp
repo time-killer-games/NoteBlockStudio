@@ -146,6 +146,7 @@
     {"id":{"name":"buffer_read_byte","path":"scripts/buffer_read_byte/buffer_read_byte.yy",},"order":3,},
     {"id":{"name":"buffer_read_byte_signed","path":"scripts/buffer_read_byte_signed/buffer_read_byte_signed.yy",},"order":4,},
     {"id":{"name":"spr_tooltip_sl_right_hires","path":"sprites/spr_tooltip_sl_right_hires/spr_tooltip_sl_right_hires.yy",},"order":5,},
+    {"id":{"name":"midi_refresh_device","path":"scripts/midi_refresh_device/midi_refresh_device.yy",},"order":7,},
     {"id":{"name":"fnt_wslui","path":"fonts/fnt_wslui/fnt_wslui.yy",},"order":0,},
     {"id":{"name":"buffer_read_double","path":"scripts/buffer_read_double/buffer_read_double.yy",},"order":5,},
     {"id":{"name":"buffer_read_int","path":"scripts/buffer_read_int/buffer_read_int.yy",},"order":6,},

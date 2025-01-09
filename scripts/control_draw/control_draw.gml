@@ -2060,7 +2060,7 @@ function control_draw() {
 
 			draw_set_halign(fa_right)
 			str = ""
-			for (a = 0; a < midi_devices; a += 1) str += condstr(a > 0, ", ") + midi_input_device_name(a) + condstr(midi_device_current = a, condstr(language != 1, " (selected)", "（使用中）"))
+			for (a = 0; a < midi_devices; a += 1) str += condstr(a > 0, ", ") + midi_device_names[a] + condstr(midi_device_current = a, condstr(language != 1, " (selected)", "（使用中）"))
 			if (language != 1) {
 				if (midi_devices = 0) str = "No connected MIDI devices"
 				else str = "MIDI devices: " + str

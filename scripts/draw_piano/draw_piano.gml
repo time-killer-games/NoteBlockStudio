@@ -10,13 +10,10 @@ function draw_piano(argument0, argument1, argument2, argument3) {
 	d = -1
 	selectedkey = -1
 	alpha = max(0, 3 - startkey) * !isplayer + 3 * isplayer
-	midi_devices = midi_input_devices()
-	if (midi_devices_old != midi_devices) midi_set_device(0)
 	for (a = 0; a < midi_devices; a += 1) {
 		midi_keys[a] = midi_input_key_presses(a)
 		midi_releases[a] = midi_input_key_releases(a)
 	}
-	midi_devices_old = midi_devices
 	for (a = 0; a < k; a += 1) {
 	    c = (startkey + a) mod 7
 	    if (a > 0 && c != 2 && c != 5) { // Sharp key to the left

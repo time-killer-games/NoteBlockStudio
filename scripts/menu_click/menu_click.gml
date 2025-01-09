@@ -280,7 +280,7 @@ function menu_click(argument0) {
 	        break
 	    }
 	    case "mididevices_ins": {
-			if (sel != 0 && midi_device_current != obj_menu.mididevice) midi_set_device(obj_menu.mididevice)
+			if (midi_set_device(obj_menu.mididevice) < 0) {midi_refresh_device() set_msg(condstr(language != 1, "That device no longer exists, refreshing...", "所指定的设备不存在，刷新中……"))}
 	        if (sel - 3 < 0)
 	            mididevice_instrument[obj_menu.mididevice] = sel - 3
 	        else
