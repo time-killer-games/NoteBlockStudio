@@ -129,7 +129,7 @@ function control_create() {
 	wpaperblur = 0
 
 	// Audio
-	channels = 256
+	channels = 1024
 	channelstoggle = 1
 	sounds = 0
 	audio_channel_num(channels)
@@ -154,7 +154,7 @@ function control_create() {
 	songfolder = songs_directory
 	patternfolder = pattern_directory
 	icons_init()
-	refreshrate = 0 //0 = 30fps, 1 = 60fps, 2 = 120fps, 3 = 144fps, 4 = Unlimited
+	refreshrate = 2 //0 = 30fps, 1 = 60fps, 2 = 120fps, 3 = 144fps, 4 = 240fps
 	fade = 0
 	rhval = 270
 	fullscreen = 0
