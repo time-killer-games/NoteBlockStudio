@@ -811,7 +811,13 @@ function control_draw() {
 		}
 		if (keyboard_check_released(ord("G"))) {
 			window = w_greeting
+			debug_option = 1
 			set_msg("[Debug] Window => w_greeting")
+		}
+		if (keyboard_check_released(ord("D"))) {
+			debug_overlay_ingame = !debug_overlay_ingame
+			show_debug_overlay(debug_overlay_ingame)
+			debug_option = 1
 		}
 		//if (keyboard_check_released(ord("D")) && isplayer) {
 		//	if (!dropmode) window_maximize()

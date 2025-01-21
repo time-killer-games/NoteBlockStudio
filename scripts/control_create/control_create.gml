@@ -182,6 +182,7 @@ function control_create() {
 	rainbowtoggle = 0
 	pingtime = current_time
 	debug_overlay = check_args("--debug")
+	debug_overlay_ingame = 0
 	debug_option = 0
 	os_info = os_get_info()
 	is_yyc = code_is_compiled()
