@@ -130,7 +130,7 @@ function draw_window_properties() {
 	if (draw_button2(x1 + 430 - 72, y1 + 386, 72, condstr(language != 1, "OK", "确定")) && (windowopen = 1 || theme != 3)) {
 		
 		if (cursong.loopend != cursong.enda + 1) {
-			show_debug_message("Loop end changed; adding extra note");
+			log("Loop end changed; adding extra note");
 			add_block(cursong.loopend - 1, 0, cursong.instrument_list[| 0], 45, 0, 100, 0)
 		}
 		

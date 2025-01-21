@@ -98,7 +98,7 @@ function import_midi() {
 				vel = midi_eventvel[t, e]
 			} else vel = 100
 			if vel >=100 vel = 100
-			show_debug_message(string(vel))
+			log("[MIDI Import]" + string(vel))
 	        yy = 0
 	        stop = 0
 	        if (channel = 9) { // Percussion

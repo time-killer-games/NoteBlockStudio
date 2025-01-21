@@ -217,6 +217,7 @@
     {"id":{"name":"string_truncate","path":"scripts/string_truncate/string_truncate.yy",},"order":4,},
     {"id":{"name":"string_word_wrap","path":"scripts/string_word_wrap/string_word_wrap.yy",},"order":5,},
     {"id":{"name":"spr_inputbox_n_right_hires","path":"sprites/spr_inputbox_n_right_hires/spr_inputbox_n_right_hires.yy",},"order":5,},
+    {"id":{"name":"draw_logs_overlay","path":"scripts/draw_logs_overlay/draw_logs_overlay.yy",},"order":54,},
     {"id":{"name":"string_format_auto","path":"scripts/string_format_auto/string_format_auto.yy",},"order":6,},
     {"id":{"name":"time_str","path":"scripts/time_str/time_str.yy",},"order":7,},
     {"id":{"name":"string_path","path":"scripts/string_path/string_path.yy",},"order":8,},

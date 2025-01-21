@@ -39,7 +39,7 @@ function schematic_save(argument0, argument1) {
 				}
 			}
 		} 
-		show_debug_message("Total NBT TileEntity groups = " + string(d))
+		log("Total NBT TileEntity groups = " + string(d))
 	    nbt_tag_byte_array(file, "Blocks", sch.xsize * sch.ysize * sch.zsize) {
 	        for (c = 0; c < sch.zsize; c += 1) {
 	            for (a = 0; a < sch.xsize; a += 1) {

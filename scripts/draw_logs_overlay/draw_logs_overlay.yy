@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "GMSchematic",
-    "path": "folders/Scripts/Schematic/GMSchematic.yy",
+    "name": "Interface",
+    "path": "folders/Scripts/Interface.yy",
   },
   "resourceVersion": "1.0",
-  "name": "schematic_save",
+  "name": "draw_logs_overlay",
   "tags": [],
   "resourceType": "GMScript",
 }

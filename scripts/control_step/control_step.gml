@@ -92,7 +92,7 @@ function control_step() {
 	        //    break;
 	        //}
 	    }
-		show_debug_message("status: " + string(midi_status) + ", msg1: " + string(midi_msg1) + ", msg2: " + string(midi_msg2))
+		// show_debug_message("status: " + string(midi_status) + ", msg1: " + string(midi_msg1) + ", msg2: " + string(midi_msg2))
 	}
 	
 	// update tabs name and window title accordingly

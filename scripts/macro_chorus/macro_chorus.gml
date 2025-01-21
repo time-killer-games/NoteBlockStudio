@@ -5,7 +5,7 @@ function macro_chorus() {
 	var arr_data = selection_to_array_ext()
 	window = 0
 	total_vals = array_length(arr_data)
-	show_debug_message(str)
+	log(str)
 	val = 0
 	while (val < total_vals) {
 		val += 5

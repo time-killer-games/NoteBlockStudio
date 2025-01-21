@@ -12,7 +12,7 @@ function set_resourcepack(pack_name){
 		if (resourcepacks[pack_obj].type = 1) {
 			return 0 // doesn't support zip packs for now
 			if (directory_exists(sounds_directory + "pack_temp/")) directory_destroy(sounds_directory + "pack_temp/")
-			show_debug_message("unzip" + string(zip_unzip(resource_directory + pack_name, sounds_directory + "pack_temp/")))
+			log("unzip" + string(zip_unzip(resource_directory + pack_name, sounds_directory + "pack_temp/")))
 			//ExecuteShell("7za e \"" + resource_directory + pack_name + "\" -o \"" + sounds_directory + "pack_temp/\"")
 			dir = sounds_directory + "pack_temp/"
 			dir_no_path = "pack_temp/"
@@ -23,7 +23,7 @@ function set_resourcepack(pack_name){
 	} else {
 		dir_no_path = "idkjustloadvanilla"
 	}
-	show_debug_message(dir_no_path)
+	log(dir_no_path)
 	swap_instrument(0, "Harp", "harp2", "harp", dir_no_path)
 	swap_instrument(1, "Double Bass", "bassattack", "dbass", dir_no_path)
 	swap_instrument(2, "Bass Drum", "bd", "bdrum", dir_no_path)
@@ -106,5 +106,5 @@ function swap_instrument(index, ins_name, sound_name, vanilla_name, dir_no_path)
 			}
 		}
 	}
-	show_debug_message(sounds_directory + dir_no_path + "assets/minecraft/sounds/note/" + sound_name + ".ogg")
+	log(sounds_directory + dir_no_path + "assets/minecraft/sounds/note/" + sound_name + ".ogg")
 }

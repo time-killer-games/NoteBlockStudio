@@ -819,6 +819,10 @@ function control_draw() {
 			show_debug_overlay(debug_overlay_ingame)
 			debug_option = 1
 		}
+		if (keyboard_check_released(ord("L"))) {
+			logs_overlay = !logs_overlay
+			debug_option = 1
+		}
 		//if (keyboard_check_released(ord("D")) && isplayer) {
 		//	if (!dropmode) window_maximize()
 		//	//else window_set_size(floor(800 * window_scale), floor(500 * window_scale))
@@ -2515,6 +2519,7 @@ function control_draw() {
 	
 	// Draw debug overlay
 	if (debug_overlay) draw_debug_overlay()
+	if (logs_overlay) draw_logs_overlay(500, 40)
 	
 	if (display_mouse_get_x() - window_get_x() >= 0 && display_mouse_get_y() - window_get_y() >= 0 && display_mouse_get_x() - window_get_x() < 0 + window_width && display_mouse_get_y() - window_get_y() < 0 + window_height) window_set_cursor(curs)
 	mouse_xprev = mouse_x

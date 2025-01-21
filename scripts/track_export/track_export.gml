@@ -247,7 +247,7 @@ function track_export() {
 		TAG_List("entities", 0, 10)
 		blocktagpos = buffer_tell(buffer)
 		TAG_List("blocks", 114514, 10)
-		show_debug_message(blocktagpos)
+		log("blocktagpos: " + blocktagpos)
 			TAG_Compound("nbt")
 				TAG_String("Color", "black")
 				TAG_String("id", "minecraft:sign")
@@ -1205,7 +1205,7 @@ function track_export() {
 		TAG_List("blocks", blockamount, 10)
 	    buffer_save(buffer, temp_file)
 	    buffer_delete(buffer)
-		show_debug_message("totalblocksc: " + string(totalblocksc))
+		log("totalblocksc: " + string(totalblocksc))
 		totalblocksc = 0
 	    gzzip(temp_file, fn)
 	    instance_destroy()

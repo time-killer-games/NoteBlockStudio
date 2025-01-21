@@ -83,7 +83,7 @@ function branch_export() {
 				nblockvel[a, ticks] = 0
 				nblockkey[a, ticks] = 0
 			}
-			show_debug_message("WROTE nblocknote" + string(a) + "," + string(ticks) + " val " + string(nblocknote[a, ticks]))
+			log("WROTE nblocknote" + string(a) + "," + string(ticks) + " val " + string(nblocknote[a, ticks]))
 			noteblockzvel[a, ticks] = 0
 			noteblockxpos[a, ticks] = 0
 			ticks ++
@@ -184,7 +184,7 @@ function branch_export() {
 			}
 		}
 	}
-	show_debug_message("total note blocks = " + string(sch_exp_totalnoteblocks))
+	log("total note blocks = " + string(sch_exp_totalnoteblocks))
 	schematic_save(mySchematic, fn);
 	schematic_destroy(mySchematic);
 	schematic_end();

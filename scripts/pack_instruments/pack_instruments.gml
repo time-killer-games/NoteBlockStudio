@@ -2,7 +2,7 @@
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function pack_instruments() {
 	var fn, tempdir, ins, src, dst, count;
-	show_debug_message(songs[song].song_name)
+	log(songs[song].song_name)
 	if (language != 1) fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, "") + " - ") + "Instruments.zip", "", "Pack instruments to ZIP file"));
 	else fn = string(get_save_filename_ext("ZIP archive (*.zip)|*.zip", condstr(songs[song].filename == "", "", filename_change_ext(songs[song].filename, "") + " - ") + "Instruments.zip", "", "导出音色至 ZIP 文件"));
 	if (fn = "") return 0;
@@ -15,7 +15,7 @@ function pack_instruments() {
 	
 	count = 0;
 	for (var i = first_custom_index; i <= ds_list_size(songs[song].instrument_list) - 1; i++) {
-		show_debug_message(string(i) + " " + string(ds_list_size(songs[song].instrument_list)))
+		log(string(i) + " " + string(ds_list_size(songs[song].instrument_list)))
 		ins = ds_list_find_value(songs[song].instrument_list, i);
 		if (ins.filename != "") {
 			src = sounds_directory + ins.filename;
@@ -23,7 +23,7 @@ function pack_instruments() {
 			if (!file_exists_lib(src)) {
 				continue;
 			}
-			show_debug_message(filename_dir(dst))
+			log(filename_dir(dst))
 			if (!directory_exists_lib(filename_dir(dst))) {
 				directory_create_lib(filename_dir(dst))
 			}

@@ -30,12 +30,12 @@ function find_asset_indexes() {
 	
 	// Search for .json files in the assets/ folder
 	var assets_dir = get_assets_dir();
-	show_debug_message("Looking for index files at " + assets_dir);
+	log("Looking for index files at " + assets_dir);
 	var asset_indexes = [];
 	var file_name = file_find_first(assets_dir + "indexes\\*.json", 0);
 	while (file_name != "") {
 	    array_push(asset_indexes, string_replace(file_name, ".json", ""));
-		show_debug_message(file_name);
+		log(file_name);
 	    file_name = file_find_next();
 	}
 	file_find_close();
@@ -54,7 +54,7 @@ function find_asset_indexes() {
 
 function update_asset_index_menu() {
 	sound_import_asset_indexes = find_asset_indexes();
-	show_debug_message(sound_import_asset_indexes);
+	log(sound_import_asset_indexes);
 	
 	if (array_length(sound_import_asset_indexes) == 0) {
 		sound_import_asset_index_select = 0;

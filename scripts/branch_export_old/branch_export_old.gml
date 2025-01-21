@@ -12,9 +12,9 @@ function branch_export_old() {
 	var mySchematic = schematic_create();
 	var rangestart = sch_exp_range_start
 	var rangeend = sch_exp_range_end
-	show_debug_message("rangestart " + string(rangestart))
-	show_debug_message("rangeend " + string(rangeend))
-	show_debug_message("enda " + string(songs[song].enda))
+	log("rangestart " + string(rangestart))
+	log("rangeend " + string(rangeend))
+	log("enda " + string(songs[song].enda))
 	tags = 0
 	sch_len = (rangeend - rangestart) * 2 + 4
 	if sch_exp_polyphony = 1 && sch_exp_velocity = 0 schematic_size(mySchematic, 1, sch_len, 2 )
@@ -551,11 +551,11 @@ function branch_export_old() {
 		}
 	}	
 
-	show_debug_message(sch_layer1)
-	show_debug_message(sch_layer2)
-	show_debug_message(sch_layer3)
-	show_debug_message(entries)
-	show_debug_message(noteblocks)
+	log(sch_layer1)
+	log(sch_layer2)
+	log(sch_layer3)
+	log(entries)
+	log(noteblocks)
 	schematic_save(mySchematic, fn);
 	schematic_destroy(mySchematic);
 	schematic_end();

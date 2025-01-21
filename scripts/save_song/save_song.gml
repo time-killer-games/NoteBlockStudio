@@ -13,7 +13,7 @@ function save_song() {
 	    fsave = filename_name(cursong.filename)
 	    if (!directory_exists_lib(songfolder)) songfolder = songs_directory
 	    fn = string(get_save_filename_ext("Note Block Songs (*.nbs)|*.nbs", fsave + condstr(filename_ext(cursong.filename) != ".nbs", ".nbs"), songfolder, condstr(language !=1, "Save song", "保存歌曲")))
-		show_debug_message(string_char_at(fn, string_length(fn) - 3))
+		log(string_char_at(fn, string_length(fn) - 3))
 	    if (fn = "") return 0
 	}
 	if ((!backup) && (cursong.selected > 0)) selection_place(0)

@@ -183,6 +183,7 @@ function control_create() {
 	pingtime = current_time
 	debug_overlay = check_args("--debug")
 	debug_overlay_ingame = 0
+	logs_overlay = check_args("--logs")
 	debug_option = 0
 	os_info = os_get_info()
 	is_yyc = code_is_compiled()
@@ -212,7 +213,7 @@ function control_create() {
 		else if (filename_ext(pack_to_push) = "") pack_ext = 2
 		else if (directory_exists(resource_directory + pack_to_push)) pack_ext = 2
 	    if (pack_ext != 0) array_push(resourcepacks, new_resourcepack(pack_ext, pack_to_push))
-		show_debug_message(pack_to_push)
+		log("Pushing resource pack " + pack_to_push)
 	    pack_to_push = file_find_next()
 	}
 	file_find_close()
@@ -708,7 +709,7 @@ function control_create() {
 			
 			// File drop, etc.
 			} else if (string_replace(arg, " ", "") != "") {
-				show_debug_message(arg)
+				log("Opening song from argument, arg: " + arg)
 				filenamearg = arg;
 				song_backupname = filename_name(filename_change_ext(filenamearg, ".nbs"));
 			}

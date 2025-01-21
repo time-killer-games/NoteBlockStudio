@@ -73,9 +73,9 @@ function open_schematic(argument0) {
 	        instance_destroy()
 	        return 0
 	    }
-	    show_debug_message(sch_width)
-	    show_debug_message(sch_length)
-	    show_debug_message(sch_height)
+	    log("[Open Schematic] w=" + sch_width)
+	    log("[Open Schematic] l=" + sch_length)
+	    log("[Open Schematic] h=" + sch_height)
 	    if (blockspos < 0) {
 	        message("Failed to load Schematic.\n\nERROR: No Blocks array found.", "Error")
 	        window = 0

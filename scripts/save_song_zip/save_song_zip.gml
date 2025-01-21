@@ -14,7 +14,7 @@ function save_song_zip() {
 	// Save instruments
 	count = 0;
 	for (var i = first_custom_index; i <= ds_list_size(songs[song].instrument_list) - 1; i++) {
-		show_debug_message(string(i) + " " + string(ds_list_size(songs[song].instrument_list)));
+		log(string(i) + " " + string(ds_list_size(songs[song].instrument_list)));
 		ins = ds_list_find_value(songs[song].instrument_list, i);
 		if (ins.filename != "") {
 			src = sounds_directory + ins.filename;
@@ -22,7 +22,7 @@ function save_song_zip() {
 			if (!file_exists_lib(src)) {
 				continue;
 			}
-			show_debug_message(filename_dir(dst));
+			log(filename_dir(dst));
 			if (!directory_exists_lib(filename_dir(dst))) {
 				directory_create_lib(filename_dir(dst));
 			}
