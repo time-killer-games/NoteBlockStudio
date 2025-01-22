@@ -13,6 +13,7 @@ function draw_logs_overlay(width, lines){
 		line_lines[0] = ""
 		var line_str = log_strs[array_length(log_strs) - i]
 		var current_line = 0
+		draw_theme_font(0, 0, 1)
 		for (var j = 1; j <= string_length(line_str); j++) {
 			if (string_width(line_lines[current_line] + string_char_at(line_str, j)) > width - 7) {
 				current_line++
@@ -20,8 +21,12 @@ function draw_logs_overlay(width, lines){
 			}
 			line_lines[current_line] += string_char_at(line_str, j)
 		}
+		draw_theme_font(0, 0)
 		for (var j = 0; j <= current_line; j++) {
-			if (i - j + current_line <= lines) draw_text(rw - width + 3, rh - lineheight * (i - j + current_line) + 2, line_lines[j])
+			if (i - j + current_line <= lines) {
+				if (!hires || theme != 3) draw_text(rw - width + 3, rh - lineheight * (i - j + current_line) + 2, line_lines[j])
+				else draw_text_transformed(rw - width + 3, rh - lineheight * (i - j + current_line) + 2, line_lines[j], 0.25, 0.25, 0)
+			}
 		}
 		i += current_line
 	}
