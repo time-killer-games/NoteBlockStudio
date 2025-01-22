@@ -33,7 +33,7 @@ function play_sound() {
 	if (realstereo = 0) audio_emitter_position(emitter,pan,0,0)
 	else audio_emitter_position(emitter,100,0,0)
 
-	audio_play_sound_on(emitter,ins.sound, 0, 0)
+	audio_play_sound_on(emitter,ins.sound, 0, current_time)
 	sounds++
 
 	//Schedule emitter to be deleted from memory
@@ -62,9 +62,10 @@ function play_sound() {
 	var emitter_x = 100
 	if (realstereo = 0) emitter_x = pan
 
-	var soundid = audio_play_sound_at(ins.sound, emitter_x, 0, 0, 100, 300, 1, false, 1)
+	var soundid = audio_play_sound_at(ins.sound, emitter_x, 0, 0, 100, 300, 1, false, current_time)
 	audio_sound_gain(soundid, emitter_gain, 0)
 	audio_sound_pitch(soundid, emitter_pitch)
+	
 	sounds++
 
 	//Schedule emitter to be deleted from memory
