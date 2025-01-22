@@ -37,9 +37,9 @@ function draw_block(argument0, argument1, argument2, argument3, argument4, argum
 			frame = 1
 		}
 	}
-	if (hires && theme = 3) gpu_set_texfilter(false)
+	//if (hires && theme = 3) gpu_set_texfilter(false)
 	draw_sprite_ext(sprite, frame, xx, yy, 1, 1, 0, -1, alpha)
-	if (hires && theme = 3) gpu_set_texfilter(true)
+	//if (hires && theme = 3) gpu_set_texfilter(true)
 	draw_set_alpha(1)
 	if (use_icons) {
 		if (iscustom) {
