@@ -50,8 +50,8 @@ function action_undo() {
 			break
 		}
 		case h_selectmove: {
-		    selection_x = arg2
-		    selection_y = arg3
+		    songs[song].selection_x = arg2
+		    songs[song].selection_y = arg3
 			break
 		}
 		case h_selectpaste: {

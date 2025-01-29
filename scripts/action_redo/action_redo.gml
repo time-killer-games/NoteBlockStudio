@@ -48,8 +48,8 @@ function action_redo() {
 			break
 		}
 		case h_selectmove: {
-			selection_x = arg0
-			selection_y = arg1
+			songs[song].selection_x = arg0
+			songs[song].selection_y = arg1
 			break
 		}
 		case h_selectpaste: {
