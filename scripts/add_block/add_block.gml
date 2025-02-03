@@ -13,6 +13,8 @@ function add_block() {
 	}
 	else
 		insnum = false
+		
+	if (xx < 0) return 0
 
 	// Initialize cells
 	if (xx >= songs[song].arraylength) {
