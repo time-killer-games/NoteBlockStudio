@@ -63,7 +63,7 @@ function import_midi() {
 	            while (note > 57) note -= 12
 	        }
 	        if (stop = 0) {
-				if (channel = 9 || midi_eventuntil[t, e] = -1){
+				if (channel = 9 || midi_eventuntil[t, e] = -1 || pos - noteuntil = 0){
 		            if (channelheight[channel] < w_midi_maxheight || w_midi_maxheight = 20) {
 		                switch (midi_channelins[channel]) {
 		                    case 0: {ins1notes[note, pos] = 1 break}
@@ -149,7 +149,7 @@ function import_midi() {
 	            while (note > 57) note -= 12
 	        }
 	        if (ins > -1 && stop = 0) {
-				if (channel = 9 || midi_eventuntil[t, e] = -1) {
+				if (channel = 9 || midi_eventuntil[t, e] = -1 || pos - noteuntil = 0) {
 		            switch (midi_channelins[channel]) {
 		                case 0: {ins1notes[note, pos] = 1 break}
 		                case 1: {ins2notes[note, pos] = 1 break}
