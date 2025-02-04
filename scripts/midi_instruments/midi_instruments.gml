@@ -301,7 +301,7 @@ function midi_instruments() {
 	midi_ins[a, 0] = "Synth Drum" midi_ins[a, 3] = ""
 	midi_ins[a, 1] = 3 midi_ins[a, 2] = 0 a += 1
 	midi_ins[a, 0] = "Reverse Cymbal" midi_ins[a, 3] = "Reverse Cym."
-	midi_ins[a, 1] = 8 midi_ins[a, 2] = -2 a += 1
+	midi_ins[a, 1] = 3 midi_ins[a, 2] = 10 a += 1
 	// Sound Effects
 	midi_ins[a, 0] = "Guitar Fret Noise" midi_ins[a, 3] = "Gt Fret Noise"
 	midi_ins[a, 1] = 4 midi_ins[a, 2] = 1 a += 1
@@ -463,6 +463,12 @@ function midi_instruments() {
 	midi_drum[a, 0] = "Open Surdo"
 	midi_drum[a, 1] = 2 midi_drum[a, 2] = 7 a += 1
 
-
+	midi_fadeout = []
+	array_push(midi_fadeout, "Gunshot")
+	array_push(midi_fadeout, "Applause")
+	array_push(midi_fadeout, "Seashore")
+	
+	midi_fadein = []
+	array_push(midi_fadein, "Reverse Cymbal")
 
 }

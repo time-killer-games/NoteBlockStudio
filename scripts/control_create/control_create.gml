@@ -484,6 +484,7 @@ function control_create() {
 	w_midi_vel = 1
 	w_midi_precision = 1
 	w_midi_tempo_changer = 0
+	w_midi_note_duration = 0
 	w_isdragging = 0
 	w_dragvalue = 0
 	init_midi()

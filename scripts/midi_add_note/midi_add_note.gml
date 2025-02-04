@@ -17,6 +17,7 @@ function midi_add_note(argument0, argument1, argument2, argument3, argument4) {
 	midi_eventnote[track, n] = note
 	midi_eventvel[track, n ] = vel
 	midi_eventchannel[track, n] = channel
+	midi_eventuntil[track, n] = -1
 	midi_trackamount[track] += 1
 	midi_tracklength[track] = max(midi_tracklength[track], pos)
 	midi_channels = max(midi_channels, channel)

@@ -159,9 +159,12 @@ function open_midi() {
 	                lastchannel = channel
 	            }
 	            switch (eventtype) {
-	                case $8: { // Note off, useless
-	                    repeat (2) buffer_read_byte()
-	                    break
+	                case $8: { // Note off, (NOT) useless
+	                    var note, vel
+						note = buffer_read_byte()
+						vel = buffer_read_byte()
+						midi_set_until(channel, t, p, note, vel)
+						break
 	                }
 	                case $9: { // Note on
 	                    var note, vel;
@@ -170,6 +173,8 @@ function open_midi() {
                     
 	                    if (vel > 0)
 	                        midi_add_note(channel, t, p, note, vel) //-21
+						else
+							midi_set_until(channel, t, p, note, vel)
 	                    break
 	                }
 	                case $A: { // Note aftertouch (useless)

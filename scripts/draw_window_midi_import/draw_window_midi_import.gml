@@ -25,11 +25,12 @@ function draw_window_midi_import() {
 	if (draw_radiobox(x1 + 52, y1 + 32 + 60, !w_midi_name_patch, "...channel numbers", "If the layers should be named\nafter the channels in the MIDI file.", !w_midi_name) && wmenu = 0) w_midi_name_patch = 0
 	if (draw_checkbox(x1 + 260, y1 + 32, w_midi_tempo, "Same tempo as in file", "Set the song's tempo to match\nthe one of the MIDI file.") && wmenu = 0) w_midi_tempo=!w_midi_tempo
 	if (draw_checkbox(x1 + 410, y1 + 32, w_midi_tempo_changer, "Tempo changes", "Whether to add tempo changes found in the MIDI file.\nTempo changes are not supported in-game and in most NBS-compatible tools.") && wmenu = 0) {w_midi_tempo_changer=!w_midi_tempo_changer}
-	draw_text_dynamic(x1 + 260, y1 + 52, "Max. channel height:")
-	popup_set_window(x1 + 260, y1 + 52, 140, 16, "The maximum allowed layers per channel.\nClick and drag to adjust.")
-	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 380, y1 + 52, w_midi_maxheight, 1), 20)
-	if (draw_checkbox(x1 + 260, y1 + 72, w_midi_octave, "Keep within octave range", "Whether to automatically transpose the notes\nto keep them within the 2 octave range.") && wmenu = 0) w_midi_octave=!w_midi_octave
-	if (draw_checkbox(x1 + 260, y1 + 92, w_midi_vel, "Read note velocity", "Whether to copy the volume data found\nin each MIDI note.") && wmenu = 0) w_midi_vel=!w_midi_vel
+	if (draw_checkbox(x1 + 260, y1 + 52, w_midi_note_duration, "Note Duration", "Whether to include the note duration as a stereo trail of notes.") && wmenu = 0) {w_midi_note_duration=!w_midi_note_duration}
+	draw_text_dynamic(x1 + 260, y1 + 72, "Max. channel height:")
+	popup_set_window(x1 + 260, y1 + 72, 140, 16, "The maximum allowed layers per channel.\nClick and drag to adjust.")
+	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 380, y1 + 72, w_midi_maxheight, 1), 20)
+	if (draw_checkbox(x1 + 260, y1 + 92, w_midi_octave, "Keep within octave range", "Whether to automatically transpose the notes\nto keep them within the 2 octave range.") && wmenu = 0) w_midi_octave=!w_midi_octave
+	if (draw_checkbox(x1 + 260, y1 + 112, w_midi_vel, "Read note velocity", "Whether to copy the volume data found\nin each MIDI note.") && wmenu = 0) w_midi_vel=!w_midi_vel
 	
 	draw_text_dynamic(x1 + 470, y1 + 32 + 20, "Time precision")
 	popup_set_window(x1 + 470, y1 + 32 + 20, 100, 20, "How much to increase the spacing between each note,\nso that more notes can be placed in between.")
@@ -51,11 +52,12 @@ function draw_window_midi_import() {
 	if (draw_radiobox(x1 + 52, y1 + 32 + 60, !w_midi_name_patch, "......根据层号", "是否根据 MIDI 中的层序号为每层命名。", !w_midi_name) && wmenu = 0) w_midi_name_patch = 0
 	if (draw_checkbox(x1 + 300, y1 + 32, w_midi_tempo, "导入速度", "是否将速度设定为与 MIDI 文件中一样。") && wmenu = 0) w_midi_tempo=!w_midi_tempo
 	if (draw_checkbox(x1 + 410, y1 + 32, w_midi_tempo_changer, "速度变化", "是否添加 MIDI 文件中的速度变化。\n速度调节器（Tempo Changer）在游戏中及大多数NBS兼容软件中不被支持。") && wmenu = 0) {w_midi_tempo_changer=!w_midi_tempo_changer}
-	draw_text_dynamic(x1 + 300, y1 + 52, "通道最高层数:")
-	popup_set_window(x1 + 300, y1 + 52, 140, 16, "每个通道所允许使用的最多层数。拖拽来更改。")
-	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 420, y1 + 52, w_midi_maxheight, 1), 20)
-	if (draw_checkbox(x1 + 300, y1 + 72, w_midi_octave, "保持八度范围", "是否自动将音符转换到 2 八度限制内。") && wmenu = 0) w_midi_octave=!w_midi_octave
-	if (draw_checkbox(x1 + 300, y1 + 92, w_midi_vel, "导入音符音量", "是否将 MIDI 文件中音符音量应用到音符上。") && wmenu = 0) w_midi_vel=!w_midi_vel
+	if (draw_checkbox(x1 + 300, y1 + 52, w_midi_note_duration, "音符长度", "是否将长音以震荡式的排列方式表示。") && wmenu = 0) {w_midi_note_duration=!w_midi_note_duration}
+	draw_text_dynamic(x1 + 300, y1 + 72, "通道最高层数:")
+	popup_set_window(x1 + 300, y1 + 72, 140, 16, "每个通道所允许使用的最多层数。拖拽来更改。")
+	w_midi_maxheight = median(1, draw_dragvalue(1, x1 + 420, y1 + 72, w_midi_maxheight, 1), 20)
+	if (draw_checkbox(x1 + 300, y1 + 92, w_midi_octave, "保持八度范围", "是否自动将音符转换到 2 八度限制内。") && wmenu = 0) w_midi_octave=!w_midi_octave
+	if (draw_checkbox(x1 + 300, y1 + 112, w_midi_vel, "导入音符音量", "是否将 MIDI 文件中音符音量应用到音符上。") && wmenu = 0) w_midi_vel=!w_midi_vel
 	
 	draw_text_dynamic(x1 + 470, y1 + 32 + 20, "精准度")
 	popup_set_window(x1 + 470, y1 + 32 + 20, 100, 20, "调整音符间的距离，以在中间放下更多音符。")
@@ -87,6 +89,8 @@ function draw_window_midi_import() {
 	        w_midi_octave = 0
 			w_midi_vel = 1
 			w_midi_precision = 1
+			w_midi_tempo_changer = 0
+			w_midi_note_duration = 0
 	    }
 	}
 	b = 8
