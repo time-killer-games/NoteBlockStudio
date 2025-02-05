@@ -13,6 +13,7 @@ if (os_type != os_windows) {
   if (!directory_exists(pattern_directory)) execute_program("Xcopy", @'/E /I "' + filename_dir(bundled_pattern_directory) + @'" "' + filename_dir(pattern_directory) + @'"', true)
 }
 
+// maximize game window on startup
 window_zoom(window_handle());
 
 // Do everything else for create event...
